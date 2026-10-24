@@ -1,0 +1,42 @@
+{
+  "name": "sard-monorepo",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Sard — Content Operating System by Bunya Labs",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "typescript": "^5.7.2",
+    "prettier": "^3.4.2",
+    "eslint": "^9.18.0",
+    "@eslint/js": "^9.18.0",
+    "typescript-eslint": "^8.20.0",
+    "tsx": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=9.15.0"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "license": "MIT",
+  "author": "Bunya Labs",
+  "homepage": "https://sard.bunya.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bunya-labs/sard"
+  },
+  "keywords": ["cms", "content", "edge", "typescript", "astro", "portable-text"],
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md}": ["prettier --write"]
+  }
+}
