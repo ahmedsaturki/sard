@@ -1,22 +1,43 @@
 {
   "name": "sard/admin",
   "version": "0.0.1",
-  "description": "Sard admin placeholder",
+  "description": "Sard Admin - Content Operating System Dashboard",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && vite build",
+    "dev": "vite",
+    "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "clean": "rm -rf dist"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "@sard/design-tokens": "workspace:*",
+    "@sard/components": "workspace:*",
+    "@sard/visual-editor": "workspace:*",
+    "@sard/core": "workspace:*",
+    "@sard/db": "workspace:*"
+  },
   "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "typescript": "^5.7.2",
-    "vitest": "^3.0.5"
+    "vite": "^5.4.2",
+    "vitest": "^3.0.5",
+    "eslint": "^9.9.1"
   },
   "license": "MIT"
 }

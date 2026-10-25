@@ -1,0 +1,286 @@
+{
+  "name": "Agency Starter",
+  "description": "Professional agency website with portfolio, services, team, and contact form",
+  "version": "1.0.0",
+  "locale": "ar",
+  "supportedLocales": [
+    "ar",
+    "en"
+  ],
+  "site": {
+    "name": {
+      "ar": "وكالة سرد",
+      "en": "Sard Agency"
+    },
+    "description": {
+      "ar": "وكالة رقمية متكاملة لبناء حضورك الرقمي",
+      "en": "Full-service digital agency for your digital presence"
+    },
+    "url": "https://agency.sard.demo",
+    "logo": "/images/logo.svg",
+    "favicon": "/images/favicon.ico"
+  },
+  "navigation": {
+    "items": [
+      {
+        "label": {
+          "ar": "الرئيسية",
+          "en": "Home"
+        },
+        "url": "/",
+        "order": 1
+      },
+      {
+        "label": {
+          "ar": "خدماتنا",
+          "en": "Services"
+        },
+        "url": "/services",
+        "order": 2
+      },
+      {
+        "label": {
+          "ar": "أعمالنا",
+          "en": "Portfolio"
+        },
+        "url": "/portfolio",
+        "order": 3
+      },
+      {
+        "label": {
+          "ar": "فريقنا",
+          "en": "Team"
+        },
+        "url": "/team",
+        "order": 4
+      },
+      {
+        "label": {
+          "ar": "اتصل بنا",
+          "en": "Contact"
+        },
+        "url": "/contact",
+        "order": 5
+      }
+    ]
+  },
+  "hero": {
+    "headline": {
+      "ar": "نصنع بصمتك الرقمية",
+      "en": "We Craft Your Digital Footprint"
+    },
+    "subheadline": {
+      "ar": "وكالة رقمية متكاملة تقدم حلول الويب والتسويق الرقمي",
+      "en": "Full-service digital agency providing web and digital marketing solutions"
+    },
+    "cta": {
+      "ar": "ابدأ مشروعك",
+      "en": "Start Your Project"
+    },
+    "ctaLink": "/contact",
+    "backgroundImage": "/images/hero-bg.jpg"
+  },
+  "services": [
+    {
+      "id": "web-development",
+      "title": {
+        "ar": "تطوير المواقع",
+        "en": "Web Development"
+      },
+      "description": {
+        "ar": "مواقع ويب حديثة وسريعة وآمنة",
+        "en": "Modern, fast, and secure websites"
+      },
+      "icon": "code",
+      "features": [
+        {
+          "ar": "مواقع متجاوبة",
+          "en": "Responsive Design"
+        },
+        {
+          "ar": "أداء فائق",
+          "en": "High Performance"
+        },
+        {
+          "ar": "آمنة ومحمية",
+          "en": "Secure & Protected"
+        }
+      ]
+    },
+    {
+      "id": "digital-marketing",
+      "title": {
+        "ar": "التسويق الرقمي",
+        "en": "Digital Marketing"
+      },
+      "description": {
+        "ar": "استراتيجيات تسويقية تحقق النتائج",
+        "en": "Marketing strategies that deliver results"
+      },
+      "icon": "trending-up",
+      "features": [
+        {
+          "ar": "تحسين محركات البحث",
+          "en": "SEO Optimization"
+        },
+        {
+          "ar": "إدارة وسائل التواصل",
+          "en": "Social Media Management"
+        },
+        {
+          "ar": "إعلانات مدفوعة",
+          "en": "Paid Advertising"
+        }
+      ]
+    },
+    {
+      "id": "branding",
+      "title": {
+        "ar": "الهوية البصرية",
+        "en": "Branding"
+      },
+      "description": {
+        "ar": "هوية تميزك عن المنافسين",
+        "en": "Identity that sets you apart"
+      },
+      "icon": "palette",
+      "features": [
+        {
+          "ar": "تصميم الشعار",
+          "en": "Logo Design"
+        },
+        {
+          "ar": "دليل العلامة التجارية",
+          "en": "Brand Guidelines"
+        },
+        {
+          "ar": "مواد تسويقية",
+          "en": "Marketing Materials"
+        }
+      ]
+    }
+  ],
+  "portfolio": {
+    "categories": [
+      {
+        "id": "all",
+        "label": {
+          "ar": "الكل",
+          "en": "All"
+        }
+      },
+      {
+        "id": "web",
+        "label": {
+          "ar": "مواقع ويب",
+          "en": "Websites"
+        }
+      },
+      {
+        "id": "ecommerce",
+        "label": {
+          "ar": "متاجر إلكترونية",
+          "en": "E-commerce"
+        }
+      },
+      {
+        "id": "webapp",
+        "label": {
+          "ar": "تطبيقات ويب",
+          "en": "Web Apps"
+        }
+      }
+    ]
+  },
+  "team": [
+    {
+      "id": "1",
+      "name": {
+        "ar": "أحمد محمد",
+        "en": "Ahmed Mohamed"
+      },
+      "role": {
+        "ar": "المؤسس والرئيس التنفيذي",
+        "en": "Founder & CEO"
+      },
+      "bio": {
+        "ar": "خبير في تطوير الويب مع 15 سنة خبرة",
+        "en": "Web development expert with 15 years experience"
+      },
+      "image": "/images/team/ahmed.jpg",
+      "social": {
+        "linkedin": "https://linkedin.com/in/ahmed",
+        "twitter": "https://twitter.com/ahmed",
+        "github": "https://github.com/ahmed"
+      }
+    },
+    {
+      "id": "2",
+      "name": {
+        "ar": "سارة أحمد",
+        "en": "Sarah Ahmed"
+      },
+      "role": {
+        "ar": "مديرة المشاريع",
+        "en": "Project Manager"
+      },
+      "bio": {
+        "ar": "متخصصة في إدارة المشاريع الرقمية",
+        "en": "Digital project management specialist"
+      },
+      "image": "/images/team/sarah.jpg",
+      "social": {
+        "linkedin": "https://linkedin.com/in/sarah"
+      }
+    },
+    {
+      "id": "3",
+      "name": {
+        "ar": "عمر خالد",
+        "en": "Omar Khaled"
+      },
+      "role": {
+        "ar": "كبير المطورين",
+        "en": "Lead Developer"
+      },
+      "bio": {
+        "ar": "مطور Full Stack بخبرة 10 سنوات",
+        "en": "Full Stack developer with 10 years experience"
+      },
+      "image": "/images/team/omar.jpg",
+      "social": {
+        "github": "https://github.com/omar",
+        "linkedin": "https://linkedin.com/in/omar"
+      }
+    }
+  ],
+  "contact": {
+    "address": {
+      "ar": "الرياض، المملكة العربية السعودية",
+      "en": "Riyadh, Saudi Arabia"
+    },
+    "phone": "+966 50 123 4567",
+    "email": "hello@sard-agency.com",
+    "hours": {
+      "ar": "الأحد - الخميس: 9 ص - 5 م",
+      "en": "Sun - Thu: 9 AM - 5 PM"
+    },
+    "mapEmbed": "https://maps.google.com/embed?..."
+  },
+  "seo": {
+    "defaultMetaTitle": {
+      "ar": "وكالة سرد - وكالتك الرقمية",
+      "en": "Sard Agency - Your Digital Agency"
+    },
+    "defaultMetaDescription": {
+      "ar": "وكالة رقمية متكاملة تقدم تطوير المواقع والتسويق الرقمي والهوية البصرية",
+      "en": "Full-service digital agency offering web development, digital marketing, and branding"
+    },
+    "defaultOgImage": "/images/og-default.jpg",
+    "twitterHandle": "@sardagency"
+  },
+  "analytics": {
+    "gaId": "G-XXXXXXXXXX",
+    "plausibleDomain": "agency.sard.demo"
+  }
+}

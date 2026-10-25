@@ -1,4 +1,8 @@
 packages:
+  - 'packages/db-sqlcipher'
+  - 'packages/sandbox'
+  - 'packages/wp-runtime'
+  - 'apps/lite'
   - 'apps/*'
   - 'packages/*'
   - 'tools/*'

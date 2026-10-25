@@ -1,0 +1,270 @@
+/**
+ * @module sard/lite/styles/globals
+ * Global styles with RTL-first design tokens
+ * HC-10: Arabic/RTL as first-class citizen
+ */
+
+@import '@sard/design-tokens/css/variables.css';
+
+/* RTL-first base */
+:root {
+  /* Direction */
+  --direction: rtl;
+  --direction-opposite: ltr;
+  
+  /* Logical properties (use these instead of left/right) */
+  --space-inline-start: var(--sard-spacing-md);
+  --space-inline-end: var(--sard-spacing-md);
+  --space-block-start: var(--sard-spacing-md);
+  --space-block-end: var(--sard-spacing-md);
+  
+  /* Border radius (logical) */
+  --radius-start-start: var(--sard-radius-md);
+  --radius-start-end: var(--sard-radius-md);
+  --radius-end-start: var(--sard-radius-md);
+  --radius-end-end: var(--sard-radius-md);
+  
+  /* Shadows (logical) */
+  --shadow-inline-start: var(--sard-shadow-md);
+  --shadow-inline-end: var(--sard-shadow-md);
+}
+
+/* HTML direction */
+html[dir="rtl"] {
+  --direction: rtl;
+  --direction-opposite: ltr;
+}
+
+html[dir="ltr"] {
+  --direction: ltr;
+  --direction-opposite: rtl;
+}
+
+/* Base reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--sard-font-family-arabic), var(--sard-font-family-sans);
+  direction: var(--direction);
+  line-height: 1.6;
+  color: var(--sard-color-neutral-900);
+  background-color: var(--sard-color-neutral-50);
+  min-height: 100vh;
+}
+
+/* Focus styles (accessibility) */
+:focus-visible {
+  outline: 2px solid var(--sard-color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--sard-color-primary-600);
+  color: white;
+  padding: var(--sard-spacing-sm) var(--sard-spacing-md);
+  z-index: 10000;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* RTL-aware utilities */
+.text-start { text-align: start; }
+.text-end { text-align: end; }
+.float-start { float: inline-start; }
+.float-end { float: inline-end; }
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--sard-spacing-lg);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  gap: var(--sard-spacing-lg);
+}
+
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+  .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Flex utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-sm { gap: var(--sard-spacing-sm); }
+.gap-md { gap: var(--sard-spacing-md); }
+.gap-lg { gap: var(--sard-spacing-lg); }
+
+/* Button base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sard-spacing-sm);
+  padding: var(--sard-spacing-sm) var(--sard-spacing-lg);
+  font-family: inherit;
+  font-size: var(--sard-font-size-base);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--sard-radius-md);
+  cursor: pointer;
+  transition: all var(--sard-transition-fast);
+}
+
+.btn-primary {
+  background: var(--sard-color-primary-600);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--sard-color-primary-700);
+}
+
+.btn-secondary {
+  background: var(--sard-color-neutral-200);
+  color: var(--sard-color-neutral-900);
+}
+
+.btn-secondary:hover {
+  background: var(--sard-color-neutral-300);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--sard-color-primary-600);
+  color: var(--sard-color-primary-600);
+}
+
+.btn-outline:hover {
+  background: var(--sard-color-primary-50);
+}
+
+/* Form elements */
+.input {
+  width: 100%;
+  padding: var(--sard-spacing-sm) var(--sard-spacing-md);
+  font-family: inherit;
+  font-size: var(--sard-font-size-base);
+  border: 1px solid var(--sard-color-neutral-300);
+  border-radius: var(--sard-radius-md);
+  background: white;
+  color: var(--sard-color-neutral-900);
+  transition: border-color var(--sard-transition-fast), box-shadow var(--sard-transition-fast);
+}
+
+.input:focus {
+  border-color: var(--sard-color-primary-500);
+  box-shadow: 0 0 0 3px var(--sard-color-primary-100);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--sard-color-neutral-400);
+}
+
+.label {
+  display: block;
+  margin-block-end: var(--sard-spacing-xs);
+  font-weight: 500;
+  color: var(--sard-color-neutral-700);
+}
+
+/* Card */
+.card {
+  background: white;
+  border-radius: var(--sard-radius-lg);
+  box-shadow: var(--sard-shadow-sm);
+  padding: var(--sard-spacing-lg);
+  border: 1px solid var(--sard-color-neutral-100);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--sard-spacing-lg);
+}
+
+.modal {
+  background: white;
+  border-radius: var(--sard-radius-xl);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: var(--sard-shadow-xl);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0; 
+    transform: translateX(var(--sard-spacing-lg)); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in { animation: fadeIn 0.2s ease-out; }
+.animate-slide-in { animation: slideIn 0.3s ease-out; }
+.animate-pulse { animation: pulse 2s infinite; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: black; }
+}

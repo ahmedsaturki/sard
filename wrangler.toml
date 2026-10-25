@@ -1,0 +1,21 @@
+name = "sard-cloud"
+account_id = ""
+
+# Commands to run:
+#   npx wrangler publish    # Publish to Cloudflare Workers
+#   npx wrangler dev        # Development server
+
+# Compatibility flags
+compatibility_flags = []
+
+# Compatibility date
+compatibility_date = "2024-01-01"
+
+# HTTP bindings
+[[api]]
+
+# Site usage options
+# site_id = ""
+
+[vars]
+# ADD YOUR ENVIRONMENT VARIABLES HERE

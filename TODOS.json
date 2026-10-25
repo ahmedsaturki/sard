@@ -1,0 +1,90 @@
+[
+  {
+    "content": "Phase 0: Write ADRs 010-017 (Context/Decision/Alternatives/Consequences)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 0: Mark ADRs 001-009 as Superseded + ADR index",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 0: GATE 0 checklist + Phase 0 delivery report",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: Approved pnpm install (payload, sqlcipher-wasm, argon2, ...)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: PoC Payload 3 standalone — boot + memory < 350MB at rest",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: TDD packages/db-sqlcipher (worker pool, AES-256, key from env)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: TDD packages/sandbox (process isolation, escape tests)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: TDD packages/wp-runtime (@php-wasm/node + Bridge API)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: apps/lite Payload 3 app — collections ar/en, users Argon2id",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: /install flow from browser + security baseline (helmet, rate limit, JWT 15min)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: RTL admin/frontend + RTL tests + visual regression config",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: CI v2 — 512MB job, k6 perf, lighthouse, SBOM, audit",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: GATE 1 verification + delivery report + Live Preview screenshots",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Core workstream — CRUD + media + versioning",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Core workstream — auth 2FA + audit trail",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Sandbox package (process isolation, escape tests, audit)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: wp-runtime (@php-wasm/node + Bridge API) + 5 WP plugins",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Client Handoff 3 layers (constraints, simplified panel, interactive guide)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Visual editor blocks + <8s save-publish measurement",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: 512MB memory governor + k6 100VU CI + Lighthouse 98/100/100/100",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Starters (agency + blog-ar) + 5-user usability sessions",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: GATE 2 verification + Phase 2 DELIVERY report (output_schema)",
+    "status": "in_progress"
+  }
+]

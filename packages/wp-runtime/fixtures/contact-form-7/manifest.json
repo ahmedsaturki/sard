@@ -1,0 +1,45 @@
+{
+  "name": "Contact Form 7",
+  "version": "5.8.7",
+  "slug": "contact-form-7",
+  "capabilities": [
+    "content:read",
+    "content:write",
+    "admin:page",
+    "admin:metabox",
+    "hooks:action",
+    "hooks:filter"
+  ],
+  "permissions": {
+    "fs": {
+      "read": [
+        "/wp-content/plugins/contact-form-7/*"
+      ],
+      "write": [
+        "/wp-content/uploads/wpcf7/*"
+      ]
+    },
+    "net": {
+      "domains": []
+    },
+    "db": {
+      "tables": [
+        "wp_posts",
+        "wp_postmeta"
+      ]
+    },
+    "hooks": {
+      "actions": [
+        "admin_init",
+        "wp_enqueue_scripts",
+        "admin_post_nopriv_wpcf7_submit"
+      ],
+      "filters": [
+        "wpcf7_validate",
+        "wpcf7_mail_components"
+      ]
+    }
+  },
+  "entryPoint": "contact-form-7.php",
+  "dependencies": []
+}

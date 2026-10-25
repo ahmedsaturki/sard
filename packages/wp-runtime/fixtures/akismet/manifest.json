@@ -1,0 +1,40 @@
+{
+  "name": "Akismet Anti-Spam",
+  "version": "5.2",
+  "slug": "akismet",
+  "capabilities": [
+    "content:read",
+    "content:write",
+    "net:http"
+  ],
+  "permissions": {
+    "fs": {
+      "read": [
+        "/wp-content/plugins/akismet/*"
+      ]
+    },
+    "net": {
+      "domains": [
+        "*.akismet.com",
+        "*.rest.akismet.com"
+      ]
+    },
+    "db": {
+      "tables": [
+        "wp_comments",
+        "wp_commentmeta"
+      ]
+    },
+    "hooks": {
+      "actions": [
+        "comment_post",
+        "admin_init"
+      ],
+      "filters": [
+        "pre_comment_approved"
+      ]
+    }
+  },
+  "entryPoint": "akismet.php",
+  "dependencies": []
+}

@@ -1,0 +1,38 @@
+{
+  "name": "WP Super Cache",
+  "version": "1.9.4",
+  "slug": "wp-super-cache",
+  "capabilities": [
+    "content:read",
+    "net:http"
+  ],
+  "permissions": {
+    "fs": {
+      "read": [
+        "/wp-content/plugins/wp-super-cache/*"
+      ],
+      "write": [
+        "/wp-content/cache/*"
+      ]
+    },
+    "net": {
+      "domains": []
+    },
+    "db": {
+      "tables": [
+        "wp_options"
+      ]
+    },
+    "hooks": {
+      "actions": [
+        "init",
+        "shutdown",
+        "wp_cache_update",
+        "admin_init"
+      ],
+      "filters": []
+    }
+  },
+  "entryPoint": "wp-super-cache.php",
+  "dependencies": []
+}

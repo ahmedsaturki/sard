@@ -1,0 +1,47 @@
+{
+  "name": "Yoast SEO",
+  "version": "22.5",
+  "slug": "yoast-seo",
+  "capabilities": [
+    "content:read",
+    "content:write",
+    "metadata:write",
+    "admin:page",
+    "admin:metabox",
+    "hooks:filter"
+  ],
+  "permissions": {
+    "fs": {
+      "read": [
+        "/wp-content/plugins/yoast-seo/*"
+      ],
+      "write": []
+    },
+    "net": {
+      "domains": [
+        "*.yoast.com",
+        "api.yoast.com"
+      ]
+    },
+    "db": {
+      "tables": [
+        "wp_postmeta",
+        "wp_options"
+      ]
+    },
+    "hooks": {
+      "actions": [
+        "wp_head",
+        "save_post",
+        "init"
+      ],
+      "filters": [
+        "the_content",
+        "wpseo_metadesc",
+        "wpseo_opengraph"
+      ]
+    }
+  },
+  "entryPoint": "yoast-seo.php",
+  "dependencies": []
+}

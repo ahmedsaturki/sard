@@ -1,3 +1,5 @@
+> **⚠️ SUPERSEDED** — This ADR was created in a prior session and has been replaced by ADR-010 through ADR-017 as of 2026-10-25 per Spec v3.0 re-baseline. It is retained for historical reference only.
+
 # ADR-001: Technology Stack Selection
 
 ## Status

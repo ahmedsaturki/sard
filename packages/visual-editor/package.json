@@ -1,0 +1,31 @@
+{
+  "name": "@sard/visual-editor",
+  "version": "0.0.1",
+  "description": "Real-Time Visual Editor for Sard CMS",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "@sard/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
+  },
+  "license": "MIT"
+}

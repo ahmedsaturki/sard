@@ -1,0 +1,51 @@
+{
+  "name": "sard/lite",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Sard Lite — Payload 3 app for shared hosting (Node.js 20+, 512MB/1-core)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "payload dev",
+    "build": "payload build && next build",
+    "start": "NODE_ENV=production node server.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "clean": "rm -rf dist .next",
+    "payload:migrate": "payload migrate",
+    "payload:generate": "payload generate:types"
+  },
+  "dependencies": {
+    "payload": "^3.0.0",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@payloadcms/db-sqlite": "^3.0.0",
+    "@payloadcms/richtext-lexical": "^3.0.0",
+    "@node-rs/argon2": "^2.2.2",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^7.4.1",
+    "zod": "^3.24.1",
+    "@sard/db-sqlcipher": "workspace:*",
+    "@sard/portable-text": "workspace:*",
+    "@sard/design-tokens": "workspace:*",
+    "@sard/components": "workspace:*",
+    "@sard/client-handoff": "workspace:*",
+    "@sard/wp-runtime": "workspace:*",
+    "@payloadcms/translations": "^3.92.0",
+    "express": "^4.21.1",
+    "@types/express": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5",
+    "eslint": "^9.18.0",
+    "tsx": "^4.19.2"
+  },
+  "license": "MIT"
+}

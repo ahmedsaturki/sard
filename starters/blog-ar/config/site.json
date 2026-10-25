@@ -1,0 +1,226 @@
+{
+  "name": "Arabic Blog Starter",
+  "description": "RTL-first Arabic blog with categories, tags, SEO, and newsletter",
+  "version": "1.0.0",
+  "locale": "ar",
+  "supportedLocales": [
+    "ar",
+    "en"
+  ],
+  "site": {
+    "name": {
+      "ar": "مدونة سرد",
+      "en": "Sard Blog"
+    },
+    "description": {
+      "ar": "مدونة عربية عصرية للأفكار والرؤى",
+      "en": "Modern Arabic blog for ideas and insights"
+    },
+    "url": "https://blog.sard.demo",
+    "logo": "/images/logo.svg",
+    "favicon": "/images/favicon.ico"
+  },
+  "navigation": {
+    "items": [
+      {
+        "label": {
+          "ar": "الرئيسية",
+          "en": "Home"
+        },
+        "url": "/",
+        "order": 1
+      },
+      {
+        "label": {
+          "ar": "المقالات",
+          "en": "Articles"
+        },
+        "url": "/posts",
+        "order": 2
+      },
+      {
+        "label": {
+          "ar": "التصنيفات",
+          "en": "Categories"
+        },
+        "url": "/categories",
+        "order": 2
+      },
+      {
+        "label": {
+          "ar": "الكتاب",
+          "en": "Authors"
+        },
+        "url": "/authors",
+        "order": 3
+      },
+      {
+        "label": {
+          "ar": "النشرة البريدية",
+          "en": "Newsletter"
+        },
+        "url": "/newsletter",
+        "order": 4
+      },
+      {
+        "label": {
+          "ar": "اتصل بنا",
+          "en": "Contact"
+        },
+        "url": "/contact",
+        "order": 5
+      }
+    ]
+  },
+  "hero": {
+    "headline": {
+      "ar": "أفكار تلهم، كلمات تبقى",
+      "en": "Ideas That Inspire, Words That Stay"
+    },
+    "subheadline": {
+      "ar": "منصة عربية للمقالات الرصينة والآراء العميقة",
+      "en": "Arabic platform for thoughtful articles and deep insights"
+    },
+    "cta": {
+      "ar": "تصفح المقالات",
+      "en": "Browse Articles"
+    },
+    "ctaLink": "/posts",
+    "backgroundImage": "/images/blog-hero.jpg"
+  },
+  "categories": [
+    {
+      "id": "tech",
+      "label": {
+        "ar": "تقنية",
+        "en": "Technology"
+      },
+      "color": "#3B82F6"
+    },
+    {
+      "id": "business",
+      "label": {
+        "ar": "أعمال",
+        "en": "Business"
+      },
+      "color": "#10B981"
+    },
+    {
+      "id": "culture",
+      "label": {
+        "ar": "ثقافة",
+        "en": "Culture"
+      },
+      "color": "#F59E0B"
+    },
+    {
+      "id": "science",
+      "label": {
+        "ar": "علوم",
+        "en": "Science"
+      },
+      "color": "#8B5CF6"
+    },
+    {
+      "id": "opinion",
+      "label": {
+        "ar": "آراء",
+        "en": "Opinion"
+      },
+      "color": "#EF4444"
+    }
+  ],
+  "authors": [
+    {
+      "id": "1",
+      "name": {
+        "ar": "د. أحمد السعيد",
+        "en": "Dr. Ahmed Al-Saeed"
+      },
+      "role": {
+        "ar": "كاتب تقني",
+        "en": "Tech Writer"
+      },
+      "bio": {
+        "ar": "مهندس برمجيات وكاتب تقني مهتم بالذكاء الاصطناعي",
+        "en": "Software engineer and tech writer interested in AI"
+      },
+      "image": "/images/authors/ahmed.jpg",
+      "social": {
+        "twitter": "https://twitter.com/ahmed",
+        "linkedin": "https://linkedin.com/in/ahmed",
+        "github": "https://github.com/ahmed"
+      }
+    },
+    {
+      "id": "2",
+      "name": {
+        "ar": "سارة العبدالله",
+        "en": "Sara Al-Abdullah"
+      },
+      "role": {
+        "ar": "كاتبة أعمال",
+        "en": "Business Writer"
+      },
+      "bio": {
+        "ar": "خبيرة في ريادة الأعمال والتسويق الرقمي",
+        "en": "Entrepreneurship and digital marketing expert"
+      },
+      "image": "/images/authors/sara.jpg",
+      "social": {
+        "linkedin": "https://linkedin.com/in/sara",
+        "twitter": "https://twitter.com/sara"
+      }
+    }
+  ],
+  "newsletter": {
+    "title": {
+      "ar": "النشرة البريدية الأسبوعية",
+      "en": "Weekly Newsletter"
+    },
+    "description": {
+      "ar": "أفضل المقالات تصل لبريدك أسبوعياً",
+      "en": "Best articles delivered to your inbox weekly"
+    },
+    "placeholder": {
+      "ar": "بريدك الإلكتروني",
+      "en": "Your email"
+    },
+    "button": {
+      "ar": "اشترك",
+      "en": "Subscribe"
+    },
+    "privacyNote": {
+      "ar": "نحن نحترم خصوصيتك، لا سبام",
+      "en": "We respect your privacy, no spam"
+    }
+  },
+  "contact": {
+    "address": {
+      "ar": "القاهرة، مصر",
+      "en": "Cairo, Egypt"
+    },
+    "email": "hello@sard-blog.com",
+    "social": {
+      "twitter": "https://twitter.com/sardblog",
+      "linkedin": "https://linkedin.com/company/sardblog",
+      "youtube": "https://youtube.com/@sardblog"
+    }
+  },
+  "seo": {
+    "defaultMetaTitle": {
+      "ar": "مدونة سرد - مقالات عربية رصينة",
+      "en": "Sard Blog - Quality Arabic Articles"
+    },
+    "defaultMetaDescription": {
+      "ar": "منصة عربية للمقالات الرصينة في التقنية والأعمال والثقافة والعلوم",
+      "en": "Arabic platform for quality articles in tech, business, culture, and science"
+    },
+    "defaultOgImage": "/images/og-blog.jpg",
+    "twitterHandle": "@sardblog"
+  },
+  "analytics": {
+    "gaId": "G-XXXXXXXXXX",
+    "plausibleDomain": "blog.sard.demo"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@sard/wp-runtime",
+  "version": "0.0.1",
+  "description": "PHP-WASM runtime + Bridge API for WordPress plugin sandbox (L1 WP Compat)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@php-wasm/node": "^2.0.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5",
+    "eslint": "^9.18.0"
+  },
+  "license": "MIT"
+}

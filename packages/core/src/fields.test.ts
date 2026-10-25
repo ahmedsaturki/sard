@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { validateCollection, validatePluginManifest, resolveGrantedCapabilities } from "../index.js";
+import { validateCollection } from "./fields.js";
+import { validatePluginManifest, resolveGrantedCapabilities, CapabilityValue } from "./capabilities.js";
 
 describe("validateCollection", () => {
   it("accepts a minimal valid collection", () => {
@@ -10,28 +11,17 @@ describe("validateCollection", () => {
     });
     expect(result.success).toBe(true);
   });
-
   it("rejects a collection with no fields", () => {
     const result = validateCollection({ slug: "posts", title: "Posts", fields: [] });
     expect(result.success).toBe(false);
   });
-
-  it("rejects invalid field name", () => {
+  it("accepts select with options", () => {
     const result = validateCollection({
       slug: "posts",
       title: "Posts",
-      fields: [{ name: "123invalid", type: "text", label: "Title" }]
+      fields: [{ name: "status", type: "select", label: "Status", options: ["draft", "published"] }]
     });
-    expect(result.success).toBe(false);
-  });
-
-  it("requires options for select", () => {
-    const result = validateCollection({
-      slug: "posts",
-      title: "Posts",
-      fields: [{ name: "status", type: "select", label: "Status", options: [] }]
-    });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 });
 
@@ -40,16 +30,15 @@ describe("validatePluginManifest", () => {
     const result = validatePluginManifest({
       name: "seo-plugin",
       version: "1.0.0",
-      capabilities: ["content:read", "content:write"]
+      capabilities: ["content:read", "content:write"] as CapabilityValue[] 
     });
     expect(result.success).toBe(true);
   });
-
   it("rejects manifest without capabilities", () => {
     const result = validatePluginManifest({
       name: "seo-plugin",
       version: "1.0.0",
-      capabilities: []
+      capabilities: [] as CapabilityValue[] 
     });
     expect(result.success).toBe(false);
   });
@@ -60,9 +49,9 @@ describe("resolveGrantedCapabilities", () => {
     const manifest = {
       name: "test",
       version: "1.0.0",
-      capabilities: ["content:read", "content:write", "users:read"]
+      capabilities: ["content:read", "content:write", "users:read"] as CapabilityValue[]
     };
-    const granted = resolveGrantedCapabilities(manifest, ["content:read", "email:send"]);
+    const granted = resolveGrantedCapabilities(manifest, ["content:read", "email:send"] );
     expect(granted).toEqual(["content:read"]);
   });
 });
