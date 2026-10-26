@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import { withPayload } from '@payloadcms/next/withPayload';
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -8,13 +10,10 @@ const nextConfig = {
     remotePatterns: [{ protocol: 'https', hostname: '**' }],
   },
   experimental: {
-    optimizePackageImports: ['@payloadcms/richtext-lexical', '@sard/components'],
-  },
-  i18n: {
-    locales: ['ar', 'en'],
-    defaultLocale: 'ar',
-    localeDetection: false,
+    extensionAlias: {
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+    },
   },
 };
 
-module.exports = nextConfig;
+export default withPayload(nextConfig);

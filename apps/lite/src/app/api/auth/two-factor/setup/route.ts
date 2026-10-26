@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
-import config from 'file:///D:/ahmed-research-lab/Bunya%20Labs/Sard/apps/lite/dist/payload.config.esm.js';
+import config from '@payload-config';
 import { generateTwoFactorSecret } from './service';
 
 let payloadPromise: Promise<any> | null = null;
@@ -73,8 +73,8 @@ export async function POST(request: Request) {
     }
     
     // Verify the code
-    const { authenticator } = await import('otplib');
-    const valid = authenticator.check(code, secret);
+    const { TOTP } = await import('@otplib/totp');
+    const valid = TOTP.verify(code, secret);
     
     if (!valid) {
       return NextResponse.json({ success: false, error: 'Invalid code' }, { status: 400 });

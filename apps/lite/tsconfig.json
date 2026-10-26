@@ -2,27 +2,37 @@
   "extends": "../../tools/tsconfig/nextjs.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
+      "@payload-config": [
+        "./payload.config.ts"
       ],
-      "@sard/*": [
-        "../../packages/*/src"
+      "@importMap": [
+        "./src/app/(payload)/sard-import-map.js"
+      ],
+      "@/importMap": [
+        "./src/app/(payload)/sard-import-map.js"
       ]
     },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "types": [
-      "node",
-      "next",
-      "next/image-types/global"
+    "noEmit": true
+  },
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
     ]
   },
+  "plugins": [
+    {
+      "name": "next"
+    }
+  ],
+  "types": [
+    "node",
+    "next",
+    "next/image-types/global"
+  ],
+  "noEmit": true,
   "include": [
     "next-env.d.ts",
     "**/*.ts",

@@ -9,7 +9,8 @@
     "jsxImportSource": "react"
   },
   "include": [
-    "src"
+    "src",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",

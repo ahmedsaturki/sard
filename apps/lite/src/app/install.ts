@@ -6,7 +6,7 @@
 import { Request, Response } from 'express';
 import { randomBytes } from 'node:crypto';
 import { Payload } from 'payload';
-import { argon2 } from '@node-rs/argon2';
+import { hash, verify } from '@node-rs/argon2';
 
 interface InstallRequest {
   siteName: string;
@@ -46,7 +46,7 @@ function generateDBKey(): string {
 }
 
 function hashPassword(password: string): Promise<string> {
-  return argon2.hash(password, {
+  return hash(password, {
     memoryCost: 65536, timeCost: 3, parallelism: 1, outputLen: 32, type: 2,
   });
 }
@@ -126,7 +126,7 @@ export async function installHandler(payload: Payload): Promise<(req: Request, r
   };
 }
 
-export function installMiddleware(payload: Payload) {
+export async function installMiddleware(payload: Payload) {
   const handler = await installHandler(payload);
   return handler;
 }

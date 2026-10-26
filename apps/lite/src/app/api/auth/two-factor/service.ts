@@ -3,9 +3,9 @@
  * Two-Factor Authentication (TOTP) service
  */
 
-import { authenticator } from 'otplib';
+import { TOTP } from '@otplib/totp';
 import { getPayload } from 'payload';
-import config from 'file:///D:/ahmed-research-lab/Bunya%20Labs/Sard/apps/lite/dist/payload.config.esm.js';
+import config from '@payload-config';
 
 let payloadPromise: Promise<any> | null = null;
 
@@ -17,7 +17,7 @@ function getPayloadInstance() {
 }
 
 // Configure otplib
-authenticator.options = {
+TOTP.options = {
   window: 1, // Allow 1 step window (30 seconds)
   digits: 6,
   step: 30,
@@ -37,9 +37,9 @@ export interface TwoFactorVerifyResult {
 }
 
 export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFactorSetup> {
-  const secret = authenticator.generateSecret();
+  const secret = TOTP.generateSecret();
   const serviceName = 'Sard Lite';
-  const uri = authenticator.keyuri(userEmail, serviceName, secret);
+  const uri = TOTP.generateURI(userEmail, serviceName, secret);
   
   // Generate backup codes
   const backupCodes = Array.from({ length: 10 }, () => 
@@ -65,7 +65,7 @@ export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFac
 
 export async function verifyTwoFactorCode(secret: string, code: string): Promise<TwoFactorVerifyResult> {
   try {
-    const valid = authenticator.check(code, secret);
+    const valid = TOTP.verify(code, secret);
     return { valid };
   } catch (error) {
     console.error('[2FA] Verification error:', error);
@@ -93,9 +93,9 @@ export function generateBackupCodes(): string[] {
 }
 
 export function generateTwoFactorSecretOnly(): string {
-  return authenticator.generateSecret();
+  return TOTP.generateSecret();
 }
 
 export function getTwoFactorURI(email: string, secret: string): string {
-  return authenticator.keyuri(email, 'Sard Lite', secret);
+  return TOTP.generateURI(email, 'Sard Lite', secret);
 }

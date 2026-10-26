@@ -46,3 +46,21 @@ Thumbs.db
 # Temporary
 *.tmp
 *.temp
+
+# Databases (never commit DB files — AC-06/AC-11)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+apps/lite/data/
+
+# Build/pack artifacts
+*.tgz
+
+# Scratch
+test.mjs
+test-*.mjs
+load-test.*
+start-server*.bat
+docs/reports/*.json

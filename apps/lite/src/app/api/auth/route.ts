@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
-import config from 'file:///D:/ahmed-research-lab/Bunya%20Labs/Sard/apps/lite/dist/payload.config.esm.js';
+import config from '@payload-config';
 import { LoginSchema, TwoFactorSetupSchema } from '../validation';
 
 let payloadPromise: Promise<any> | null = null;

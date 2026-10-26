@@ -5,7 +5,6 @@
  * 
  * Target: < 8s save-publish cycle
  */
-
 import { 
   Block, 
   BlockSelection, 
@@ -39,11 +38,9 @@ import {
   CopyIcon,
   EditIcon 
 } from '@sard/icons';
-
 // ============================================
 // Base Block Component
 // ============================================
-
 interface BaseBlockProps {
   block: any;
   onChange: (block: any) => void;
@@ -51,7 +48,6 @@ interface BaseBlockProps {
   onDuplicate: () => void;
   isSelected: boolean;
 }
-
 const BaseBlockWrapper: React.FC<BaseBlockProps & { children: React.ReactNode }> = ({
   block,
   onChange,
@@ -61,16 +57,12 @@ const BaseBlockWrapper: React.FC<BaseBlockProps & { children: React.ReactNode }>
   children,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const isRtl = document.dir === 'rtl';
-  
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <div
       className={`sard-block-wrapper ${isSelected ? 'selected' : ''}`}
@@ -100,7 +92,6 @@ const BaseBlockWrapper: React.FC<BaseBlockProps & { children: React.ReactNode }>
         }}>
           <DragIndicatorIcon />
         </span>
-        
         {/* Block Type Label */}
         <span style={{
           fontSize: '12px',
@@ -112,9 +103,7 @@ const BaseBlockWrapper: React.FC<BaseBlockProps & { children: React.ReactNode }>
         }}>
           {block.type || 'block'}
         </span>
-        
         <div style={{ flex: 1 }} />
-        
         {/* Actions Menu */}
         <div style={{ position: 'relative' }}>
           <button
@@ -132,40 +121,32 @@ const BaseBlockWrapper: React.FC<BaseBlockProps & { children: React.ReactNode }>
           </button>
         </div>
       </div>
-      
       {/* Block Content */}
       <div style={{ padding: '16px' }}>
         {children}
       </div>
-      
       {/* Context Menu */}
       {/* Menu component would go here */}
     </div>
   );
 };
-
 // ============================================
 // Text Block (Paragraph, Heading)
 // ============================================
-
 interface TextBlockProps extends BaseBlockProps {
   block: {
     type: 'paragraph' | 'heading1' | 'heading2' | 'heading3' | 'heading4' | 'blockquote';
     children: string;
   };
 }
-
 const TextBlock: React.FC<TextBlockProps> = ({ block, onChange, onRemove, onDuplicate, isSelected }) => {
   const [content, setContent] = React.useState(block.children || '');
-  const isRtl = document.dir === 'rtl';
-  
   React.useEffect(() => {
     const timeout = setTimeout(() => {
       onChange({ ...block, children: content });
     }, 300);
     return () => clearTimeout(timeout);
   }, [content]);
-  
   const tagMap = {
     paragraph: 'p',
     heading1: 'h1',
@@ -174,9 +155,7 @@ const TextBlock: React.FC<TextBlockProps> = ({ block, onChange, onRemove, onDupl
     heading4: 'h4',
     blockquote: 'blockquote',
   };
-  
   const Tag = tagMap[block.type as keyof typeof tagMap] || 'p';
-  
   return (
     <BaseBlockWrapper
       block={{ type: block.type }}
@@ -199,18 +178,16 @@ const TextBlock: React.FC<TextBlockProps> = ({ block, onChange, onRemove, onDupl
           lineHeight: 1.6,
           color: 'var(--sard-color-neutral-900)',
         }}
-        onInput={(e) => setContent(e.currentTarget.innerText)}
+
         dir="auto"
         data-placeholder={block.type === 'blockquote' ? 'اقتباس...' : 'اكتب هنا...'}
       />
     </BaseBlockWrapper>
   );
 };
-
 // ============================================
 // Image Block
 // ============================================
-
 interface ImageBlockProps extends BaseBlockProps {
   block: {
     type: 'image';
@@ -221,11 +198,9 @@ interface ImageBlockProps extends BaseBlockProps {
     height?: number;
   };
 }
-
 const ImageBlock: React.FC<ImageBlockProps> = ({ block, onChange, onRemove, onDuplicate, isSelected }) => {
   const [alt, setAlt] = React.useState(block.alt || '');
   const [caption, setCaption] = React.useState(block.caption || '');
-  const isRtl = document.dir === 'rtl';
   
   return (
     <BaseBlockWrapper
@@ -245,7 +220,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({ block, onChange, onRemove, onDu
             borderRadius: '8px',
             boxShadow: 'var(--sard-shadow-md)',
           }}
-          onLoad={(e) => {
+          onLoad={(_e) => {
             // Image loaded
           }}
         />
@@ -263,7 +238,6 @@ const ImageBlock: React.FC<ImageBlockProps> = ({ block, onChange, onRemove, onDu
           </div>
         )}
       </div>
-      
       <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div>
           <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.875rem', fontWeight: 500 }}>
@@ -283,7 +257,6 @@ const ImageBlock: React.FC<ImageBlockProps> = ({ block, onChange, onRemove, onDu
             }}
           />
         </div>
-        
         <div>
           <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.875rem', fontWeight: 500 }}>
             التسمية التوضيحية (Caption)
@@ -307,11 +280,9 @@ const ImageBlock: React.FC<ImageBlockProps> = ({ block, onChange, onRemove, onDu
     </BaseBlockWrapper>
   );
 };
-
 // ============================================
 // Video Block
 // ============================================
-
 interface VideoBlockProps extends BaseBlockProps {
   block: {
     type: 'video';
@@ -320,12 +291,9 @@ interface VideoBlockProps extends BaseBlockProps {
     caption?: string;
   };
 }
-
 const VideoBlock: React.FC<VideoBlockProps> = ({ block, onChange, onRemove, onDuplicate, isSelected }) => {
   const [title, setTitle] = React.useState(block.title || '');
   const [caption, setCaption] = React.useState(block.caption || '');
-  const isRtl = document.dir === 'rtl';
-  
   return (
     <BaseBlockWrapper
       block={{ type: 'video' }}
@@ -342,7 +310,6 @@ const VideoBlock: React.FC<VideoBlockProps> = ({ block, onChange, onRemove, onDu
           title={block.title || 'Video'}
         />
       </div>
-      
       <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div>
           <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.875rem', fontWeight: 500 }}>
@@ -362,7 +329,6 @@ const VideoBlock: React.FC<VideoBlockProps> = ({ block, onChange, onRemove, onDu
             }}
           />
         </div>
-        
         <div>
           <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.875rem', fontWeight: 500 }}>
             التسمية التوضيحية
@@ -386,11 +352,9 @@ const VideoBlock: React.FC<VideoBlockProps> = ({ block, onChange, onRemove, onDu
     </BaseBlockWrapper>
   );
 };
-
 // ============================================
 // Code Block
 // ============================================
-
 interface CodeBlockProps extends BaseBlockProps {
   block: {
     type: 'code';
@@ -398,13 +362,10 @@ interface CodeBlockProps extends BaseBlockProps {
     language: string;
   };
 }
-
 const CodeBlock: React.FC<CodeBlockProps> = ({ block, onChange, onRemove, onDuplicate, isSelected }) => {
   const [code, setCode] = React.useState(block.code || '');
   const [language, setLanguage] = React.useState(block.language || 'javascript');
   const languages = ['javascript', 'typescript', 'python', 'php', 'html', 'css', 'sql', 'json', 'bash', 'yaml', 'markdown'];
-  const isRtl = document.dir === 'rtl';
-  
   return (
     <BaseBlockWrapper
       block={{ type: 'code' }}
@@ -429,7 +390,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ block, onChange, onRemove, onDupl
             <option key={lang} value={lang}>{lang}</option>
           ))}
         </select>
-        
+      </div>
       <textarea
         value={code}
         onChange={(e) => setCode(e.target.value)}
@@ -453,39 +414,16 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ block, onChange, onRemove, onDupl
     </BaseBlockWrapper>
   );
 };
-
 // ============================================
 // Gallery Block
 // ============================================
-
 interface GalleryBlockProps extends BaseBlockProps {
   block: {
     type: 'gallery';
     images: Array<{ url: string; alt: string; caption?: string }>;
   };
 }
-
 const GalleryBlock: React.FC<GalleryBlockProps> = ({ block, onChange, onRemove, onDuplicate, isSelected }) => {
-  const [images, setImages] = React.useState(block.images || []);
-  const isRtl = document.dir === 'rtl';
-  
-  const addImage = () => {
-    // Would open media picker
-    console.log('Open media picker');
-  };
-  
-  const removeImage = (index: number) => {
-    const newImages = images.filter((_, i) => i !== index);
-    setImages(newImages);
-  };
-  
-  const reorderImages = (fromIndex: number, toIndex: number) => {
-    const newImages = [...images];
-    const [removed] = newImages.splice(fromIndex, 1);
-    newImages.splice(toIndex, 0, removed);
-    setImages(newImages);
-  };
-  
   return (
     <BaseBlockWrapper
       block={{ type: 'gallery' }}
@@ -495,7 +433,7 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({ block, onChange, onRemove, 
       isSelected={isSelected}
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px', marginBottom: '16px' }}>
-        {block.images.map((image, index) => (
+        {(block.images || []).map((image, index) => (
           <div key={index} style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', aspectRatio: '4/3' }}>
             <img
               src={image.url}
@@ -523,7 +461,6 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({ block, onChange, onRemove, 
           </div>
         ))}
       </div>
-      
       <button
         onClick={() => console.log('Open media picker')}
         style={{
@@ -543,11 +480,9 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({ block, onChange, onRemove, 
     </BaseBlockWrapper>
   );
 };
-
 // ============================================
 // Block Registry
 // ============================================
-
 const blockComponents: Record<string, React.FC<any>> = {
   paragraph: TextBlock,
   heading1: TextBlock,
@@ -560,52 +495,40 @@ const blockComponents: Record<string, React.FC<any>> = {
   code: CodeBlock,
   gallery: GalleryBlock,
 };
-
 export function getBlockComponent(type: string): React.FC<any> | null {
   return blockComponents[type] || null;
 }
-
 export function getAllBlockTypes(): string[] {
   return Object.keys(blockComponents);
 }
-
 // ============================================
 // Payload 3 Lexical Editor Configuration
 // ============================================
-
-export const sardLexicalEditor = lexicalEditor({
+export const sardLexicalEditor: any = lexicalEditor({
   // Custom blocks
   // blocks: getAllBlockTypes().map(type => ({
   //   type,
   //   // Component would be registered here
   // })),
-  
   // Arabic/RTL support
   // Note: Lexical handles RTL via CSS direction
 });
-
 export const visualEditorConfig = {
   // Block types available
   blockTypes: getAllBlockTypes(),
-  
   // Custom block components
   blockComponents,
-  
   // Save/Publish performance targets
   saveTimeout: 8000, // < 8s target (HC-14)
   autoSaveInterval: 30000, // 30 seconds
-  
   // Collaboration (future)
   collaboration: false,
-  
   // RTL support
   rtl: true,
-  
   // Media upload
   upload: {
     maxSize: 10 * 1024 * 1024, // 10MB
     allowedTypes: ['image/*', 'video/mp4', 'application/pdf'],
   },
 };
-
 export default visualEditorConfig;

@@ -12,12 +12,12 @@ import type { ContentEntrySerializable, CollectionSerializable } from "@sard/cor
 /**
  * Editor modes
  */
-export type EditorMode = "preview" | "edit" | "structure" | "settings";
+type EditorMode = "preview" | "edit" | "structure" | "settings";
 
 /**
  * Visual Editor context
  */
-export interface VisualEditorContextValue {
+interface VisualEditorContextValue {
   mode: EditorMode;
   setMode: (mode: EditorMode) => void;
   selectedElement: string | null;
@@ -40,7 +40,7 @@ export interface VisualEditorContextValue {
 /**
  * Editable region props
  */
-export interface EditableRegionProps {
+interface EditableRegionProps {
   id: string;
   fieldName: string;
   fieldType: string;
@@ -61,7 +61,7 @@ export interface EditableRegionProps {
 /**
  * Toolbar props
  */
-export interface ToolbarProps {
+interface ToolbarProps {
   mode: EditorMode;
   onModeChange: (mode: EditorMode) => void;
   canUndo: boolean;
@@ -77,7 +77,7 @@ export interface ToolbarProps {
 /**
  * Sidebar props
  */
-export interface SidebarProps {
+interface SidebarProps {
   activeTab: "structure" | "settings" | "seo" | "versions" | "media";
   onTabChange: (tab: string) => void;
   collection: CollectionSerializable | null;
@@ -87,7 +87,7 @@ export interface SidebarProps {
 /**
  * Block/Component types for visual editing
  */
-export interface EditorBlock {
+interface EditorBlock {
   id: string;
   type: string;
   name: string;
@@ -100,7 +100,7 @@ export interface EditorBlock {
   allowedChildren?: string[];
 }
 
-export interface EditorBlockField {
+interface EditorBlockField {
   name: string;
   label: string;
   type: "text" | "textarea" | "richtext" | "image" | "video" | "select" | "boolean" | "number" | "color" | "link" | "component";
@@ -118,7 +118,7 @@ export interface EditorBlockField {
 /**
  * Built-in editor blocks
  */
-export const builtInBlocks = [
+const builtInBlocks = [
   {
     id: "heading",
     type: "heading",
@@ -407,7 +407,7 @@ export const builtInBlocks = [
 /**
  * Editor history for undo/redo
  */
-export interface EditorHistory {
+interface EditorHistory {
   past: ContentEntrySerializable[];
   future: ContentEntrySerializable[];
   maxSize: number;
@@ -418,7 +418,7 @@ export interface EditorHistory {
 /**
  * Create editor history manager
  */
-export function createEditorHistory(maxSize = 50): EditorHistory {
+function createEditorHistory(maxSize = 50): EditorHistory {
   return {
     past: [],
     future: [],
@@ -428,8 +428,8 @@ export function createEditorHistory(maxSize = 50): EditorHistory {
   };
 }
 
-export function pushHistory(history: EditorHistory, content: ContentEntrySerializable): EditorHistory {
-  const newPast = [...history.past, history.getContent ? history.getContent() : history.content].filter((c): c is ContentEntrySerializable => c !== null && c !== undefined);
+function pushHistory(history: EditorHistory, content: ContentEntrySerializable): EditorHistory {
+  const newPast = [...history.past, history.getContent ? history.getContent() : history.content].filter((c): c is ContentEntrySerializable => c !== null && c !== undefined) as ContentEntrySerializable[];
   if (newPast.length > history.maxSize) {
     newPast.shift();
   }
@@ -442,7 +442,7 @@ export function pushHistory(history: EditorHistory, content: ContentEntrySeriali
   };
 }
 
-export function undoFn(history: EditorHistory): EditorHistory | null {
+function undoFn(history: EditorHistory): EditorHistory | null {
   if (history.past.length === 0) return null;
   const previous = history.past[history.past.length - 1];
   const newPast = history.past.slice(0, -1);
@@ -451,12 +451,12 @@ export function undoFn(history: EditorHistory): EditorHistory | null {
     past: newPast,
     future: [currentContent, ...history.future].filter((c): c is ContentEntrySerializable => c !== null && c !== undefined),
     maxSize: history.maxSize,
-    content: previous,
-    getContent: () => previous,
+    content: (previous as ContentEntrySerializable | null),
+    getContent: () => (previous as ContentEntrySerializable | null),
   };
 }
 
-export function redoFn(history: EditorHistory): EditorHistory | null {
+function redoFn(history: EditorHistory): EditorHistory | null {
   if (history.future.length === 0) return null;
   const next = history.future[0];
   const newFuture = history.future.slice(1);
@@ -465,15 +465,15 @@ export function redoFn(history: EditorHistory): EditorHistory | null {
     past: [...history.past, currentContent].filter((c): c is ContentEntrySerializable => c !== null && c !== undefined),
     future: newFuture,
     maxSize: history.maxSize,
-    content: next,
-    getContent: () => next,
+    content: next ?? null,
+    getContent: () => (next as ContentEntrySerializable | null),
   };
 }
 
 /**
  * Real-time collaboration types
  */
-export interface CollaborationUser {
+interface CollaborationUser {
   id: string;
   name: string;
   color: string;
@@ -481,7 +481,7 @@ export interface CollaborationUser {
   selection?: { start: number; end: number };
 }
 
-export interface CollaborationState {
+interface CollaborationState {
   users: Map<string, CollaborationUser>;
   currentUser: CollaborationUser;
   presence: Map<string, { x: number; y: number }>;
@@ -502,7 +502,7 @@ export interface EditorConfig {
   locale?: string;
 }
 
-export const defaultEditorConfig = {
+const defaultEditorConfig = {
   blocks: builtInBlocks,
   maxDepth: 10,
   enableCollaboration: false,
@@ -520,7 +520,7 @@ export const defaultEditorConfig = {
 /**
  * Hook for editor state management
  */
-export function useVisualEditor(config: Partial<EditorConfig> = {}) {
+function useVisualEditor(config: Partial<EditorConfig> = {}) {
   const mergedConfig = { ...defaultEditorConfig, ...config };
   const [mode, setMode] = React.useState<EditorMode>("preview");
   const [selectedElement, setSelectedElement] = React.useState<string | null>(null);
@@ -604,7 +604,7 @@ export interface VisualEditorProviderProps {
 
 const VisualEditorContext = React.createContext<any>(null);
 
-export function VisualEditorProvider({
+function VisualEditorProvider({
   children,
   config,
   initialContent: _initialContent,
@@ -630,7 +630,7 @@ export function VisualEditorProvider({
   );
 }
 
-export function useVisualEditorContext(): VisualEditorContextValue {
+function useVisualEditorContext(): VisualEditorContextValue {
   const context = React.useContext(VisualEditorContext);
   if (!context) {
     throw new Error("useVisualEditorContext must be used within VisualEditorProvider");
@@ -641,3 +641,29 @@ export function useVisualEditorContext(): VisualEditorContextValue {
 // ============================================================================
 // EXPORTS
 // ============================================================================
+
+// ============================================================================
+// EXPORTS
+// ============================================================================
+
+export {
+  type EditorMode,
+  type VisualEditorContextValue,
+  type EditableRegionProps,
+  type ToolbarProps,
+  type SidebarProps,
+  type EditorBlock,
+  type EditorBlockField,
+  type EditorHistory,
+  type CollaborationUser,
+  type CollaborationState,
+  VisualEditorProvider,
+  useVisualEditor,
+  useVisualEditorContext,
+  builtInBlocks,
+  defaultEditorConfig,
+  createEditorHistory,
+  pushHistory,
+  undoFn,
+  redoFn,
+};
