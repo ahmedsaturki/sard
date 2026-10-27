@@ -8,10 +8,10 @@ export const AuditLogCollection = {
   labels: { singular: { ar: 'سجل التدقيق', en: 'Audit Log' }, plural: { ar: 'سجلات التدقيق', en: 'Audit Logs' } },
   admin: { group: { ar: 'الأمان', en: 'Security' }, hidden: true },
   access: {
-    read: ({ req: { user } }) => user?.role === 'admin',
+    read: ({ req }: { req: { user?: { role?: string } } }) => req.user?.role === 'admin',
     create: () => true,
     update: () => false,
-    delete: ({ req: { user } }) => user?.role === 'admin',
+    delete: ({ req }: { req: { user?: { role?: string } } }) => req.user?.role === 'admin',
   },
   fields: [
     { name: 'action', type: 'text', required: true, label: { ar: 'الإجراء', en: 'Action' } },
@@ -26,8 +26,8 @@ export const AuditLogCollection = {
   ],
   hooks: {
     beforeChange: [
-      ({ data }) => {
-        data.createdAt = new Date().toISOString();
+      ({ data }: { data: Record<string, unknown> }) => {
+        data['createdAt'] = new Date().toISOString();
       },
     ],
   },

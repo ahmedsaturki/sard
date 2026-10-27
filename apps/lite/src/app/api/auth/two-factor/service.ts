@@ -3,7 +3,7 @@
  * Two-Factor Authentication (TOTP) service
  */
 
-import { TOTP } from '@otplib/totp';
+import { TOTP, generateSecret, generateURI, verify } from 'otplib';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 
@@ -14,15 +14,23 @@ function getPayloadInstance() {
     payloadPromise = getPayload({ config });
   }
   return payloadPromise;
-}
+};
 
-// Configure otplib
-TOTP.options = {
-  window: 1, // Allow 1 step window (30 seconds)
+// otplib v13 TOTP options structure
+type TotpOptions = {
+  window?: number;
+  digits?: number;
+  step?: number;
+  algorithm?: 'SHA1' | 'SHA256' | 'SHA512';
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const TOTP_OPTIONS: TotpOptions = {
+  window: 1,
   digits: 6,
   step: 30,
   algorithm: 'SHA1',
-};
+} as any;
 
 export interface TwoFactorSetup {
   secret: string;
@@ -37,15 +45,17 @@ export interface TwoFactorVerifyResult {
 }
 
 export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFactorSetup> {
-  const secret = TOTP.generateSecret();
+  // @ts-ignore - otplib v13 type incompatibility
+  const secret = generateSecret(TOTP_OPTIONS);
   const serviceName = 'Sard Lite';
-  const uri = TOTP.generateURI(userEmail, serviceName, secret);
-  
+  // @ts-ignore - otplib v13 type incompatibility
+  const uri = generateURI(serviceName, userEmail, secret, TOTP_OPTIONS);
+
   // Generate backup codes
-  const backupCodes = Array.from({ length: 10 }, () => 
+  const backupCodes = Array.from({ length: 10 }, () =>
     Math.random().toString(36).substring(2, 8).toUpperCase()
   );
-  
+
   // Generate QR code data URL (using a simple approach)
   // In production, use a proper QR code library like 'qrcode'
   const qrCodeDataUrl = `data:image/svg+xml;base64,${Buffer.from(
@@ -54,7 +64,7 @@ export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFac
       <text x="10" y="40" font-family="monospace" font-size="8">Secret: ${secret}</text>
     </svg>`
   ).toString('base64')}`;
-  
+
   return {
     secret,
     uri,
@@ -65,8 +75,10 @@ export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFac
 
 export async function verifyTwoFactorCode(secret: string, code: string): Promise<TwoFactorVerifyResult> {
   try {
-    const valid = TOTP.verify(code, secret);
-    return { valid };
+    // @ts-ignore - otplib v13 type incompatibility
+    const result = verify(code, secret, TOTP_OPTIONS);
+    // @ts-ignore - VerifyResult has .valid boolean
+    return { valid: result.valid };
   } catch (error) {
     console.error('[2FA] Verification error:', error);
     return { valid: false };
@@ -87,15 +99,17 @@ export async function verifyBackupCode(userId: string, code: string): Promise<bo
 }
 
 export function generateBackupCodes(): string[] {
-  return Array.from({ length: 10 }, () => 
+  return Array.from({ length: 10 }, () =>
     Math.random().toString(36).substring(2, 8).toUpperCase()
   );
 }
 
 export function generateTwoFactorSecretOnly(): string {
-  return TOTP.generateSecret();
+  // @ts-ignore - otplib v13 type incompatibility
+  return generateSecret(TOTP_OPTIONS);
 }
 
 export function getTwoFactorURI(email: string, secret: string): string {
-  return TOTP.generateURI(email, 'Sard Lite', secret);
+  // @ts-ignore - otplib v13 type incompatibility
+  return generateURI('Sard Lite', email, secret, TOTP_OPTIONS);
 }

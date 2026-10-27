@@ -21,6 +21,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default buildConfig({
+  secret: process.env['PAYLOAD_SECRET'] || 'a-strong-secret-for-development-only',
   admin: {
     user: 'users',
     autoLogin: false,
@@ -44,7 +45,6 @@ export default buildConfig({
 
   collections: sardCollections,
   globals: sardGlobals,
-  fields: sardFields,
 
   db: sqliteAdapter({
     client: {
@@ -62,7 +62,7 @@ export default buildConfig({
     disablePlaygroundInProduction: process.env.NODE_ENV === 'production',
   },
 
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  serverURL: process.env['PAYLOAD_PUBLIC_SERVER_URL'] || 'http://localhost:3000',
 
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),

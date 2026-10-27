@@ -4,8 +4,6 @@
  * Targets: LCP <= 1s, INP <= 100ms, CLS <= 0.05, TTFB <= 50ms
  */
 
-import { MemoryGovernor, getMemoryGovernor } from './memory/governor';
-
 // ============================================
 // Cache Management
 // ============================================
@@ -106,37 +104,37 @@ export function compressionMiddleware() {
     const encoding = req.headers['accept-encoding'] || '';
     const supportsGzip = encoding.includes('gzip');
     const supportsBrotli = encoding.includes('br');
-    
+
     const originalSend = res.send;
     res.send = function(body: any) {
       if (res.getHeader('Content-Encoding') || !body || Buffer.byteLength(body) < 1024) {
         return originalSend.call(this, body);
       }
-      
-      const zlib = require('zlib');
-      const encoding = supportsBrotli ? 'br' : (supportsGzip ? 'gzip' : null);
-      
-      if (encoding) {
-        const compressed = encoding === 'br' 
-          ? require('zlib').brotliCompressSync(body)
-          : require('zlib').gzipSync(body);
-        
-        res.setHeader('Content-Encoding', encoding);
+
+      const compressEncoding = supportsBrotli ? 'br' : (supportsGzip ? 'gzip' : null);
+
+      if (compressEncoding) {
+        const zlib = require('zlib');
+        const compressed = compressEncoding === 'br'
+          ? zlib.brotliCompressSync(body)
+          : zlib.gzipSync(body);
+
+        res.setHeader('Content-Encoding', compressEncoding);
         res.setHeader('Content-Length', compressed.length);
         return originalSend.call(this, compressed);
       }
-      
+
       return originalSend.call(this, body);
     };
-    
+
     next();
   };
 }
 
 export function staticAssetHeaders() {
-  return (req: any, res: any, next: () => void) => {
-    const path = req.path;
-    
+  return (_req: any, res: any, next: () => void) => {
+    const path = _req.path;
+
     if (/.[a-f0-9]{8,}.(js|css|png|jpg|jpeg|webp|avif|woff2?)$/.test(path)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
@@ -146,7 +144,7 @@ export function staticAssetHeaders() {
     else if (path.endsWith('.html') || path === '/') {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
-    
+
     next();
   };
 }
@@ -225,11 +223,20 @@ export class PerformanceMonitor {
       inpObserver.observe({ type: 'event', buffered: true, durationThreshold: 50 });
     } catch (e) {}
     
-    try {
+    export interface LayoutShiftEntry extends PerformanceEntry {
+  hadRecentInput?: boolean;
+  value: number;
+}
+
+export function hasRecentInput(entry: PerformanceEntry): entry is LayoutShiftEntry {
+  return 'hadRecentInput' in entry;
+}
+
+try {
       let clsValue = 0;
       const clsObserver = new PerformanceObserver((entries) => {
         for (const entry of entries.getEntries()) {
-          if (!entry.hadRecentInput) {
+          if (hasRecentInput(entry) && !entry.hadRecentInput) {
             clsValue += entry.value;
           }
         }
@@ -280,24 +287,24 @@ export class PerformanceMonitor {
   }
 }
 
-export function createPerformanceMiddleware() {
+export async function createPerformanceMiddleware() {
   const monitor = new PerformanceMonitor();
-  
+
   return {
-    middleware: () => {
+    middleware: async () => {
       return (req: any, res: any, next: () => void) => {
         const start = process.hrtime.bigint();
-        
+
         res.on('finish', () => {
           const duration = Number(process.hrtime.bigint() - start) / 1_000_000;
-          
+
           res.setHeader('X-Response-Time', duration.toFixed(2) + 'ms');
-          
+
           if (duration > 100) {
             console.warn('[PERF] Slow request: ' + req.method + ' ' + req.path + ' - ' + duration.toFixed(2) + 'ms');
           }
         });
-        
+
         next();
       };
     },

@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import { LoginSchema, TwoFactorSetupSchema } from '../validation';
@@ -20,9 +21,9 @@ function getPayloadInstance() {
 function validateRequest<T>(schema: any, data: unknown): { success: true; data: T } | { success: false; error: string } {
   const result = schema.safeParse(data);
   if (!result.success) {
-    return { success: false, error: result.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ') };
+    return { success: false, error: result.error.errors.map((e: { path: (string | number)[]; message: string }) => `${e.path.join('.')}: ${e.message}`).join(', ') };
   }
-  return { success: true, data: result.data };
+  return { success: true as const, data: result.data as T };
 }
 
 export async function POST(request: NextRequest) {
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Regular login
-    const validation = validateRequest(LoginSchema, body);
+    const validation = validateRequest<z.infer<typeof LoginSchema>>(LoginSchema, body);
     if (!validation.success) {
       return NextResponse.json({ success: false, error: validation.error }, { status: 400 });
     }

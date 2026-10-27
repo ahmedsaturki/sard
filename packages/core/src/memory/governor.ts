@@ -31,10 +31,10 @@ export class MemoryGovernor extends EventEmitter {
   private gcInterval: NodeJS.Timeout | null = null;
   private stats: MemoryStats | null = null;
   private cacheEvictionCallbacks: Array<() => Promise<void>> = [];
-  
+
   constructor(config: Partial<MemoryConfig> = {}) {
     super();
-    
+
     this.config = {
       maxHeapMB: parseInt(process.env.NODE_OPTIONS?.match(/--max-old-space-size=(\d+)/)?.[1] || '512', 10),
       warningThreshold: 0.8,
@@ -45,28 +45,28 @@ export class MemoryGovernor extends EventEmitter {
       ...config,
     };
   }
-  
+
   start(): void {
     if (this.checkInterval) return;
-    
+
     // Initial check
     this.checkMemory();
-    
+
     // Periodic checks
     this.checkInterval = setInterval(() => {
       this.checkMemory();
     }, this.config.checkIntervalMs);
-    
+
     // Periodic GC
     if (this.config.enableAutoGC && global.gc) {
       this.gcInterval = setInterval(() => {
         this.forceGC();
       }, this.config.gcIntervalMs);
     }
-    
+
     console.log(`[MemoryGovernor] Started - Max heap: ${this.config.maxHeapMB}MB`);
   }
-  
+
   stop(): void {
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
@@ -77,7 +77,7 @@ export class MemoryGovernor extends EventEmitter {
       this.gcInterval = null;
     }
   }
-  
+
   checkMemory(): MemoryStats {
     const usage = process.memoryUsage();
     const heapUsedMB = Math.round(usage.heapUsed / 1024 / 1024);
@@ -85,11 +85,11 @@ export class MemoryGovernor extends EventEmitter {
     const externalMB = Math.round(usage.external / 1024 / 1024);
     const rssMB = Math.round(usage.rss / 1024 / 1024);
     const usagePercent = heapUsedMB / this.config.maxHeapMB;
-    
+
     let status: 'normal' | 'warning' | 'critical' = 'normal';
     if (usagePercent >= this.config.criticalThreshold) status = 'critical';
     else if (usagePercent >= this.config.warningThreshold) status = 'warning';
-    
+
     this.stats = {
       heapUsedMB,
       heapTotalMB,
@@ -99,10 +99,10 @@ export class MemoryGovernor extends EventEmitter {
       status,
       timestamp: new Date(),
     };
-    
+
     // Emit events for status changes
     this.emit('memory-check', this.stats);
-    
+
     if (status === 'critical') {
       this.emit('memory-critical', this.stats);
       this.handleCriticalMemory();
@@ -110,43 +110,47 @@ export class MemoryGovernor extends EventEmitter {
       this.emit('memory-warning', this.stats);
       this.handleWarningMemory();
     }
-    
+
     return this.stats;
   }
-  
+
   private handleWarningMemory(): void {
-    console.warn(`[MemoryGovernor] WARNING: Heap usage at ${this.stats?.heapUsedMB}MB (${(this.stats?.usagePercent * 100).toFixed(1)}% of ${this.config.maxHeapMB}MB)`);
-    
+    const stats = this.stats;
+    if (!stats) return;
+    console.warn(`[MemoryGovernor] WARNING: Heap usage at ${stats.heapUsedMB}MB (${(stats.usagePercent * 100).toFixed(1)}% of ${this.config.maxHeapMB}MB)`);
+
     // Evict caches
     this.evictCaches('warning');
   }
-  
+
   private handleCriticalMemory(): void {
-    console.error(`[MemoryGovernor] CRITICAL: Heap usage at ${this.stats?.heapUsedMB}MB (${(this.stats?.usagePercent * 100).toFixed(1)}% of ${this.config.maxHeapMB}MB)`);
-    
+    const stats = this.stats;
+    if (!stats) return;
+    console.error(`[MemoryGovernor] CRITICAL: Heap usage at ${stats.heapUsedMB}MB (${(stats.usagePercent * 100).toFixed(1)}% of ${this.config.maxHeapMB}MB)`);
+
     // Force GC
     this.forceGC();
-    
+
     // Aggressive cache eviction
     this.evictCaches('critical');
   }
-  
+
   registerCacheEviction(callback: () => Promise<void>): void {
     this.cacheEvictionCallbacks.push(callback);
   }
-  
-  private async evictCaches(severity: 'warning' | 'critical'): void {
+
+  private evictCaches(severity: 'warning' | 'critical'): void {
     console.log(`[MemoryGovernor] Evicting caches (${severity})...`);
-    
+
     for (const callback of this.cacheEvictionCallbacks) {
       try {
-        await callback();
+        callback();
       } catch (error) {
         console.error('[MemoryGovernor] Cache eviction failed:', error);
       }
     }
   }
-  
+
   forceGC(): void {
     if (global.gc) {
       const before = process.memoryUsage().heapUsed;
@@ -159,29 +163,29 @@ export class MemoryGovernor extends EventEmitter {
       console.warn('[MemoryGovernor] GC not available (run with --expose-gc)');
     }
   }
-  
+
   getStats(): MemoryStats | null {
     return this.stats;
   }
-  
+
   getConfig(): Readonly<MemoryConfig> {
     return { ...this.config };
   }
-  
+
   updateConfig(config: Partial<MemoryConfig>): void {
     this.config = { ...this.config, ...config };
   }
-  
+
   // Express middleware for memory monitoring
   middleware() {
     return (req: any, res: any, next: () => void) => {
       const stats = this.checkMemory();
-      
+
       // Add memory headers
       res.setHeader('X-Memory-Used-MB', String(this.stats?.heapUsedMB || 0));
       res.setHeader('X-Memory-Usage-Pct', String(Math.round((this.stats?.usagePercent || 0) * 100)));
       res.setHeader('X-Memory-Status', this.stats?.status || 'normal');
-      
+
       // Reject requests if critical
       if (this.stats?.status === 'critical') {
         return res.status(503).json({
@@ -190,7 +194,7 @@ export class MemoryGovernor extends EventEmitter {
           retryAfter: 30,
         });
       }
-      
+
       next();
     };
   }

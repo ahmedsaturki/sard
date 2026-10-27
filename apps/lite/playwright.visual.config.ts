@@ -1,3 +1,5 @@
+import { devices } from '@playwright/test';
+
 module.exports = {
   testDir: './__tests__',
   testMatch: '**/*.visual.test.ts',

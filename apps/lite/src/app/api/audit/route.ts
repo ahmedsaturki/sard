@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import { AuditQuerySchema } from '../validation';
@@ -20,9 +21,9 @@ function getPayloadInstance() {
 function validateRequest<T>(schema: any, data: unknown): { success: true; data: T } | { success: false; error: string } {
   const result = schema.safeParse(data);
   if (!result.success) {
-    return { success: false, error: result.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ') };
+    return { success: false, error: result.error.errors.map((e: { path: (string | number)[]; message: string }) => `${e.path.join('.')}: ${e.message}`).join(', ') };
   }
-  return { success: true, data: result.data };
+  return { success: true, data: result.data as T };
 }
 
 export async function GET(request: NextRequest) {
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, error: queryResult.error }, { status: 400 });
     }
     
-    const query = queryResult.data;
+    const query = queryResult.data as z.infer<typeof AuditQuerySchema>;
     
     // Build where clause
     const where: any = {};
