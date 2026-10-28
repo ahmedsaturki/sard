@@ -9,7 +9,6 @@
  */
 
 import { spawn, ChildProcess } from 'node:child_process';
-import { randomUUID } from 'node:crypto';
 import pidusage from 'pidusage';
 import type { Sandbox, SandboxConfig, SandboxResult, SandboxedProcess, CapabilityManifest } from './types.js';
 
