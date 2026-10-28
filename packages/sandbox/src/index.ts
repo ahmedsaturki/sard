@@ -8,13 +8,13 @@
  * Wall-clock enforced via spawn timeout.
  */
 
-import { spawn, ChildProcess } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import pidusage from 'pidusage';
-import type { Sandbox, SandboxConfig, SandboxResult, SandboxedProcess, CapabilityManifest } from './types.js';
+import type { Sandbox, SandboxConfig, SandboxResult, CapabilityManifest } from './types.js';
 
 class ProcessSandbox implements Sandbox {
   private manifests = new Map<string, CapabilityManifest>();
-  private activeProcesses = new Map<string, ChildProcess>();
+  private activeProcesses = new Map<string, ReturnType<typeof spawn>>();
 
   isAvailable(): boolean {
     return typeof process !== 'undefined' && typeof spawn === 'function';
