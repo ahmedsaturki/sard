@@ -3,3 +3,16 @@ dist
 build
 coverage
 *.min.js
+packages/sandbox/src/index.js
+packages/sandbox/src/types.js
+packages/design-tokens/src/__tests__/placeholder.test.ts
+packages/wp-runtime/src/__tests__/placeholder.test.ts
+packages/wp-runtime/src/__tests__/placeholder.test.js
+packages/sandbox/src/__tests__/placeholder.test.ts
+packages/sandbox/src/__tests__/placeholder.test.js
+packages/wp-runtime/src/index.js
+packages/wp-runtime/src/bridge.js
+packages/wp-runtime/src/php-wasm-runtime.js
+packages/wp-runtime/src/types.js
+packages/sandbox/src/index.js
+packages/sandbox/src/types.js
