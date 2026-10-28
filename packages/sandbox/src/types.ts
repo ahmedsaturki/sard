@@ -24,15 +24,15 @@ export interface SandboxConfig {
 
 export interface SandboxResult<T = unknown> {
   success: boolean;
-  result?: T;
-  error?: string;
-  stdout?: string;
-  stderr?: string;
-  exitCode?: number;
-  killed?: boolean;
-  killReason?: string;
+  result?: T | undefined;
+  error?: string | undefined;
+  stdout?: string | undefined;
+  stderr?: string | undefined;
+  exitCode?: number | undefined;
+  killed?: boolean | undefined;
+  killReason?: string | undefined;
   durationMs: number;
-  memoryUsedMB?: number;
+  memoryUsedMB?: number | undefined;
 }
 
 export interface SandboxedProcess {

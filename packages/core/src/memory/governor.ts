@@ -178,8 +178,8 @@ export class MemoryGovernor extends EventEmitter {
 
   // Express middleware for memory monitoring
   middleware() {
-    return (req: any, res: any, next: () => void) => {
-      const stats = this.checkMemory();
+    return (_req: any, res: any, next: () => void) => {
+      this.checkMemory();
 
       // Add memory headers
       res.setHeader('X-Memory-Used-MB', String(this.stats?.heapUsedMB || 0));
