@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tools/tsconfig/base.json",
+  "extends": "../../tools/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
@@ -20,10 +20,13 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false
+    "noEmit": false,
+    "allowJs": true,
+    "checkJs": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/**/*.js"
   ],
   "exclude": [
     "node_modules",
