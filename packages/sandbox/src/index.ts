@@ -1,16 +1,10 @@
-/**
- * @module @sard/sandbox
- * Process isolation wrapper for untrusted code execution
- *
- * ADR-013 L1: Process isolation first (AC-05).
- * Uses child_process with resource limits for production.
- * Memory enforced via --max-old-space-size + RSS monitoring (pidusage).
- * Wall-clock enforced via spawn timeout.
- */
-
 import { spawn } from 'node:child_process';
 import pidusage from 'pidusage';
 import type { Sandbox, SandboxConfig, SandboxResult, CapabilityManifest } from './types.js';
+
+export type { SandboxResult, SandboxConfig, CapabilityManifest, SandboxedProcess, Sandbox as SandboxInterface } from './types.js';
+
+const defaultAllowed = ['content:read', 'content:write', 'media:read'];
 
 class ProcessSandbox implements Sandbox {
   private manifests = new Map<string, CapabilityManifest>();
@@ -36,6 +30,11 @@ class ProcessSandbox implements Sandbox {
     return this.manifests.get(name);
   }
 
+  private hasCapability(cap: string): boolean {
+    return defaultAllowed.includes(cap) ||
+           Array.from(this.manifests.values()).some(m => m.capabilities.includes(cap));
+  }
+
   async run<T>(fn: () => Promise<T>, config: SandboxConfig = {}): Promise<SandboxResult<T>> {
     const start = Date.now();
 
@@ -46,6 +45,8 @@ class ProcessSandbox implements Sandbox {
             success: false,
             error: `Capability denied: ${cap}`,
             durationMs: Date.now() - start,
+            killed: false,
+            killReason: 'capability-denied',
             exitCode: undefined
           };
         }
@@ -59,6 +60,7 @@ class ProcessSandbox implements Sandbox {
           success: true,
           result,
           durationMs: Date.now() - start,
+          killed: false,
           exitCode: undefined
         };
       } catch (error) {
@@ -66,36 +68,31 @@ class ProcessSandbox implements Sandbox {
           success: false,
           error: error instanceof Error ? error.message : String(error),
           durationMs: Date.now() - start,
+          killed: false,
+          killReason: 'error',
           exitCode: undefined
         };
       }
     }
 
-    return this.runInChildProcess(fn, config, Date.now());
+    return this.runInChildProcess(fn, config, start);
   }
 
-  private hasCapability(cap: string): boolean {
-    const defaultAllowed = ['content:read', 'content:write', 'media:read'];
-    return defaultAllowed.includes(cap) ||
-           Array.from(this.manifests.values()).some(m => m.capabilities.includes(cap));
-  }
-
-  private async runInChildProcess<T>(
-    fn: () => Promise<T>,
-    config: SandboxConfig,
-    start: number
-  ): Promise<SandboxResult<T>> {
+  private async runInChildProcess<T>(fn: () => Promise<T>, config: SandboxConfig, start: number): Promise<SandboxResult<T>> {
+    const fnSource = JSON.stringify(`(${fn.toString()})()`);
     const script = `
-      const fn = ${fn.toString()};
-      fn().then(r => console.log(JSON.stringify({ success: true, result: r })))
-          .catch(e => console.log(JSON.stringify({ success: false, error: e.message })));
+      const vm = require('node:vm');
+      const ctx = vm.createContext({ console }, { codeGeneration: { strings: false, wasm: false } });
+      Promise.resolve(vm.runInContext(${fnSource}, ctx))
+        .then(r => console.log(JSON.stringify({ success: true, result: r })))
+        .catch(e => console.log(JSON.stringify({ success: false, error: String((e && e.message) || e) })));
     `;
 
     return new Promise((resolve) => {
       const memoryLimitMB = config.memoryLimitMB ?? 128;
       const child = spawn(process.execPath, [`--max-old-space-size=${memoryLimitMB}`, '-e', script], {
         cwd: config.cwd ?? process.cwd(),
-        env: { ...process.env, ...config.env },
+        env: { PATH: process.env['PATH'] ?? '', ...config.env },
         stdio: ['ignore', 'pipe', 'pipe'],
         timeout: config.wallTimeLimitMs ?? 5000
       });
@@ -124,7 +121,6 @@ class ProcessSandbox implements Sandbox {
 
       child.on('close', (code, signal) => {
         if (monitor) clearInterval(monitor);
-        const timedOut = signal === 'SIGTERM' && !killedBy;
         if (signal === 'SIGTERM') timeoutKilled = true;
         if (signal === 'SIGKILL' && !killedBy) killedBy = 'memory';
         if (timeoutKilled && !killedBy) killedBy = 'timeout';
@@ -132,13 +128,29 @@ class ProcessSandbox implements Sandbox {
         try {
           const lastLine = stdout.trim().split('\n').pop() ?? '{}';
           const parsed = JSON.parse(lastLine);
-          resolve({
-            ...parsed,
-            durationMs: Date.now() - start,
-            exitCode: code ?? undefined,
-            killed: signal !== null || !!killedBy || timeoutKilled,
-            killReason: (killedBy || (timeoutKilled ? 'timeout' : signal)) ?? undefined
-          });
+          if (parsed.success) {
+            resolve({
+              success: true,
+              result: parsed.result,
+              durationMs: Date.now() - start,
+              stdout: parsed.stdout,
+              stderr: parsed.stderr,
+              exitCode: code ?? undefined,
+              killed: signal !== null || !!killedBy || timeoutKilled,
+              killReason: (killedBy || (timeoutKilled ? 'timeout' : signal)) ?? undefined
+            });
+          } else {
+            resolve({
+              success: false,
+              error: parsed.error || 'Unknown error',
+              durationMs: Date.now() - start,
+              stdout: parsed.stdout,
+              stderr: parsed.stderr,
+              exitCode: code ?? undefined,
+              killed: signal !== null || !!killedBy || timeoutKilled,
+              killReason: (killedBy || (timeoutKilled ? 'timeout' : signal)) ?? undefined
+            });
+          }
         } catch {
           resolve({
             success: false,
@@ -159,6 +171,8 @@ class ProcessSandbox implements Sandbox {
           success: false,
           error: err.message,
           durationMs: Date.now() - start,
+          killed: true,
+          killReason: 'child-process-error',
           exitCode: undefined
         });
       });
@@ -201,26 +215,45 @@ class ProcessSandbox implements Sandbox {
 
       child.on('close', (code, signal) => {
         if (monitor) clearInterval(monitor);
-        const timedOut = signal === 'SIGTERM' && !killedBy;
         if (signal === 'SIGTERM') timeoutKilled = true;
         if (signal === 'SIGKILL' && !killedBy) killedBy = 'memory';
         if (timeoutKilled && !killedBy) killedBy = 'timeout';
 
-        resolve({
-          success: code === 0,
-          error: code !== 0 ? (stderr || 'Script failed') : undefined,
-          stdout,
-          stderr,
-          durationMs: Date.now() - start,
-          exitCode: code ?? undefined,
-          killed: signal !== null || !!killedBy || timeoutKilled,
-          killReason: (killedBy || (timeoutKilled ? 'timeout' : signal)) ?? undefined
-        });
+        if (code === 0) {
+          resolve({
+            success: true,
+            result: undefined as T,
+            durationMs: Date.now() - start,
+            stdout,
+            stderr,
+            exitCode: code ?? undefined,
+            killed: signal !== null || !!killedBy || timeoutKilled,
+            killReason: (killedBy || (timeoutKilled ? 'timeout' : signal)) ?? undefined
+          });
+        } else {
+          resolve({
+            success: false,
+            error: stderr || 'Script failed',
+            durationMs: Date.now() - start,
+            stdout,
+            stderr,
+            exitCode: code ?? undefined,
+            killed: signal !== null || !!killedBy || timeoutKilled,
+            killReason: (killedBy || (timeoutKilled ? 'timeout' : signal)) ?? undefined
+          });
+        }
       });
 
       child.on('error', (err) => {
         if (monitor) clearInterval(monitor);
-        resolve({ success: false, error: err.message, durationMs: Date.now() - start, exitCode: undefined });
+        resolve({
+          success: false,
+          error: err.message,
+          durationMs: Date.now() - start,
+          killed: true,
+          killReason: 'child-process-error',
+          exitCode: undefined
+        });
       });
     });
   }

@@ -2,7 +2,6 @@
   "extends": "../../tools/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -22,15 +21,17 @@
     "isolatedModules": true,
     "noEmit": false,
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+    "verbatimModuleSyntax": true
   },
   "include": [
     "src/**/*",
-    "src/**/*.js"
+    "src/**/*.js",
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "__tests__"
+    "dist"
   ]
 }

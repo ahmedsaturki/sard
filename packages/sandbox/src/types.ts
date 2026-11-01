@@ -3,7 +3,7 @@
  * Type definitions for process isolation sandbox
  */
 
-export interface SandboxConfig {
+export type SandboxConfig = {
   /** Max memory in MB */
   memoryLimitMB?: number;
   /** Max CPU time in ms */
@@ -22,27 +22,18 @@ export interface SandboxConfig {
   onKill?: (reason: string) => void;
 }
 
-export interface SandboxResult<T = unknown> {
-  success: boolean;
-  result?: T | undefined;
-  error?: string | undefined;
-  stdout?: string | undefined;
-  stderr?: string | undefined;
-  exitCode?: number | undefined;
-  killed?: boolean | undefined;
-  killReason?: string | undefined;
-  durationMs: number;
-  memoryUsedMB?: number | undefined;
-}
+export type SandboxResult<T = unknown> =
+  | { success: true; result: T; error?: never; stdout?: string; stderr?: string; exitCode?: number | undefined; killed?: boolean; killReason?: string | undefined; durationMs: number; memoryUsedMB?: number }
+  | { success: false; error: string; result?: never; stdout?: string; stderr?: string; exitCode?: number | undefined; killed?: boolean; killReason?: string | undefined; durationMs: number; memoryUsedMB?: number };
 
-export interface SandboxedProcess {
+export type SandboxedProcess = {
   id: string;
   pid: number;
   kill(): Promise<void>;
   onExit: (callback: (code: number | null, signal: string | null) => void) => void;
 }
 
-export interface Sandbox {
+export type Sandbox = {
   /** Run a function in isolated process */
   run<T>(fn: () => Promise<T>, config?: SandboxConfig): Promise<SandboxResult<T>>;
   /** Run a script file in isolated process */
@@ -53,7 +44,7 @@ export interface Sandbox {
   getUsage(): { memoryMB: number; cpuPercent: number } | null;
 }
 
-export interface CapabilityManifest {
+export type CapabilityManifest = {
   name: string;
   version: string;
   capabilities: string[];
