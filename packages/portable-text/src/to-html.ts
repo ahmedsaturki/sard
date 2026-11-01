@@ -1,4 +1,5 @@
 import type { Block, ContentBlock, Document, ImageBlock, TextSpan } from "./types.js";
+import type { ValidationResult } from "./validate.js";
 import { escapeHtml } from "./escape.js";
 
 export interface RenderOptions {
