@@ -115,7 +115,11 @@ class ProcessSandbox implements Sandbox {
               killedBy = 'memory';
               child.kill('SIGKILL');
             }
-          }).catch(() => {});
+          }).catch(() => {
+        // Memory monitoring error - continue without monitoring
+      }
+            // Memory monitoring error - continue without monitoring
+          });
         }, 50);
       }
 
@@ -209,7 +213,11 @@ class ProcessSandbox implements Sandbox {
               killedBy = 'memory';
               child.kill('SIGKILL');
             }
-          }).catch(() => {});
+          }).catch(() => {
+        // Memory monitoring error - continue without monitoring
+      }
+            // Memory monitoring error - continue without monitoring
+          });
         }, 50);
       }
 
