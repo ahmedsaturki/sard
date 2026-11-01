@@ -6,9 +6,7 @@ export default defineConfig({
     globals: true,
     include: ['__tests__/**/*.test.ts'],
     typecheck: {
-      tsconfig: {
-        verbatimModuleSyntax: true
-      }
+      tsconfig: './tsconfig.json'
     },
     coverage: {
       provider: 'v8',
