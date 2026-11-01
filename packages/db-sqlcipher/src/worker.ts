@@ -4,9 +4,7 @@
  */
 
 import { parentPort, workerData } from 'node:worker_threads';
-import { createClient } from '@libsql/client';
-import { drizzle } from 'drizzle-orm/libsql';
-import * as schema from '@sard/db';
+import { createClient, type InArgs, type Row, type TransactionMode } from '@libsql/client';
 import type { SQLCipherWorkerMessage, SQLCipherWorkerResponse } from './types.js';
 
 if (!parentPort) {
@@ -16,7 +14,6 @@ if (!parentPort) {
 const { databasePath, encryptionKey } = workerData as { databasePath: string; encryptionKey: string };
 
 let client: ReturnType<typeof createClient> | null = null;
-let db: ReturnType<typeof drizzle> | null = null;
 
 async function initialize(): Promise<void> {
   client = createClient({
@@ -30,8 +27,6 @@ async function initialize(): Promise<void> {
   await client.execute('PRAGMA foreign_keys = ON;');
   await client.execute('PRAGMA busy_timeout = 5000;');
 
-  db = drizzle(client, { schema });
-  
   // Verify encryption works
   const result = await client.execute('SELECT 1 as test');
   if (!result.rows || result.rows.length !== 1) {
@@ -39,15 +34,15 @@ async function initialize(): Promise<void> {
   }
 }
 
-async function execute(sql: string, params: unknown[] = []): Promise<SQLCipherWorkerResponse> {
+async function execute(sql: string, params: InArgs = []): Promise<SQLCipherWorkerResponse> {
   if (!client) throw new Error('Client not initialized');
-  
+
   try {
     const result = await client.execute({ sql, args: params });
     return {
       id: '',
       success: true,
-      rows: result.rows as unknown[][],
+      rows: result.rows.map((row: Row) => Object.values(row)),
       rowCount: result.rows.length,
       changes: (result as any).changes ?? 0,
       lastInsertRowid: (result as any).lastInsertRowid ?? 0,
@@ -61,23 +56,38 @@ async function execute(sql: string, params: unknown[] = []): Promise<SQLCipherWo
   }
 }
 
-async function transaction(statements: { sql: string; params: unknown[] }[]): Promise<SQLCipherWorkerResponse> {
+async function transaction(statements: { sql: string; params: unknown[] }[], msgId: string): Promise<SQLCipherWorkerResponse> {
   if (!client) throw new Error('Client not initialized');
-  
+
   try {
-    return await client.transaction(async (txClient) => {
-      for (const stmt of statements) {
-        await txClient.execute({ sql: stmt.sql, args: stmt.params });
+    const transactionResult = await client.transaction('write');
+    const txn = transactionResult as any;
+    
+    let lastInsertRowid: bigint | undefined;
+    let changes = 0;
+    
+    for (const stmt of statements) {
+      const stmtResult = await txn.execute({ sql: stmt.sql, args: stmt.params ?? [] });
+      if (stmtResult.rowsAffected > 0) {
+        changes += stmtResult.rowsAffected;
+        if (stmtResult.lastInsertRowid !== undefined) {
+          lastInsertRowid = stmtResult.lastInsertRowid;
+        }
       }
-      return {
-        id: '',
-        success: true,
-        rowCount: statements.length,
-      };
-    });
+    }
+
+    await txn.commit();
+
+    return {
+      id: msgId,
+      success: true,
+      rowCount: statements.length,
+      changes,
+      lastInsertRowid: lastInsertRowid !== undefined ? Number(lastInsertRowid) : 0,
+    };
   } catch (error) {
     return {
-      id: '',
+      id: msgId,
       success: false,
       error: error instanceof Error ? error.message : String(error),
     };
@@ -86,20 +96,20 @@ async function transaction(statements: { sql: string; params: unknown[] }[]): Pr
 
 parentPort.on('message', async (msg: SQLCipherWorkerMessage) => {
   const response: SQLCipherWorkerResponse = { id: msg.id, success: false };
-  
+
   try {
     switch (msg.type) {
       case 'exec':
         if (!msg.sql) throw new Error('SQL required for exec');
-        Object.assign(response, await execute(msg.sql, msg.params ?? []));
+        Object.assign(response, await execute(msg.sql, msg.params as InArgs));
         break;
       case 'query':
         if (!msg.sql) throw new Error('SQL required for query');
-        Object.assign(response, await execute(msg.sql, msg.params ?? []));
+        Object.assign(response, await execute(msg.sql, msg.params as InArgs));
         break;
       case 'transaction':
         if (!msg.statements?.length) throw new Error('Statements required for transaction');
-        Object.assign(response, await transaction(msg.statements));
+        Object.assign(response, await transaction(msg.statements, msg.id));
         break;
       case 'health':
         response.success = true;
@@ -109,7 +119,6 @@ parentPort.on('message', async (msg: SQLCipherWorkerMessage) => {
         if (client) {
           await client.close();
           client = null;
-          db = null;
         }
         response.success = true;
         break;
@@ -119,7 +128,7 @@ parentPort.on('message', async (msg: SQLCipherWorkerMessage) => {
   } catch (error) {
     response.error = error instanceof Error ? error.message : String(error);
   }
-  
+
   parentPort!.postMessage(response);
 });
 

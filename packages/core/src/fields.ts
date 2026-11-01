@@ -28,7 +28,9 @@ const baseField = {
   type: z.enum(FieldType),
   label: z.union([z.string(), z.record(z.string())]),
   description: z.string().optional(),
-  required: z.boolean().optional()
+  required: z.boolean().optional(),
+  options: z.array(z.string()).optional(),
+  to: z.string().optional()
 };
 
 export const FieldDefinitionSchema = z

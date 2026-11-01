@@ -18,7 +18,7 @@ export interface SQLCipherConfig {
 
 export interface SQLCipherWorkerMessage {
   id: string;
-  type: 'exec' | 'transaction' | 'close' | 'health';
+  type: 'exec' | 'transaction' | 'close' | 'health' | 'query';
   sql?: string;
   params?: unknown[];
   statements?: { sql: string; params: unknown[] }[];
@@ -36,7 +36,7 @@ export interface SQLCipherWorkerResponse {
 
 export interface DatabaseAdapter {
   initialize(config: SQLCipherConfig): Promise<void>;
-  exec(sql: string, params?: unknown[]): Promise<{ rows: unknown[][]; rowCount: number }>;
+  exec(sql: string, params?: unknown[]): Promise<{ rows: unknown[][]; rowCount: number; lastInsertRowid?: number | bigint }>;
   query(sql: string, params?: unknown[]): Promise<{ rows: unknown[][]; rowCount: number }>;
   transaction<T>(fn: (tx: Transaction) => Promise<T>): Promise<T>;
   close(): Promise<void>;
@@ -44,7 +44,7 @@ export interface DatabaseAdapter {
 }
 
 export interface Transaction {
-  exec(sql: string, params?: unknown[]): Promise<{ rows: unknown[][]; rowCount: number; changes: number }>;
+  exec(sql: string, params?: unknown[]): Promise<{ rows: unknown[][]; rowCount: number; changes: number; lastInsertRowid?: number | bigint }>;
   query(sql: string, params?: unknown[]): Promise<{ rows: unknown[][]; rowCount: number }>;
 }
 

@@ -13,7 +13,7 @@ import type { WPPluginBridge, WPPluginManifest, WPPluginContext, WPQuery, WPPost
 export class PHPWasmRuntime {
   private php: PHP | null = null;
   private plugins = new Map<string, WPPluginContext>();
-  private virtualFS: Map<string, string> = new Map();
+  private virtualFS: Map<string, string> = new Map<string, string>();
 
   constructor(private config: { memoryLimitMB?: number; allowNetwork?: string[] } = {}) {}
 
@@ -67,6 +67,7 @@ export class PHPWasmRuntime {
   }
 
   private createBridgeForPlugin(pluginSlug: string): WPPluginBridge {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
     const getContext = () => {
@@ -80,19 +81,19 @@ export class PHPWasmRuntime {
       return ctx.plugin.capabilities.includes(cap) || ctx.plugin.capabilities.includes('*');
     };
 
-    const checkNetwork = (domain: string): boolean => {
+    const _checkNetwork = (domain: string): boolean => {
       const ctx = getContext();
       const allowlist = ctx.plugin.permissions.net?.domains ?? [];
       return allowlist.some(d => d === '*' || d === domain || (d.startsWith('*.') && domain.endsWith(d.slice(2))));
     };
 
-    const checkTable = (table: string): boolean => {
+    const _checkTable = (table: string): boolean => {
       const ctx = getContext();
       const allowlist = ctx.plugin.permissions.db?.tables ?? [];
       return allowlist.includes('*') || allowlist.includes(table);
     };
 
-    const checkFS = (path: string, write = false): boolean => {
+    const _checkFS = (path: string, write = false): boolean => {
       const ctx = getContext();
       const allowlist = write ? ctx.plugin.permissions.fs?.write : ctx.plugin.permissions.fs?.read;
       if (!allowlist) return false;
@@ -147,19 +148,51 @@ export class PHPWasmRuntime {
       addMetaBox(config: import('./types.js').WPMetaBoxConfig): void {
         self.setVirtualFile(`admin/metaboxes/${config.id}.json`, JSON.stringify(config));
       },
-      addAction(hook: string, callback: string, priority: number = 10): void {
+      addAction(hook: string, callback: string, priority = 10): void {
         const key = `hooks/actions/${hook}/${priority}/${callback}`;
         self.setVirtualFile(key, JSON.stringify({ hook, callback, priority }));
       },
-      addFilter(hook: string, callback: string, priority: number = 10): void {
+      addFilter(hook: string, callback: string, priority = 10): void {
         const key = `hooks/filters/${hook}/${priority}/${callback}`;
         self.setVirtualFile(key, JSON.stringify({ hook, callback, priority }));
       },
-      async doAction(_hook: string, ..._args: unknown[]): Promise<void> {
+      async doAction(hook: string, ...args: unknown[]): Promise<void> {
         // Trigger registered actions
+        const actions = Array.from(this.virtualFS.entries())
+          .filter(([path]) => path.startsWith(`hooks/actions/${hook}/`))
+          .map(([_, content]) => JSON.parse(content));
+
+        for (const action of actions) {
+          try {
+            await this.php?.run({
+              code: `<?php\n  $context = json_decode(file_get_contents('php://stdin'), true);\n  ${action.callback}($context['args']);\n?>`,
+              stdin: JSON.stringify({ args })
+            });
+          } catch (error) {
+            console.error(`Error in action ${action.callback}:`, error);
+          }
+        }
       },
       async applyFilters(_hook: string, value: unknown, ..._args: unknown[]): Promise<unknown> {
-        return value;
+        // Apply registered filters
+        const filters = Array.from(this.virtualFS.entries())
+          .filter(([path]) => path.startsWith(`hooks/filters/${_hook}/`))
+          .map(([_, content]) => JSON.parse(content))
+          .sort((a, b) => a.priority - b.priority);
+
+        let result = value;
+        for (const filter of filters) {
+          try {
+            const filterResult = await this.php?.run({
+              code: `<?php\n  $context = json_decode(file_get_contents('php://stdin'), true);\n  echo json_encode(${filter.callback}($context['value'], $context['args']));\n?>`,
+              stdin: JSON.stringify({ value: result, args: _args })
+            });
+            result = JSON.parse(filterResult?.stdout ?? 'null');
+          } catch (error) {
+            console.error(`Error in filter ${filter.callback}:`, error);
+          }
+        }
+        return result;
       }
     };
   }

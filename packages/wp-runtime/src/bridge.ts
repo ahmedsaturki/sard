@@ -5,31 +5,10 @@
  */
 
 import { auditLog } from '@sard/sandbox';
-import type { WPPluginBridge, WPPluginContext, WPPluginManifest, WPPost, WPQuery, WPPage } from './types.js';
+import type { WPPage, WPPluginBridge, WPPluginContext, WPPluginManifest, WPPost, WPQuery } from './types.js';
 
 export function createBridge(context: WPPluginContext): WPPluginBridge {
   const { plugin } = context;
-
-  const capabilities = {
-    content: {
-      read: 'content:read',
-      write: 'content:write',
-      delete: 'content:delete'
-    },
-    media: {
-      read: 'media:read',
-      write: 'media:write',
-      delete: 'media:delete'
-    },
-    net: {
-      http: 'net:http',
-      ws: 'net:ws'
-    },
-    db: {
-      query: 'db:query',
-      migrate: 'db:migrate'
-    }
-  } as const;
 
   function checkCapability(cap: string): boolean {
     return plugin.capabilities.includes(cap) ||
@@ -37,21 +16,25 @@ export function createBridge(context: WPPluginContext): WPPluginBridge {
            (plugin.permissions.net?.domains?.includes('*') ?? false);
   }
 
-  function checkNetwork(domain: string): boolean {
+  /* Check network domain permissions */
+  function _checkNetwork(domain: string): boolean {
     const allowlist = plugin.permissions.net?.domains ?? [];
     return allowlist.some(d => d === '*' || d === domain ||
            (d.startsWith('*.') && domain.endsWith(d.slice(2))));
   }
 
-  function checkTable(table: string): boolean {
+  function checkTable(_table: string): boolean {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const allowlist = plugin.permissions.db?.tables ?? [];
-    return allowlist.includes('*') || allowlist.includes(table);
+    return allowlist.includes('*') || allowlist.includes(_table);
   }
 
-  function checkFS(path: string, write = false): boolean {
-    const allowlist = write ? plugin.permissions.fs?.write : plugin.permissions.fs?.read;
+  /* Check file system permissions */
+  function checkFS(_path: string, _write = false): boolean {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const allowlist = _write ? plugin.permissions.fs?.write : plugin.permissions.fs?.read;
     if (!allowlist) return false;
-    return allowlist.some(p => p === '*' || path.startsWith(p.replace('*', '')));
+    return allowlist.some(p => p === '*' || _path.startsWith(p.replace('*', '')));
   }
 
   const bridge: WPPluginBridge = {
@@ -71,13 +54,15 @@ export function createBridge(context: WPPluginContext): WPPluginBridge {
       return null as WPPost | null;
     },
 
-    async getPages(query?: WPQuery) {
+    async getPages(_query?: WPQuery): Promise<WPPage[]> {
       if (!checkCapability('content:read')) throw new Error('Capability denied');
+      console.log(`[Bridge] getPages called with query:`, _query);
       return [];
     },
 
-    async getPage(id: string | number) {
+    async getPage(_id: string | number): Promise<WPPage | null> {
       if (!checkCapability('content:read')) throw new Error('Capability denied');
+      console.log(`[Bridge] getPage called with id:`, _id);
       return null;
     },
 
@@ -102,16 +87,16 @@ export function createBridge(context: WPPluginContext): WPPluginBridge {
       context.config.set(scopedName, null);
     },
 
-    async query(sql: string, params: unknown[] = []): Promise<unknown[][]> {
+    async query(_sql: string, _params: unknown[] = []): Promise<unknown[][]> {
       if (!checkCapability('db:query')) throw new Error('Capability denied');
       // Validate parameterized query
-      if (!/^\s*select/i.test(sql)) throw new Error('Only SELECT allowed');
+      if (!/^\s*select/i.test(_sql)) throw new Error('Only SELECT allowed');
       // Check table allowlist
-      const tables = sql.match(/from\s+(\w+)/gi)?.map(m => m.split(' ')[1]).filter((t): t is string => t !== undefined) ?? [];
+      const tables = _sql.match(/from\s+(\w+)/gi)?.map(m => m.split(' ')[1]).filter((t): t is string => t !== undefined) ?? [];
       for (const table of tables) {
         if (!checkTable(table)) throw new Error(`Table not allowed: ${table}`);
       }
-      auditLog('bridge:query', 'ALLOWED', { plugin: plugin.name, sql, tables: tables as string[] });
+      auditLog('bridge:query', 'ALLOWED', { plugin: plugin.name, sql: _sql, tables: tables as string[] });
       // Execute via Sard DB adapter
       return [];
     },
@@ -121,12 +106,12 @@ export function createBridge(context: WPPluginContext): WPPluginBridge {
       throw new Error('Write queries not allowed via bridge');
     },
 
-    enqueueScript(handle: string, src: string, deps: string[] = []): void {
+    enqueueScript(handle: string, src: string, _deps: string[] = []): void {
       auditLog('bridge:enqueueScript', 'ALLOWED', { plugin: plugin.name, handle, src });
       // Store for frontend
     },
 
-    enqueueStyle(handle: string, src: string, deps: string[] = []): void {
+    enqueueStyle(handle: string, src: string, _deps: string[] = []): void {
       auditLog('bridge:enqueueStyle', 'ALLOWED', { plugin: plugin.name, handle, src });
     },
 
@@ -140,22 +125,22 @@ export function createBridge(context: WPPluginContext): WPPluginBridge {
       auditLog('bridge:addMetaBox', 'ALLOWED', { plugin: plugin.name, id: config['id'] as string });
     },
 
-    addAction(hook: string, callback: string, priority: number = 10): void {
+    addAction(_hook: string, _callback: string, priority = 10): void {
       if (!checkCapability('hooks:action')) throw new Error('Capability denied');
-      auditLog('bridge:addAction', 'ALLOWED', { plugin: plugin.name, hook });
+      auditLog('bridge:addAction', 'ALLOWED', { plugin: plugin.name, hook: _hook });
     },
 
-    addFilter(hook: string, callback: string, priority: number = 10): void {
+    addFilter(_hook: string, _callback: string, priority = 10): void {
       if (!checkCapability('hooks:filter')) throw new Error('Capability denied');
-      auditLog('bridge:addFilter', 'ALLOWED', { plugin: plugin.name, hook });
+      auditLog('bridge:addFilter', 'ALLOWED', { plugin: plugin.name, hook: _hook });
     },
 
-    async doAction(hook: string, ...args: unknown[]): Promise<void> {
-      auditLog('bridge:doAction', 'ALLOWED', { plugin: plugin.name, hook });
+    async doAction(_hook: string, ..._args: unknown[]): Promise<void> {
+      auditLog('bridge:doAction', 'ALLOWED', { plugin: plugin.name, hook: _hook });
     },
 
-    async applyFilters(hook: string, value: unknown, ...args: unknown[]): Promise<unknown> {
-      auditLog('bridge:applyFilters', 'ALLOWED', { plugin: plugin.name, hook });
+    async applyFilters(_hook: string, value: unknown, ..._args: unknown[]): Promise<unknown> {
+      auditLog('bridge:applyFilters', 'ALLOWED', { plugin: plugin.name, hook: _hook });
       return value;
     }
   };

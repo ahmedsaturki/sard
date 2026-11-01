@@ -33,11 +33,11 @@ function parseHtml(html: string): (Node | string)[] {
     const tag = match[1] ?? "";
     const lowerTag = tag.toLowerCase();
     const selfClose = match[3] === "/" || VOID_TAGS.has(lowerTag);
-    const isClose = match[0] && match[0][1] === "/";
+    const isClose = match[0] !== null && match[0][1] === '/';
     if (isClose) {
       for (let i = stack.length - 1; i > 0; i--) {
         const entry = stack[i];
-        if (entry && entry.tag === lowerTag) {
+        if (entry !== null && entry !== undefined && entry.tag === lowerTag) {
           stack.length = i;
           break;
         }
@@ -49,13 +49,13 @@ function parseHtml(html: string): (Node | string)[] {
     let am: RegExpExecArray | null;
     const attrStr = match[2] ?? "";
     while ((am = attrRe.exec(attrStr)) !== null) {
-      const k = am[1];
-      const v = am[3] ?? am[4] ?? am[5];
-      if (k && v) attrs[k.toLowerCase()] = v;
+      const k = am[1] ?? "";
+      const v = am[3] ?? am[4] ?? am[5] ?? "";
+      if (k !== '' && v !== '') attrs[k.toLowerCase()] = v;
     }
     const node: Node = { tag: lowerTag, attrs, children: [] };
     top.children.push(node);
-    if (!selfClose) stack.push(node);
+    if (!selfClose) { stack.push(node); }
   }
   return root.children;
 }
@@ -96,22 +96,22 @@ function inlineToSpans(children: (Node | string)[], marks: string[] = []): TextS
       spans.push(...inlineToSpans(child.children, [...marks, "underline"]));
     } else if (tag === "code") {
       spans.push(...inlineToSpans(child.children, [...marks, "code"]));
-    } else if (tag === "a") {
-      const href = child.attrs["href"];
-      if (href) {
-        spans.push(...inlineToSpans(child.children, [...marks, "link:" + href]));
+    } else if (tag === 'a') {
+      const href = child.attrs['href'];
+      if (href !== undefined) {
+        spans.push(...inlineToSpans(child.children, [...marks, 'link:' + href]));
       } else {
         spans.push(...inlineToSpans(child.children, marks));
       }
-    } else if (tag === "br") {
-      spans.push({ _type: "span", text: " ", marks: [...marks] });
-    } else if (tag === "img") {
-      const url = child.attrs["src"] ?? "";
-      if (url) {
-        spans.push({ _type: "span", text: "", marks: [] });
+    } else if (tag === 'br') {
+      spans.push({ _type: 'span', text: ' ', marks: [...marks] });
+    } else if (tag === 'img') {
+      const url = child.attrs['src'] ?? '';
+      if (url !== '') {
+        spans.push({ _type: 'span', text: '', marks: [] });
         spans.push({
-          _type: "span",
-          text: child.attrs["alt"] ?? "[image]",
+          _type: 'span',
+          text: child.attrs['alt'] ?? '[image]',
           marks: []
         });
       }

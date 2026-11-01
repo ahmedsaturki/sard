@@ -45,11 +45,11 @@ export { tokens } from "@sard/design-tokens";
 /**
  * Generate CSS custom properties from design tokens
  */
-export function generateCssVariables(tokens: any): string {
+export function generateCssVariables(tokens: Record<string, unknown>): string {
   const lines: string[] = [":root {"];
 
   // Color tokens
-  if (tokens.color) {
+  if (tokens.color !== undefined) {
     lines.push("  /* Colors */");
     flattenTokens(tokens.color, "color").forEach(([key, value]) => {
       lines.push(`  --sard-${key}: ${value};`);
@@ -57,7 +57,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Typography tokens
-  if (tokens.typography) {
+  if (tokens.typography !== undefined) {
     lines.push("  /* Typography */");
     flattenTokens(tokens.typography, "typography").forEach(([key, value]) => {
       lines.push(`  --sard-${key}: ${value};`);
@@ -65,7 +65,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Spacing tokens
-  if (tokens.spacing) {
+  if (tokens.spacing !== undefined) {
     lines.push("  /* Spacing */");
     Object.entries(tokens.spacing).forEach(([key, value]) => {
       lines.push(`  --sard-spacing-${key}: ${value};`);
@@ -73,7 +73,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Border radius tokens
-  if (tokens.borderRadius) {
+  if (tokens.borderRadius !== undefined) {
     lines.push("  /* Border Radius */");
     Object.entries(tokens.borderRadius).forEach(([key, value]) => {
       lines.push(`  --sard-radius-${key}: ${value};`);
@@ -81,7 +81,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Shadow tokens
-  if (tokens.shadow) {
+  if (tokens.shadow !== undefined) {
     lines.push("  /* Shadows */");
     Object.entries(tokens.shadow).forEach(([key, value]) => {
       lines.push(`  --sard-shadow-${key}: ${value};`);
@@ -89,14 +89,14 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Transition tokens
-  if (tokens.transition) {
+  if (tokens.transition !== undefined) {
     lines.push("  /* Transitions */");
-    if (tokens.transition.durations) {
+    if (tokens.transition.durations !== undefined) {
       Object.entries(tokens.transition.durations).forEach(([key, value]) => {
         lines.push(`  --sard-transition-${key}: ${value};`);
       });
     }
-    if (tokens.transition.easings) {
+    if (tokens.transition.easings !== undefined) {
       Object.entries(tokens.transition.easings).forEach(([key, value]) => {
         lines.push(`  --sard-easing-${key}: ${value};`);
       });
@@ -104,7 +104,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Z-index tokens
-  if (tokens.zIndex) {
+  if (tokens.zIndex !== undefined) {
     lines.push("  /* Z-Index */");
     Object.entries(tokens.zIndex).forEach(([key, value]) => {
       lines.push(`  --sard-z-${key}: ${value};`);
@@ -112,7 +112,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Breakpoint tokens
-  if (tokens.breakpoint) {
+  if (tokens.breakpoint !== undefined) {
     lines.push("  /* Breakpoints */");
     Object.entries(tokens.breakpoint).forEach(([key, value]) => {
       lines.push(`  --sard-breakpoint-${key}: ${value};`);
@@ -120,7 +120,7 @@ export function generateCssVariables(tokens: any): string {
   }
 
   // Component tokens
-  if (tokens.component) {
+  if (tokens.component !== undefined) {
     lines.push("  /* Component Tokens */");
     flattenTokens(tokens.component, "component").forEach(([key, value]) => {
       lines.push(`  --sard-${key}: ${value};`);
@@ -135,14 +135,14 @@ export function generateCssVariables(tokens: any): string {
 /**
  * Flatten nested token objects into key-value pairs
  */
-function flattenTokens(obj: any, prefix: string): [string, string][] {
+function flattenTokens(obj: object, prefix: string): [string, string][] {
   const result: [string, string][] = [];
 
-  function recurse(current: any, path: string[]) {
+  function recurse(current: object, path: string[]) {
     for (const [key, value] of Object.entries(current)) {
       const newPath = [...path, key];
-      if (value && typeof value === "object" && !Array.isArray(value)) {
-        recurse(value, newPath);
+      if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        recurse(value as object, newPath);
       } else {
         result.push([newPath.join("-"), String(value)]);
       }
@@ -156,13 +156,17 @@ function flattenTokens(obj: any, prefix: string): [string, string][] {
 /**
  * Generate RTL-specific CSS variables
  */
-export function generateRtlCssVariables(tokens: any): string {
+export function generateRtlCssVariables(tokens: Record<string, unknown>): string {
   const lines: string[] = [":root {", "  /* RTL Logical Properties */"];
 
-  if (tokens.rtl?.logical) {
-    Object.entries(tokens.rtl.logical).forEach(([key, value]) => {
-      lines.push(`  --sard-rtl-${key}: ${value};`);
-    });
+  const rtl = tokens.rtl as Record<string, unknown> | undefined;
+  if (rtl !== undefined && rtl !== null && "logical" in rtl) {
+    const logical = rtl.logical as Record<string, string> | undefined;
+    if (logical !== undefined && logical !== null) {
+      Object.entries(logical).forEach(([key, value]) => {
+        lines.push(`  --sard-rtl-${key}: ${value};`);
+      });
+    }
   }
 
   lines.push("}");
@@ -223,8 +227,8 @@ export interface BaseComponentProps {
  */
 export type PolymorphicComponentProp<
   C extends React.ElementType,
-  Props = {}
-> = Props & {
+  Props = Record<string, never>
+  > = Props & {
   as?: C;
 };
 
@@ -266,8 +270,8 @@ export function useTheme(): ThemeContextValue {
   return {
     mode: "system",
     resolvedMode: "light",
-    setMode: () => {},
-    toggleMode: () => {},
+    setMode: (_mode: ThemeMode) => { /* TODO: implement storage */ },
+    toggleMode: () => { /* TODO: implement toggle */ },
   };
 }
 
@@ -278,7 +282,7 @@ export function useRtl(): RtlContextValue {
   return {
     dir: "ltr",
     locale: "en",
-    setLocale: () => {},
+    setLocale: (_locale: string) => { /* TODO: implement storage */ },
     isRtl: false,
   };
 }
@@ -329,7 +333,7 @@ export function responsiveStyle<T>(
     Object.entries(obj).forEach(([breakpoint, val]) => {
       if (val !== undefined) {
         const bp = breakpointMap[breakpoint];
-        if (bp) {
+        if (bp !== undefined && bp !== "") {
           styles[`@media (min-width: ${bp})`] = {
             [property]: val,
           } as React.CSSProperties;
@@ -379,7 +383,7 @@ export function createStyledComponent<
 ) {
   return function StyledComponent(props: P & { as?: T }) {
     const { className, style, ...rest } = props;
-    const Component = props.as || element;
+    const Component = props.as !== undefined ? props.as : element;
 
     return React.createElement(Component, {
       ...rest,

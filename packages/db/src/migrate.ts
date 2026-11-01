@@ -8,13 +8,16 @@ const connectionString = process.env.DATABASE_URL ?? "postgresql://postgres:post
 
 async function main(): Promise<void> {
   const db = createSardDb({ connectionString });
+  // eslint-disable-next-line no-console
   console.log("[sard:db] Applying migrations...");
   await migrate(db, { migrationsFolder: "./src/migrations" });
+  // eslint-disable-next-line no-console
   console.log("[sard:db] Migrations complete.");
   await closeDb();
 }
 
 main().catch((err: unknown) => {
+  // eslint-disable-next-line no-console
   console.error("[sard:db] Migration failed:", err);
   process.exit(1);
 });

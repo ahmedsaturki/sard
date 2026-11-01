@@ -5,6 +5,7 @@
  */
 
 import { EventEmitter } from 'node:events';
+import type { Request, Response, NextFunction } from 'express';
 
 export interface MemoryConfig {
   maxHeapMB: number;
@@ -30,13 +31,13 @@ export class MemoryGovernor extends EventEmitter {
   private checkInterval: NodeJS.Timeout | null = null;
   private gcInterval: NodeJS.Timeout | null = null;
   private stats: MemoryStats | null = null;
-  private cacheEvictionCallbacks: Array<() => Promise<void>> = [];
+  private cacheEvictionCallbacks: (() => Promise<void>)[] = [];
 
   constructor(config: Partial<MemoryConfig> = {}) {
     super();
 
     this.config = {
-      maxHeapMB: parseInt(process.env.NODE_OPTIONS?.match(/--max-old-space-size=(\d+)/)?.[1] || '512', 10),
+      maxHeapMB: parseInt(process.env.NODE_OPTIONS?.match(/--max-old-space-size=(\d+)/)?.[1] ?? '512', 10),
       warningThreshold: 0.8,
       criticalThreshold: 0.9,
       checkIntervalMs: 30000, // 30 seconds
@@ -64,7 +65,7 @@ export class MemoryGovernor extends EventEmitter {
       }, this.config.gcIntervalMs);
     }
 
-    console.log(`[MemoryGovernor] Started - Max heap: ${this.config.maxHeapMB}MB`);
+    console.info(`[MemoryGovernor] Started - Max heap: ${this.config.maxHeapMB}MB`);
   }
 
   stop(): void {
@@ -140,7 +141,7 @@ export class MemoryGovernor extends EventEmitter {
   }
 
   private evictCaches(severity: 'warning' | 'critical'): void {
-    console.log(`[MemoryGovernor] Evicting caches (${severity})...`);
+    console.info(`[MemoryGovernor] Evicting caches (${severity})...`);
 
     for (const callback of this.cacheEvictionCallbacks) {
       try {
@@ -157,7 +158,7 @@ export class MemoryGovernor extends EventEmitter {
       global.gc();
       const after = process.memoryUsage().heapUsed;
       const freed = Math.round((before - after) / 1024 / 1024);
-      console.log(`[MemoryGovernor] GC freed ${freed}MB`);
+      console.info(`[MemoryGovernor] GC freed ${freed}MB`);
       this.emit('gc-complete', { freedMB: freed });
     } else {
       console.warn('[MemoryGovernor] GC not available (run with --expose-gc)');
@@ -178,13 +179,13 @@ export class MemoryGovernor extends EventEmitter {
 
   // Express middleware for memory monitoring
   middleware() {
-    return (_req: any, res: any, next: () => void) => {
+    return (_req: Request, res: Response, next: NextFunction) => {
       this.checkMemory();
 
       // Add memory headers
-      res.setHeader('X-Memory-Used-MB', String(this.stats?.heapUsedMB || 0));
-      res.setHeader('X-Memory-Usage-Pct', String(Math.round((this.stats?.usagePercent || 0) * 100)));
-      res.setHeader('X-Memory-Status', this.stats?.status || 'normal');
+      res.setHeader('X-Memory-Used-MB', String(this.stats?.heapUsedMB ?? 0));
+      res.setHeader('X-Memory-Usage-Pct', String(Math.round((this.stats?.usagePercent ?? 0) * 100)));
+      res.setHeader('X-Memory-Status', this.stats?.status ?? 'normal');
 
       // Reject requests if critical
       if (this.stats?.status === 'critical') {

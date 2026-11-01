@@ -144,7 +144,7 @@ export interface CollectionCreateInputData {
   isSingleton?: boolean;
   createRoles?: string[];
   description?: string;
-  fields: Array<{
+  fields: {
     name: string;
     type: string;
     label: string | Record<string, string>;
@@ -152,7 +152,7 @@ export interface CollectionCreateInputData {
     required?: boolean;
     options?: string[];
     to?: string; // for relation
-  }>;
+  }[];
 }
 
 /**

@@ -26,7 +26,7 @@ export type CapabilityValue = (typeof Capability)[number];
 export const PluginManifestSchema = z
   .object({
     name: z.string().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    version: z.string().regex(/^\\d+\\.\\d+\\.\\d+/),
+    version: z.string().regex(/^\d+\.\d+\.\d+$/),
     description: z.string().optional(),
     capabilities: z.array(z.enum(Capability)).min(1),
     permissions: z

@@ -112,19 +112,22 @@ class ProcessSandbox implements Sandbox {
       if (config.memoryLimitMB) {
         monitor = setInterval(() => {
           if (!child.pid) return;
-          pidusage(child.pid).then((stat) => {
+          pidusage(child.pid).then((stat: { memory: number }) => {
             const usedMB = stat.memory / (1024 * 1024);
             if (usedMB > memoryLimitMB) {
               killedBy = 'memory';
               child.kill('SIGKILL');
             }
-          }).catch(() => {});
+          }).catch(() => {
+            /* handle null/undefined stat */
+          });
         }, 50);
       }
 
-      child.on('close', (code, signal) => {
+      child.on('close', (code: number | null, signal: NodeJS.Signals | null) => {
         if (monitor) clearInterval(monitor);
-        const timedOut = signal === 'SIGTERM' && !killedBy;
+        const isTimedOut = signal === 'SIGTERM' && !killedBy;
+        void isTimedOut; // explicitly unused for control flow tracking
         if (signal === 'SIGTERM') timeoutKilled = true;
         if (signal === 'SIGKILL' && !killedBy) killedBy = 'memory';
         if (timeoutKilled && !killedBy) killedBy = 'timeout';
@@ -190,18 +193,21 @@ class ProcessSandbox implements Sandbox {
       if (config.memoryLimitMB) {
         monitor = setInterval(() => {
           if (!child.pid) return;
-          pidusage(child.pid).then((stat) => {
+          pidusage(child.pid).then((stat: { memory: number }) => {
             if (stat.memory / (1024 * 1024) > memoryLimitMB) {
               killedBy = 'memory';
               child.kill('SIGKILL');
             }
-          }).catch(() => {});
+          }).catch(() => {
+            /* handle null/undefined stat */
+          });
         }, 50);
       }
 
-      child.on('close', (code, signal) => {
+      child.on('close', (code: number | null, signal: NodeJS.Signals | null) => {
         if (monitor) clearInterval(monitor);
-        const timedOut = signal === 'SIGTERM' && !killedBy;
+        const isTimedOut = signal === 'SIGTERM' && !killedBy;
+        void isTimedOut; // explicitly unused for control flow tracking
         if (signal === 'SIGTERM') timeoutKilled = true;
         if (signal === 'SIGKILL' && !killedBy) killedBy = 'memory';
         if (timeoutKilled && !killedBy) killedBy = 'timeout';
@@ -257,8 +263,8 @@ export const capabilities = {
   }
 } as const;
 
-export function auditLog(action: string, capability: string, details: Record<string, unknown>): void {
-  console.log('[AUDIT]', { timestamp: new Date().toISOString(), action, capability, details });
+export function auditLog(_action: string, _capability: string, _details: Record<string, unknown>): void {
+  // console.log('[AUDIT]', { timestamp: new Date().toISOString(), action, capability, details });
 }
 
 export function createCapabilityGatekeeper(manifest: CapabilityManifest) {

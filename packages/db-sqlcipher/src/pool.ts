@@ -76,26 +76,27 @@ export class SQLCipherPool implements DatabaseAdapter {
     }
   }
 
-  private acquire(): PoolWorker {
-    if (this.closed) throw new Error('Pool closed');
-    if (this.workers.length === 0) throw new Error('Pool not initialized');
-    
-    // Round-robin with queue depth check
-    let attempts = 0;
-    while (attempts < this.workers.length) {
-      const idx = this.nextWorker++ % this.workers.length;
-      const w = this.workers[idx];
-      if (!w.busy || (this.config!.queueMaxSize ?? 100) > w.queue.length) {
-        return w;
-      }
-      attempts++;
-    }
-    // All busy - return least busy
-    return this.workers.reduce((a, b) => a.queue.length < b.queue.length ? a : b);
-  }
+ private acquire(): PoolWorker {
+   if (this.closed) throw new Error('Pool closed');
+   if (this.workers.length === 0) throw new Error('Pool not initialized');
+   
+   // Round-robin with queue depth check
+   let attempts = 0;
+   while (attempts < this.workers.length) {
+     const idx = this.nextWorker++ % this.workers.length;
+      const w = this.workers[idx]!; // Non-null assertion
+     if (!w.busy || (this.config!.queueMaxSize ?? 100) > w.queue.length) {
+       return w;
+     }
+     attempts++;
+   }
+   // All busy - return least busy
+   return this.workers.reduce((a, b) => a.queue.length < b.queue.length ? a : b);
+ }
 
-  private send(msg: SQLCipherWorkerMessage): Promise<SQLCipherWorkerResponse> {
+ private send(msg: SQLCipherWorkerMessage): Promise<SQLCipherWorkerResponse> {
     const w = this.acquire();
+    if (!w) throw new Error('No available worker');
     return new Promise((resolve, reject) => {
       w.queue.push({ msg, resolve, reject });
       w.busy = true;
@@ -103,10 +104,14 @@ export class SQLCipherPool implements DatabaseAdapter {
     });
   }
 
-  async exec(sql: string, params: unknown[] = []): Promise<{ rows: unknown[][]; rowCount: number }> {
+  async exec(sql: string, params: unknown[] = []): Promise<{ rows: unknown[][]; rowCount: number; lastInsertRowid?: number | bigint }> {
     const response = await this.send({ id: randomUUID(), type: 'exec', sql, params });
     if (!response.success) throw new Error(response.error);
-    return { rows: response.rows ?? [], rowCount: response.rowCount ?? 0 };
+    const result: { rows: unknown[][]; rowCount: number; lastInsertRowid?: number | bigint } = { rows: response.rows ?? [], rowCount: response.rowCount ?? 0 };
+    if (response.lastInsertRowid !== undefined) {
+      result.lastInsertRowid = response.lastInsertRowid;
+    }
+    return result;
   }
 
   async query(sql: string, params: unknown[] = []): Promise<{ rows: unknown[][]; rowCount: number }> {

@@ -4,6 +4,8 @@
  * Targets: LCP <= 1s, INP <= 100ms, CLS <= 0.05, TTFB <= 50ms
  */
 
+import type { Request, Response, NextFunction } from 'express';
+
 // ============================================
 // Cache Management
 // ============================================
@@ -20,7 +22,7 @@ export class LRUCache<T> {
   private maxSize: number;
   private ttlMs: number;
 
-  constructor(maxSize: number = 1000, ttlMs: number = 300000) {
+  constructor(maxSize = 1000, ttlMs = 300000) {
     this.maxSize = maxSize;
     this.ttlMs = ttlMs;
   }
@@ -71,7 +73,7 @@ export class LRUCache<T> {
       }
     }
 
-    if (oldestKey) {
+    if (oldestKey !== null) {
       this.cache.delete(oldestKey);
     }
   }
@@ -95,8 +97,8 @@ export class LRUCache<T> {
   }
 }
 
-export const queryCache = new LRUCache<any>(500, 60000);
-export const mediaCache = new LRUCache<any>(200, 300000);
+export const queryCache = new LRUCache<Record<string, unknown>>(500, 60000);
+export const mediaCache = new LRUCache<Record<string, unknown>>(200, 300000);
 export const renderCache = new LRUCache<string>(100, 60000);
 
 // ============================================
@@ -104,24 +106,29 @@ export const renderCache = new LRUCache<string>(100, 60000);
 // ============================================
 
 export function compressionMiddleware() {
-  return (_req: any, res: any, next: () => void) => {
-    const encoding = _req.headers['accept-encoding'] || '';
+  return (_req: Request, res: Response, next: NextFunction) => {
+    const encoding = _req.headers['accept-encoding'] as string | undefined ?? '';
     const supportsGzip = encoding.includes('gzip');
     const supportsBrotli = encoding.includes('br');
 
     const originalSend = res.send;
-    res.send = function(body: any) {
-      if (res.getHeader('Content-Encoding') || !body || Buffer.byteLength(body) < 1024) {
+    res.send = function(body: unknown) {
+      const hasContentEncoding = res.getHeader('Content-Encoding') !== null;
+      const hasBody = body !== null && body !== undefined;
+      const isSmallBody = Buffer.byteLength(body as Buffer) < 1024;
+      
+      if (hasContentEncoding || !hasBody || isSmallBody) {
         return originalSend.call(this, body);
       }
 
       const compressEncoding = supportsBrotli ? 'br' : (supportsGzip ? 'gzip' : null);
 
-      if (compressEncoding) {
+      if (compressEncoding !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const zlib = require('zlib');
         const compressed = compressEncoding === 'br'
-          ? zlib.brotliCompressSync(body)
-          : zlib.gzipSync(body);
+          ? zlib.brotliCompressSync(body as Buffer)
+          : zlib.gzipSync(body as Buffer);
 
         res.setHeader('Content-Encoding', compressEncoding);
         res.setHeader('Content-Length', compressed.length);
@@ -140,7 +147,7 @@ export function compressionMiddleware() {
 // ============================================
 
 export function staticAssetHeaders() {
-  return (_req: any, res: any, next: () => void) => {
+  return (_req: Request, res: Response, next: NextFunction) => {
     const path = _req.path;
 
     if (/.[a-f0-9]{8,}.(js|css|png|jpg|jpeg|webp|avif|woff2?)$/.test(path)) {
@@ -162,7 +169,7 @@ export function staticAssetHeaders() {
 // ============================================
 
 export function preloadCriticalResources() {
-  return (_req: any, res: any, next: () => void) => {
+  return (_req: Request, res: Response, next: NextFunction) => {
     const criticalResources = [
       '< /fonts/ibm-plex-sans-arabic.woff2>; rel=preload; as=font; crossorigin',
       '< /js/main.js>; rel=preload; as=script',
@@ -197,10 +204,16 @@ export const imageOptimizationConfig = {
 export interface BundleStats {
   totalSize: number;
   gzippedSize: number;
-  chunks: Array<{ name: string; size: number; gzippedSize: number }>;
+  chunks: { name: string; size: number; gzippedSize: number }[];
 }
 
-export function analyzeBundle(_stats: any): BundleStats {
+export interface BundleStatsInput {
+  totalSize: number;
+  gzippedSize: number;
+  chunks: { name: string; size: number; gzippedSize: number }[];
+}
+
+export function analyzeBundle(_stats: BundleStatsInput): BundleStats {
   return {
     totalSize: 0,
     gzippedSize: 0,
@@ -235,7 +248,7 @@ function isLayoutShiftEntry(entry: PerformanceEntry): entry is LayoutShiftEntry 
 }
 
 export class PerformanceMonitor {
-  private metrics: any = {};
+  private metrics: Record<string, number | string | boolean> = {};
 
   start(): void {
     if (typeof window === 'undefined') return;
@@ -243,49 +256,61 @@ export class PerformanceMonitor {
     try {
       const lcpObserver = new PerformanceObserver((entries) => {
         const lastEntry = entries.getEntries().pop();
-        if (lastEntry) this.metrics.lcp = lastEntry.startTime;
+        if (lastEntry !== undefined) this.metrics.lcp = lastEntry.startTime;
       });
       lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
-    } catch (e) {}
+    } catch {
+      // Performance observer not supported in this environment
+    }
 
     try {
       const inpObserver = new PerformanceObserver((entries) => {
         for (const entry of entries.getEntries()) {
-          if (entry.entryType === 'event' && entry.duration > (this.metrics.inp || 0)) {
+          if (entry.entryType === 'event' && entry.duration > (this.metrics.inp ?? 0)) {
             this.metrics.inp = entry.duration;
           }
         }
       });
       inpObserver.observe({ type: 'event', buffered: true });
-    } catch (e) {}
+    } catch {
+      // Performance observer not supported in this environment
+    }
 
     try {
       let clsValue = 0;
       const clsObserver = new PerformanceObserver((entries) => {
         for (const entry of entries.getEntries()) {
-          if (isLayoutShiftEntry(entry) && !entry.hadRecentInput) {
+          if (isLayoutShiftEntry(entry) && entry.hadRecentInput !== true) {
             clsValue += entry.value;
           }
         }
         this.metrics.cls = clsValue;
       });
       clsObserver.observe({ type: 'layout-shift', buffered: true });
-    } catch (e) {}
+    } catch {
+      // Performance observer not supported in this environment
+    }
 
     try {
       const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
-      if (navEntry) {
+      if (navEntry !== undefined) {
         this.metrics.ttfb = navEntry.responseStart - navEntry.requestStart;
       }
-    } catch (e) {}
+    } catch {
+      // Performance API not available
+    }
 
     try {
       const fcpEntry = performance.getEntriesByName('first-contentful-paint')[0];
-      if (fcpEntry) this.metrics.fcp = fcpEntry.startTime;
-    } catch (e) {}
+      if (fcpEntry !== undefined) this.metrics.fcp = fcpEntry.startTime;
+    } catch {
+      // Performance API not available
+    }
   }
 
-  stop(): void {}
+  stop(): void {
+    // Performance monitoring stopped
+  }
 
   getMetrics() {
     return { ...this.metrics };
@@ -294,17 +319,22 @@ export class PerformanceMonitor {
   checkThresholds(): { passed: boolean; violations: string[] } {
     const violations: string[] = [];
 
-    if (this.metrics.lcp && this.metrics.lcp > 1000) {
-      violations.push('LCP: ' + this.metrics.lcp + 'ms > 1000ms');
+    const lcp = this.metrics.lcp;
+    const inp = this.metrics.inp;
+    const cls = this.metrics.cls;
+    const ttfb = this.metrics.ttfb;
+
+    if (lcp !== undefined && typeof lcp === 'number' && lcp > 1000) {
+      violations.push('LCP: ' + lcp + 'ms > 1000ms');
     }
-    if (this.metrics.inp && this.metrics.inp > 100) {
-      violations.push('INP: ' + this.metrics.inp + 'ms > 100ms');
+    if (inp !== undefined && typeof inp === 'number' && inp > 100) {
+      violations.push('INP: ' + inp + 'ms > 100ms');
     }
-    if (this.metrics.cls && this.metrics.cls > 0.05) {
-      violations.push('CLS: ' + this.metrics.cls + ' > 0.05');
+    if (cls !== undefined && typeof cls === 'number' && cls > 0.05) {
+      violations.push('CLS: ' + cls + ' > 0.05');
     }
-    if (this.metrics.ttfb && this.metrics.ttfb > 50) {
-      violations.push('TTFB: ' + this.metrics.ttfb + 'ms > 50ms');
+    if (ttfb !== undefined && typeof ttfb === 'number' && ttfb > 50) {
+      violations.push('TTFB: ' + ttfb + 'ms > 50ms');
     }
 
     return {
@@ -319,7 +349,7 @@ export function createPerformanceMiddleware() {
 
   return {
     middleware: () => {
-      return (_req: any, res: any, next: () => void) => {
+      return (_req: Request, res: Response, next: NextFunction) => {
         const start = process.hrtime.bigint();
 
         res.on('finish', () => {
@@ -328,7 +358,8 @@ export function createPerformanceMiddleware() {
           res.setHeader('X-Response-Time', duration.toFixed(2) + 'ms');
 
           if (duration > 100) {
-            console.warn('[PERF] Slow request: ' + _req.method + ' ' + _req.path + ' - ' + duration.toFixed(2) + 'ms');
+            // eslint-disable-next-line no-console
+            console.info('[PERF] Slow request: ' + _req.method + ' ' + _req.path + ' - ' + duration.toFixed(2) + 'ms');
           }
         });
 

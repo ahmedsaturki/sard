@@ -167,11 +167,13 @@ async function main(): Promise<void> {
     })
     .onConflictDoNothing({ target: [knowledgeEntities.type, knowledgeEntities.name] });
 
+  // eslint-disable-next-line no-console
   console.log("[sard:db] Seed complete. Site:", site?.name ?? "(existing)");
   await closeDb();
 }
 
 main().catch((err: unknown) => {
+  // eslint-disable-next-line no-console
   console.error("[sard:db] Seed failed:", err);
   process.exit(1);
 });

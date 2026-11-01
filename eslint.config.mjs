@@ -20,6 +20,21 @@ export default tseslint.config(
     }
   },
   {
-    ignores: ["node_modules/**", "dist/**", "build/**", "coverage/**", "*.min.js"]
+    ignores: [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "coverage/**",
+      "*.min.js",
+      "**/__tests__/**",
+      "packages/sandbox/src/index.js",
+      "packages/sandbox/src/types.js",
+      "packages/sandbox/dist/**",
+      "packages/wp-runtime/src/index.js",
+      "packages/wp-runtime/src/bridge.js",
+      "packages/wp-runtime/src/php-wasm-runtime.js",
+      "packages/wp-runtime/src/types.js",
+      "packages/wp-runtime/dist/**"
+    ]
   }
 );

@@ -1,13 +1,13 @@
 {
-  "extends": "../../../tools/tsconfig/base.json",
+  "extends": "../../tools/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "moduleResolution": "bundler",
-    "module": "ESNext",
+    "moduleResolution": "node16",
+    "module": "Node16",
     "target": "ES2022",
     "lib": [
       "ES2022"

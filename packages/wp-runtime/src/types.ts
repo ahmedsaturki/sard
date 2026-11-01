@@ -95,105 +95,10 @@ export interface WPPluginContext {
 
 export interface WPPluginBridge {
   // Content (read-only by default)
-  getPosts(query?: WPQuery): Promise<unknown[]>;
-  getPost(id: string | number): Promise<unknown>;
-  getPages(query?: WPQuery): Promise<unknown[]>;
-  getPage(id: string | number): Promise<unknown>;
-
-  // Options (scoped to plugin prefix)
-  getOption(name: string): Promise<unknown>;
-  updateOption(name: string, value: unknown): Promise<void>;
-  deleteOption(name: string): Promise<void>;
-
-  // Database (parameterized queries only, no raw SQL)
-  query(sql: string, params: unknown[]): Promise<unknown[][]>;
-  execute(sql: string, params: unknown[]): Promise<{ affectedRows: number; insertId?: number }>;
-
-  // Assets
-  enqueueScript(handle: string, src: string, deps?: string[]): void;
-  enqueueStyle(handle: string, src: string, deps?: string[]): void;
-
-  // Admin UI
-  addAdminPage(config: WPAdminPageConfig): void;
-  addMetaBox(config: WPMetaBoxConfig): void;
-
-  // Hooks
-  addAction(hook: string, callback: string, priority?: number): void;
-  addFilter(hook: string, callback: string, priority?: number): void;
-  doAction(hook: string, ...args: unknown[]): Promise<void>;
-  applyFilters(hook: string, value: unknown, ...args: unknown[]): Promise<unknown>;
-}
-
-export interface WPPluginManifest {
-  name: string;
-  version: string;
-  slug: string;
-  capabilities: string[];
-  permissions: {
-    fs?: { read?: string[]; write?: string[] };
-    net?: { domains?: string[] };
-    db?: { tables?: string[] };
-    hooks?: { actions?: string[]; filters?: string[] };
-  };
-  entryPoint: string; // main PHP file
-  dependencies?: string[];
-}
-
-export interface WPPluginContext {
-  plugin: WPPluginManifest;
-  bridge: WPPluginBridge;
-  logger: {
-    info(message: string, data?: unknown): void;
-    warn(message: string, data?: unknown): void;
-    error(message: string, error?: Error): void;
-  };
-  config: {
-    get(key: string): unknown;
-    set(key: string, value: unknown): void;
-  };
-}
-
-export interface WPAdminPageConfig {
-  page_title: string;
-  menu_title: string;
-  capability: string;
-  menu_slug: string;
-  callback: string; // PHP callable
-  icon_url?: string;
-  position?: number;
-}
-
-export interface WPMetaBoxConfig {
-  id: string;
-  title: string;
-  callback: string; // PHP callable
-  screen: string | string[];
-  context?: 'normal' | 'advanced' | 'side';
-  priority?: 'default' | 'high' | 'low' | 'core';
-  callback_args?: unknown;
-}
-
-export interface WPPluginManifest {
-  name: string;
-  version: string;
-  slug: string;
-  capabilities: string[];
-  permissions: {
-    fs?: { read?: string[]; write?: string[] };
-    net?: { domains?: string[] };
-    db?: { tables?: string[] };
-    hooks?: { actions?: string[]; filters?: string[] };
-  };
-  entryPoint: string; // main PHP file
-  dependencies?: string[];
-}
-
-export interface WPPluginBridge {
-  // Content (read-only by default)
-  getPosts(query?: WPQuery): Promise<unknown[]>;
-  getPost(id: string | number): Promise<unknown>;
-  getPages(query?: WPQuery): Promise<unknown[]>;
-  getPage(id: string | number): Promise<unknown>;
+  getPosts(query?: WPQuery): Promise<WPPost[]>;
+  getPost(id: string | number): Promise<WPPost | null>;
+  getPages(query?: WPQuery): Promise<WPPage[]>;
+  getPage(id: string | number): Promise<WPPage | null>;
 
   // Options (scoped to plugin prefix)
   getOption(name: string): Promise<unknown>;
