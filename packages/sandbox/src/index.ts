@@ -116,8 +116,6 @@ class ProcessSandbox implements Sandbox {
               child.kill('SIGKILL');
             }
           }).catch(() => {
-        // Memory monitoring error - continue without monitoring
-      }
             // Memory monitoring error - continue without monitoring
           });
         }, 50);
@@ -214,8 +212,6 @@ class ProcessSandbox implements Sandbox {
               child.kill('SIGKILL');
             }
           }).catch(() => {
-        // Memory monitoring error - continue without monitoring
-      }
             // Memory monitoring error - continue without monitoring
           });
         }, 50);
