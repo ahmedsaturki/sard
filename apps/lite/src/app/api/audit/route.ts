@@ -33,10 +33,12 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     
     const queryResult = validateRequest(AuditQuerySchema, Object.fromEntries(searchParams));
-    if (!queryResult.success) {
+    if (queryResult.success === false) {
+      // Type guard: narrow to error branch
       return NextResponse.json({ success: false, error: queryResult.error }, { status: 400 });
     }
     
+    // Type guard: narrow to success branch
     const query = queryResult.data as z.infer<typeof AuditQuerySchema>;
     
     // Build where clause
