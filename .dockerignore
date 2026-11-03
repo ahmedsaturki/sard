@@ -1,0 +1,23 @@
+# Ignore Claude worktrees and other non-project files
+.claude/
+**/.claude/
+**/node_modules/
+**/.next/
+**/dist/
+**/*.log
+**/.DS_Store
+*.tgz
+**/coverage/
+**/.nyc_output/
+**/.turbo/
+**/.vercel/
+**/.netlify/
+**/build/
+**/tmp/
+**/temp/
+.DS_Store
+Thumbs.db
+*.pem
+.env
+.env.local
+.env.*.local
