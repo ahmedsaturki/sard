@@ -1,6 +1,6 @@
 {
   "name": "@sard-cms/client-handoff",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Client Handoff System - 3-Layer Agency Handoff Experience",
   "type": "module",
   "main": "./dist/index.js",
