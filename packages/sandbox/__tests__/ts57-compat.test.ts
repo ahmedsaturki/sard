@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+﻿import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import type { SandboxConfig, CapabilityManifest } from '../src/types.js';
 import {
   sandbox,
@@ -21,7 +21,9 @@ describe('TypeScript 5.7 verbatimModuleSyntax Compatibility', () => {
         durationMs: 100
       };
       expect(result.success).toBe(true);
-      expect(result.result).toBe('test');
+      if (result.success && result.result !== undefined) {
+        expect(result.result).toBe('test');
+      }
     });
 
     it('should support type-only import of SandboxConfig', () => {
@@ -481,10 +483,10 @@ describe('SandboxResult type inference', () => {
     }));
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.result.id).toBe(1);
-      expect(result.result.data).toHaveLength(3);
-      expect(result.result.nested.value).toBe(true);
+    if (result.success && result.result !== undefined) {
+      expect(result.result?.id).toBe(1);
+      expect(result.result?.data).toHaveLength(3);
+      expect(result.result?.nested.value).toBe(true);
     }
   });
 

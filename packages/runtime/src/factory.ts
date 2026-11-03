@@ -1,5 +1,5 @@
-/**
- * @module @sard/runtime/factory
+﻿/**
+ * @module @sard-cms/runtime/factory
  * Adapter factory - creates appropriate adapters based on config
  */
 import type { DatabaseAdapter, DatabaseConfig } from "./interfaces.js";
@@ -30,3 +30,4 @@ export async function createAdapters(config: { database: DatabaseConfig }): Prom
   
   return { database, storage: null, cache: null, queue: null };
 }
+

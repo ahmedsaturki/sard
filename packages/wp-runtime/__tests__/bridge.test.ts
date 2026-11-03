@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-runtime/__tests__/bridge.test
+﻿/**
+ * @module @sard-cms/wp-runtime/__tests__/bridge.test
  * TDD tests for WP Plugin Bridge API
  * 
  * Escape tests: verify plugin cannot exceed declared capabilities
@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createBridge, createPluginManifest, type WPPluginContext } from '../src/bridge.js';
-import { capabilities } from '@sard/sandbox';
+import { capabilities } from '@sard-cms/sandbox';
 
 describe('WP Plugin Bridge', () => {
   let mockContext: WPPluginContext;
@@ -134,3 +134,4 @@ describe('WP Plugin Bridge', () => {
     });
   });
 });
+

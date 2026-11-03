@@ -1,5 +1,5 @@
-/**
- * @module @sard/db-sqlcipher/pool
+﻿/**
+ * @module @sard-cms/db-sqlcipher/pool
  * Worker thread pool for SQLCipher WASM - non-blocking async queue
  */
 
@@ -79,18 +79,16 @@ export class SQLCipherPool implements DatabaseAdapter {
   private acquire(): PoolWorker {
     if (this.closed) throw new Error('Pool closed');
     if (this.workers.length === 0) throw new Error('Pool not initialized');
-    
-    // Round-robin with queue depth check
+
     let attempts = 0;
     while (attempts < this.workers.length) {
       const idx = this.nextWorker++ % this.workers.length;
       const w = this.workers[idx];
-      if (!w.busy || (this.config!.queueMaxSize ?? 100) > w.queue.length) {
+      if (w && (!w.busy || (this.config?.queueMaxSize ?? 100) > w.queue.length)) {
         return w;
       }
       attempts++;
     }
-    // All busy - return least busy
     return this.workers.reduce((a, b) => a.queue.length < b.queue.length ? a : b);
   }
 
@@ -165,3 +163,4 @@ export class SQLCipherPool implements DatabaseAdapter {
 export function createSQLCipherPool(config: SQLCipherConfig): SQLCipherPool {
   return new SQLCipherPool();
 }
+

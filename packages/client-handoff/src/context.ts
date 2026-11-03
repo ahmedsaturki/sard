@@ -1,5 +1,5 @@
-/**
- * @module @sard/client-handoff/context
+﻿/**
+ * @module @sard-cms/client-handoff/context
  * Client Handoff Layer 1 (Design Constraints) + state primitives.
  * Logic layer per ADR-015; UI views live in ./components/HandoffUi.tsx.
  * See ADR-014 (Killer Use Case: Agency Client Handoff) and HC-11.
@@ -140,3 +140,4 @@ export function useClientHandoff(): ClientHandoffContextValue {
   }
   return context;
 }
+

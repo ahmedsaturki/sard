@@ -1,5 +1,5 @@
 {
-  "name": "@sard/mcp-server",
+  "name": "@sard-cms/mcp-server",
   "version": "0.0.1",
   "description": "Sard mcp-server placeholder",
   "type": "module",

@@ -1,9 +1,9 @@
-/**
- * @module @sard/wp-compat/migration/WXRParser
+﻿/**
+ * @module @sard-cms/wp-compat/migration/WXRParser
  * Parses WordPress WXR (WordPress eXtended RSS) export files
  */
 
-import type { WXRExport, WXRChannel, WXRWordPressData } from "./types.js";
+import type { WXRExport, WXRChannel } from "./types.js";
 
 export class WXRParser {
   /**
@@ -213,3 +213,4 @@ export class WXRParser {
     }));
   }
 }
+

@@ -1,5 +1,5 @@
 {
-  "name": "@sard/design-tokens",
+  "name": "@sard-cms/design-tokens",
   "version": "0.0.1",
   "description": "Sard design-tokens package",
   "type": "module",

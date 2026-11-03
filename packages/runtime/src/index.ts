@@ -1,5 +1,5 @@
-/**
- * @module @sard/runtime
+﻿/**
+ * @module @sard-cms/runtime
  * Deployment Abstraction Layer for Sard
  */
 export * from "./config.js";
@@ -28,3 +28,4 @@ export type {
   DatabaseConfig,
   QueryResult,
 } from "./interfaces.js";
+

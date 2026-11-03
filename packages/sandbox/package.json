@@ -1,5 +1,5 @@
 {
-  "name": "@sard/sandbox",
+  "name": "@sard-cms/sandbox",
   "version": "0.0.1",
   "description": "Process isolation wrapper for untrusted code execution (WP plugins, user jobs)",
   "type": "module",

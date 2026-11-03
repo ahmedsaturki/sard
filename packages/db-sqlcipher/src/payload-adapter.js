@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/db-sqlcipher/payload-adapter
+ * @module @sard-cms/db-sqlcipher/payload-adapter
  * Payload 3 Database Adapter implementation over SQLCipher pool
  * Implements Payload's DatabaseAdapter contract
  */
@@ -261,3 +261,4 @@ function createPayloadAdapter(config) {
     return new PayloadSQLCipherAdapter();
 }
 var templateObject_1, templateObject_2, templateObject_3;
+

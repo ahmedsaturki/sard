@@ -1,5 +1,5 @@
 {
-  "name": "@sard/portable-text",
+  "name": "@sard-cms/portable-text",
   "version": "0.0.1",
   "description": "Sard Portable Text engine: validation, HTML/plain-text rendering, HTML migration",
   "type": "module",

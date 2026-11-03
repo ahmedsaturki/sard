@@ -13,7 +13,11 @@
     "lint": "eslint src",
     "clean": "rm -rf dist"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@sard-cms/core": "workspace:*",
+    "@sard-cms/design-tokens": "workspace:*",
+    "@sard-cms/components": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "^5.7.2",
     "vitest": "^3.0.5"

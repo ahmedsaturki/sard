@@ -1,5 +1,5 @@
-/**
- * @module @sard/core/memory-governor
+﻿/**
+ * @module @sard-cms/core/memory-governor
  * Memory management for 512MB/1-core constraint (HC-03, HC-01)
  * Monitors heap usage, triggers GC, evicts caches
  */
@@ -215,3 +215,4 @@ export function initializeMemoryGovernor(config?: Partial<MemoryConfig>): Memory
   memoryGovernorInstance.start();
   return memoryGovernorInstance;
 }
+

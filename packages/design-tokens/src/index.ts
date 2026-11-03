@@ -1,5 +1,5 @@
-/**
- * @module @sard/design-tokens
+﻿/**
+ * @module @sard-cms/design-tokens
  *
  * Design Token System for Sard CMS.
  * Single source of truth for all design decisions.
@@ -574,3 +574,4 @@ export type AnimationTokens = typeof animationTokens;
 export type AllTokens = typeof tokens;
 
 export default tokens;
+

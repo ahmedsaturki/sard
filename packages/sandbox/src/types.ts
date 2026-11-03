@@ -1,5 +1,5 @@
-/**
- * @module @sard/sandbox/types
+﻿/**
+ * @module @sard-cms/sandbox/types
  * Type definitions for process isolation sandbox
  */
 
@@ -63,3 +63,4 @@ export interface CapabilityManifest {
     db?: { tables?: string[] };
   };
 }
+

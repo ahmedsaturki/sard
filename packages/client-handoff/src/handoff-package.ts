@@ -1,10 +1,18 @@
 /**
- * @module @sard/client-handoff/handoff-package
+ * @module @sard-cms/client-handoff/handoff-package
  * Generates the downloadable handoff package an agency gives its client.
  */
 
 import { type DesignConstraints } from "./context.js";
-import type { GuideStep } from "./components/HandoffUi.js";
+
+export interface GuideStep {
+  id: string;
+  title: { ar: string; en: string };
+  description: { ar: string; en: string };
+  targetSelector?: string;
+  action?: "click" | "hover" | "input";
+  position?: "top" | "bottom" | "left" | "right";
+}
 
 export interface HandoffPackage {
   siteName: string;

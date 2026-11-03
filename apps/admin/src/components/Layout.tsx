@@ -1,7 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { cn, useTheme, useRtl } from '@sard/components';
-import { defaultEditorConfig } from '@sard/visual-editor';
+import { cn, useTheme, useRtl } from '@sard-cms/components';
+import { defaultEditorConfig } from '@sard-cms/visual-editor';
 
 const NAV_ITEMS = [
   { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
@@ -367,3 +367,4 @@ export function Layout() {
 }
 
 export default Layout;
+

@@ -1,8 +1,8 @@
-/**
- * @module @sard/edge-adapter/adapters/cloudflare
+﻿/**
+ * @module @sard-cms/edge-adapter/adapters/cloudflare
  * Cloudflare Workers Edge Adapter for Sard Cloud mode
  */
-import type { RuntimeAdapter, RuntimeConfig, RuntimeRequest, RuntimeResponse, RuntimeMetadata } from "@sard/runtime";
+import type { RuntimeAdapter, RuntimeConfig, RuntimeRequest, RuntimeResponse, RuntimeMetadata } from "@sard-cms/runtime";
 
 export class CloudflareWorkersAdapter implements RuntimeAdapter {
   private middleware: Array<(req: RuntimeRequest, next: () => Promise<RuntimeResponse>) => Promise<RuntimeResponse>> = [];
@@ -66,3 +66,4 @@ export class CloudflareWorkersAdapter implements RuntimeAdapter {
 export function createCloudflareWorkersAdapter(): CloudflareWorkersAdapter {
   return new CloudflareWorkersAdapter();
 }
+

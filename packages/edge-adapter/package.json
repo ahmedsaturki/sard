@@ -1,5 +1,5 @@
 {
-  "name": "@sard/edge-adapter",
+  "name": "@sard-cms/edge-adapter",
   "version": "0.0.1",
   "description": "Sard edge-adapter placeholder",
   "type": "module",
@@ -19,7 +19,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@sard/runtime": "workspace:*"
+    "@sard-cms/runtime": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

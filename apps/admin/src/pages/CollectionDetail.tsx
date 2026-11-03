@@ -1,8 +1,8 @@
-import React from 'react';
+﻿import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
-import { VisualEditorProvider } from '@sard/visual-editor';
+import { VisualEditorProvider } from '@sard-cms/visual-editor';
 
 const ENTRIES = [
   { id: 1, slug: 'getting-started-with-sard', title: 'Getting Started with Sard', status: 'published', updated: '2 hours ago', author: 'Admin User' },
@@ -88,3 +88,4 @@ export function CollectionDetail() {
 }
 
 export default CollectionDetail;
+

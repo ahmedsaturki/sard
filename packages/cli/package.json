@@ -1,5 +1,5 @@
 {
-  "name": "@sard/cli",
+  "name": "@sard-cms/cli",
   "version": "0.0.1",
   "description": "Sard cli placeholder",
   "type": "module",

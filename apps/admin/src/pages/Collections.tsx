@@ -1,6 +1,6 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const COLLECTIONS = [
@@ -86,3 +86,4 @@ export function Collections() {
 }
 
 export default Collections;
+

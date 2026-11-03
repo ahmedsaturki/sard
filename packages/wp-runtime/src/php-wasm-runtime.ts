@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-runtime/php-wasm-runtime
+﻿/**
+ * @module @sard-cms/wp-runtime/php-wasm-runtime
  * PHP-WASM runtime wrapper using @php-wasm/node (WordPress Playground)
  *
  * Each WP plugin runs in isolated PHP WASM instance with virtual filesystem.

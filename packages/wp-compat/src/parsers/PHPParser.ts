@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-compat/parsers/PHPParser
+﻿/**
+ * @module @sard-cms/wp-compat/parsers/PHPParser
  *
  * Basic PHP parser for WordPress theme files.
  * Extracts function calls, hooks, template tags, etc.
@@ -54,3 +54,4 @@ export class PHPParser {
     return { functions, hooks, templateTags, enqueues };
   }
 }
+

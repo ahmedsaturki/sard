@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn } from '@sard/components';
+﻿import React from 'react';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const MEDIA_ITEMS = [
@@ -158,3 +158,4 @@ export function Media() {
 }
 
 export default Media;
+

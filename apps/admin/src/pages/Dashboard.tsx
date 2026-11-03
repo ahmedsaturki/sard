@@ -1,6 +1,6 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const STATS = [
@@ -111,7 +111,7 @@ export function Dashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-neutral-900 truncate">{activity.action} <span className="font-medium">{activity.item}</span></p>
-                    <p className="text-sm text-neutral-500">{activity.time} · {activity.user}</p>
+                    <p className="text-sm text-neutral-500">{activity.time} Â· {activity.user}</p>
                   </div>
                   <span className="text-xs text-neutral-400 whitespace-nowrap">{activity.time}</span>
                 </div>
@@ -146,3 +146,4 @@ export function Dashboard() {
 }
 
 export default Dashboard;
+

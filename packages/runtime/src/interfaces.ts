@@ -1,5 +1,45 @@
+﻿/**
+ * @module @sard-cms/runtime/interfaces
+ * Core adapter interfaces for deployment abstraction
+ */
+
 /**
- * @module @sard/runtime/interfaces
+ * Runtime Adapter - handles HTTP request/response in different environments
+ */
+export interface RuntimeAdapter {
+  /** Initialize the runtime */
+  initialize(config: RuntimeConfig): Promise<void>;
+  
+  /** Handle incoming request */
+  handleRequest(request: RuntimeRequest): Promise<RuntimeResponse>;
+  
+  /** Shutdown gracefully */
+  shutdown(): Promise<void>;
+  
+  /** Get runtime metadata */
+  getMetadata(): RuntimeMetadata;
+}
+
+export interface RuntimeConfig {
+  /** Base URL for the application */
+  baseUrl: string;
+  /** Environment variables */
+  env: Record<string, string>;
+  /** Custom middleware */
+  middleware?: RuntimeMiddleware[];
+}
+
+export interface RuntimeRequest {
+  method: string;
+  url: string;
+  headers: Record<string, string>;
+  body?: ReadableStream | string | null;
+  params?: Record<string, string>;
+  query?: Record<string, string>;
+}
+
+/**
+ * @module @sard-cms/runtime/interfaces
  * Core adapter interfaces for deployment abstraction
  */
 
@@ -200,3 +240,4 @@ export interface QueueStats {
   failed: number;
   delayed: number;
 }
+

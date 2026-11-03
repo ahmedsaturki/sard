@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/wp-runtime/__tests__/bridge.test
+ * @module @sard-cms/wp-runtime/__tests__/bridge.test
  * TDD tests for WP Plugin Bridge API
  *
  * Escape tests: verify plugin cannot exceed declared capabilities
@@ -55,7 +55,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var vitest_1 = require("vitest");
 var bridge_js_1 = require("../src/bridge.js");
-var sandbox_1 = require("@sard/sandbox");
+var sandbox_1 = require("@sard-cms/sandbox");
 (0, vitest_1.describe)('WP Plugin Bridge', function () {
     var mockContext;
     var bridge;
@@ -221,3 +221,4 @@ var sandbox_1 = require("@sard/sandbox");
         }); });
     });
 });
+

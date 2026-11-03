@@ -1,5 +1,5 @@
 {
-  "name": "@sard/wp-compat",
+  "name": "@sard-cms/wp-compat",
   "version": "0.0.1",
   "description": "WordPress Compatibility Layer - L2: Theme to Astro Conversion",
   "type": "module",
@@ -19,13 +19,15 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@sard/core": "workspace:*",
-    "@sard/design-tokens": "workspace:*",
+    "@sard-cms/core": "workspace:*",
+    "@sard-cms/design-tokens": "workspace:*",
     "postcss": "^8.4.47",
     "postcss-value-parser": "^4.2.0",
-    "css-tree": "^2.3.1"
+    "css-tree": "^2.3.1",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@types/xml2js": "^0.4.14",
     "typescript": "^5.7.2",
     "vitest": "^3.0.5"
   },

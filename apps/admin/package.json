@@ -24,11 +24,11 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
-    "@sard/design-tokens": "workspace:*",
-    "@sard/components": "workspace:*",
-    "@sard/visual-editor": "workspace:*",
-    "@sard/core": "workspace:*",
-    "@sard/db": "workspace:*"
+    "@sard-cms/design-tokens": "workspace:*",
+    "@sard-cms/components": "workspace:*",
+    "@sard-cms/visual-editor": "workspace:*",
+    "@sard-cms/core": "workspace:*",
+    "@sard-cms/db": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",

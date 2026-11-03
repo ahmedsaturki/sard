@@ -1,5 +1,5 @@
-/**
- * @module @sard/db
+﻿/**
+ * @module @sard-cms/db
  *
  * Sard core schema — content model, users, media, plugins, audit, knowledge graph.
  * Design notes: docs/adr/001-stack-choice.md, docs/adr/003-content-format.md,
@@ -318,3 +318,4 @@ export const sites = pgTable("sites", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
 }, (t) => [uniqueIndex("sites_slug_uq").on(t.slug)]);
+

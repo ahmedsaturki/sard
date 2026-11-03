@@ -1,7 +1,7 @@
-import React from 'react';
-import { cn, useTheme, useRtl } from '@sard/components';
+﻿import React from 'react';
+import { cn, useTheme, useRtl } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
-import { DesignConstraintsProvider, SimplifiedDashboard, InteractiveGuide, useClientHandoffSystem } from '@sard/client-handoff';
+import { DesignConstraintsProvider, SimplifiedDashboard, InteractiveGuide, useClientHandoffSystem } from '@sard-cms/client-handoff';
 
 const GUIDE_STEPS = [
   {
@@ -269,3 +269,4 @@ function ConstraintCard({ title, description, icon, locked }: { title: string; d
 }
 
 export default ClientHandoffPage;
+

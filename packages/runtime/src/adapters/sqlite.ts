@@ -1,10 +1,10 @@
-/**
- * @module @sard/runtime/adapters/sqlite
+﻿/**
+ * @module @sard-cms/runtime/adapters/sqlite
  * SQLite Database Adapter using libsql (Turso) for cross-platform compatibility
  */
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import { schema } from "@sard/db";
+import { schema } from "@sard-cms/db";
 import type { DatabaseAdapter, DatabaseConfig } from "../interfaces.js";
 
 export class SQLiteAdapter implements DatabaseAdapter {
@@ -116,3 +116,4 @@ export class SQLiteAdapter implements DatabaseAdapter {
 export function createSQLiteAdapter(_config: any): any {
   return new SQLiteAdapter();
 }
+

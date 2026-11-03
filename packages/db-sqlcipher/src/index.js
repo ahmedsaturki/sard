@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/db-sqlcipher
+ * @module @sard-cms/db-sqlcipher
  * SQLCipher WASM worker pool + Payload Database Adapter for Sard Lite
  *
  * AC-06: SQLite in production = SQLCipher (AES-256). No exceptions.
@@ -27,3 +27,4 @@ __exportStar(require("./types.js"), exports);
 var pool_js_1 = require("./pool.js");
 Object.defineProperty(exports, "SQLCipherPool", { enumerable: true, get: function () { return pool_js_1.SQLCipherPool; } });
 Object.defineProperty(exports, "createSQLCipherPool", { enumerable: true, get: function () { return pool_js_1.createSQLCipherPool; } });
+

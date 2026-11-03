@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn, useTheme } from '@sard/components';
+﻿import React from 'react';
+import { cn, useTheme } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const EXPORT_FORMATS = [
@@ -214,3 +214,4 @@ export function StaticExport() {
 }
 
 export default StaticExport;
+

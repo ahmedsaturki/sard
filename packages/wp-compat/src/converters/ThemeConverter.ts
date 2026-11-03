@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-compat/converters/ThemeConverter
+﻿/**
+ * @module @sard-cms/wp-compat/converters/ThemeConverter
  *
  * Converts WordPress themes to Sard-compatible Astro projects.
  * See ADR-0007 (WP Compatibility Layer).
@@ -56,3 +56,4 @@ export class ThemeConverter {
 }
 
 export const themeConverter = new ThemeConverter();
+

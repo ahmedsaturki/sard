@@ -1,7 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 export function Login() {
@@ -128,3 +128,4 @@ export function Login() {
 }
 
 export default Login;
+

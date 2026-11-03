@@ -1,5 +1,5 @@
 {
-  "name": "@sard/runtime",
+  "name": "@sard-cms/runtime",
   "version": "0.0.1",
   "description": "Sard runtime package",
   "type": "module",
@@ -23,7 +23,7 @@
     "drizzle-orm": "^0.38.3",
     "@libsql/client": "^0.14.0",
     "pg": "^8.13.1",
-    "@sard/db": "workspace:*"
+    "@sard-cms/db": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

@@ -65,19 +65,19 @@ importers:
 
   apps/admin:
     dependencies:
-      '@sard/components':
+      '@sard-cms/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@sard/core':
+      '@sard-cms/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@sard/db':
+      '@sard-cms/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
-      '@sard/visual-editor':
+      '@sard-cms/visual-editor':
         specifier: workspace:*
         version: link:../../packages/visual-editor
       react:
@@ -113,6 +113,16 @@ importers:
         version: 3.2.7(@types/debug@4.1.13)(@types/node@26.6.5)(happy-dom@20.14.6)(sass@1.77.4)
 
   apps/demo:
+    dependencies:
+      '@sard-cms/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@sard-cms/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@sard-cms/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -122,6 +132,19 @@ importers:
         version: 3.2.7(@types/debug@4.1.13)(@types/node@26.6.5)(happy-dom@20.14.6)(sass@1.77.4)
 
   apps/docs:
+    dependencies:
+      '@sard-cms/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@sard-cms/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@sard-cms/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
+      '@sard-cms/visual-editor':
+        specifier: workspace:*
+        version: link:../../packages/visual-editor
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -147,22 +170,22 @@ importers:
       '@payloadcms/translations':
         specifier: ^3.92.0
         version: 3.92.0
-      '@sard/client-handoff':
+      '@sard-cms/client-handoff':
         specifier: workspace:*
         version: link:../../packages/client-handoff
-      '@sard/components':
+      '@sard-cms/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@sard/db-sqlcipher':
+      '@sard-cms/db-sqlcipher':
         specifier: workspace:*
         version: link:../../packages/db-sqlcipher
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
-      '@sard/portable-text':
+      '@sard-cms/portable-text':
         specifier: workspace:*
         version: link:../../packages/portable-text
-      '@sard/wp-runtime':
+      '@sard-cms/wp-runtime':
         specifier: workspace:*
         version: link:../../packages/wp-runtime
       '@types/express':
@@ -238,18 +261,27 @@ importers:
 
   packages/client-handoff:
     dependencies:
-      '@sard/components':
+      '@sard-cms/components':
         specifier: workspace:*
         version: link:../components
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
+      '@sard-cms/icons':
+        specifier: workspace:*
+        version: link:../icons
+      i18next:
+        specifier: ^24.0.0
+        version: 24.2.3(typescript@5.9.3)
       react:
         specifier: ^18.3.1
         version: 18.3.1
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^15.0.0
+        version: 15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
     devDependencies:
       '@types/react':
         specifier: ^18.3.5
@@ -266,7 +298,7 @@ importers:
 
   packages/components:
     dependencies:
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
       react:
@@ -291,7 +323,7 @@ importers:
 
   packages/core:
     dependencies:
-      '@sard/portable-text':
+      '@sard-cms/portable-text':
         specifier: workspace:*
         version: link:../portable-text
       zod:
@@ -335,7 +367,7 @@ importers:
 
   packages/db-sqlcipher:
     dependencies:
-      '@sard/portable-text':
+      '@sard-cms/portable-text':
         specifier: workspace:*
         version: link:../portable-text
       drizzle-orm:
@@ -375,7 +407,7 @@ importers:
 
   packages/docker-runtime:
     dependencies:
-      '@sard/runtime':
+      '@sard-cms/runtime':
         specifier: workspace:*
         version: link:../runtime
     devDependencies:
@@ -385,10 +417,29 @@ importers:
 
   packages/edge-adapter:
     dependencies:
-      '@sard/runtime':
+      '@sard-cms/runtime':
         specifier: workspace:*
         version: link:../runtime
     devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/debug@4.1.13)(@types/node@26.6.5)(happy-dom@20.14.6)(sass@1.77.4)
+
+  packages/icons:
+    dependencies:
+      lucide-react:
+        specifier: ^1.66.0
+        version: 1.66.0(@types/react@18.3.31)(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.5
+        version: 18.3.31
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -435,7 +486,7 @@ importers:
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
-      '@sard/db':
+      '@sard-cms/db':
         specifier: workspace:*
         version: link:../db
       drizzle-orm:
@@ -482,7 +533,7 @@ importers:
 
   packages/visual-editor:
     dependencies:
-      '@sard/core':
+      '@sard-cms/core':
         specifier: workspace:*
         version: link:../core
       react:
@@ -501,10 +552,10 @@ importers:
 
   packages/wp-compat:
     dependencies:
-      '@sard/core':
+      '@sard-cms/core':
         specifier: workspace:*
         version: link:../core
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
       css-tree:
@@ -516,7 +567,13 @@ importers:
       postcss-value-parser:
         specifier: ^4.2.0
         version: 4.2.0
+      xml2js:
+        specifier: ^0.6.2
+        version: 0.6.2
     devDependencies:
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -529,6 +586,12 @@ importers:
       '@php-wasm/node':
         specifier: ^3.1.61
         version: 3.1.61
+      '@php-wasm/universal':
+        specifier: ^3.1.61
+        version: 3.1.61
+      '@sard-cms/sandbox':
+        specifier: workspace:*
+        version: link:../sandbox
       zod:
         specifier: ^3.24.1
         version: 3.25.76
@@ -2556,6 +2619,9 @@ packages:
   '@types/ws@8.18.2':
     resolution: {integrity: sha512-67MQl+fpWKVTT1NYdnmo3U4sc/xPo/zQBncVnI74qmQa0z/b+1g6iYqNmGCPbxO+zz2aklb08a0oHfegiVd0/w==}
 
+  '@types/xml2js@0.4.14':
+    resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
+
   '@typescript-eslint/eslint-plugin@8.72.0':
     resolution: {integrity: sha512-aysKgysPX9XOv/dk95UkvUDe++Q3n3dJPG9CEWT3RUccxfkPJ+Qn6nhKPDhZXU6Ofo9kgwGWwKyQCnZIXTgngg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -3597,6 +3663,9 @@ packages:
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
 
+  html-parse-stringify@3.1.0:
+    resolution: {integrity: sha512-E0oAXcELOtsXe+BmpJ2EZyedbldPpriV5vICzEuo6xjC/D1lDukOI7KrpfQGF2Qc4wWEy0nk3bFORS2K5ZAhFQ==}
+
   http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
@@ -3613,6 +3682,14 @@ packages:
     resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
     engines: {node: '>=18'}
     hasBin: true
+
+  i18next@24.2.3:
+    resolution: {integrity: sha512-lfbf80OzkocvX7nmZtu7nSTNbrTYR52sLWxPtlXX1zAhVw8WEnFk4puUkCR4B1dNQwbSpEHHHemcZu//7EcB7A==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -3832,7 +3909,6 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.4:
@@ -3880,6 +3956,15 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide-react@1.66.0:
+    resolution: {integrity: sha512-8zjbi/Us+ETXqfBwmXF/FHrWGIqOdE6zT1yUdRJLQVoptomSkB0zdFWVIM667t9K8djWDaXdkBkqi2qVTuDNiw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -4417,6 +4502,22 @@ packages:
     resolution: {integrity: sha512-GQDxZ5Jd+Aq/qUxbCm1UtzmL/s++V7zKgE8yMktJiCQXCCFZnMZh9ng+6/Ne6PjNSXH0L9CjeOEREfRnq6Duag==}
     peerDependencies:
       react: '>=16.13.1'
+
+  react-i18next@15.7.4:
+    resolution: {integrity: sha512-nyU8iKNrI5uDJch0z9+Y5XEr34b0wkyYj3Rp+tfbahxtlswxSCjcUL9H0nqXo9IR3/t5Y5PKIA3fx3MfUyR9Xw==}
+    peerDependencies:
+      i18next: '>= 23.4.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+      typescript: ^5
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+      typescript:
+        optional: true
 
   react-image-crop@10.1.8:
     resolution: {integrity: sha512-4rb8XtXNx7ZaOZarKKnckgz4xLMvds/YrU6mpJfGhGAsy2Mg4mIw1x+DCCGngVGq2soTBVVOxx2s/C6mTX9+pA==}
@@ -4974,6 +5075,10 @@ packages:
       jsdom:
         optional: true
 
+  void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+
   wasm-feature-detect@1.8.0:
     resolution: {integrity: sha512-zksaLKM2fVlnB5jQQDqKXXwYHLQUVH9es+5TOOHwGOVJOCeRBCiPjwSg+3tN2AdTCzjgli4jijCH290kXb/zWQ==}
 
@@ -5046,6 +5151,14 @@ packages:
   xml-naming@0.3.0:
     resolution: {integrity: sha512-ghig2TBE/H11aOVgmahA3MhimvkBr6JIYknH/Dhdk10nXwdbIqBJsbfMxpvFPG8bAw77gN29aQWvKpmVoPlvPQ==}
     engines: {node: '>=16.0.0'}
+
+  xml2js@0.6.2:
+    resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==}
+    engines: {node: '>=4.0.0'}
+
+  xmlbuilder@11.0.1:
+    resolution: {integrity: sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==}
+    engines: {node: '>=4.0'}
 
   xss@1.0.17:
     resolution: {integrity: sha512-+SEr5IDSgTBnhT6bnnf0mVRHT91+HU517zkahLNhkWLz8retCgeR1YDT4OknLiExA5+chn2Wy7z3KyjvnD8A2w==}
@@ -6923,6 +7036,10 @@ snapshots:
     dependencies:
       '@types/node': 20.19.43
 
+  '@types/xml2js@0.4.14':
+    dependencies:
+      '@types/node': 20.19.43
+
   '@typescript-eslint/eslint-plugin@8.72.0(@typescript-eslint/parser@8.72.0(eslint@9.39.5)(typescript@5.9.3))(eslint@9.39.5)(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
@@ -8009,6 +8126,10 @@ snapshots:
 
   html-escaper@2.0.2: {}
 
+  html-parse-stringify@3.1.0:
+    dependencies:
+      void-elements: 3.1.0
+
   http-errors@2.0.0:
     dependencies:
       depd: 2.0.0
@@ -8022,6 +8143,12 @@ snapshots:
   human-signals@5.0.0: {}
 
   husky@9.1.7: {}
+
+  i18next@24.2.3(typescript@5.9.3):
+    dependencies:
+      '@babel/runtime': 7.29.10
+    optionalDependencies:
+      typescript: 5.9.3
 
   iconv-lite@0.4.24:
     dependencies:
@@ -8265,6 +8392,12 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide-react@1.66.0(@types/react@18.3.31)(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+    optionalDependencies:
+      '@types/react': 18.3.31
 
   magic-string@0.30.21:
     dependencies:
@@ -8955,6 +9088,16 @@ snapshots:
       '@babel/runtime': 7.29.10
       react: 19.3.1
 
+  react-i18next@15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3):
+    dependencies:
+      '@babel/runtime': 7.29.10
+      html-parse-stringify: 3.1.0
+      i18next: 24.2.3(typescript@5.9.3)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
+      typescript: 5.9.3
+
   react-image-crop@10.1.8(react@19.3.1):
     dependencies:
       react: 19.3.1
@@ -9613,6 +9756,8 @@ snapshots:
       - supports-color
       - terser
 
+  void-elements@3.1.0: {}
+
   wasm-feature-detect@1.8.0: {}
 
   web-streams-polyfill@3.3.3: {}
@@ -9659,6 +9804,13 @@ snapshots:
   ws@8.22.0: {}
 
   xml-naming@0.3.0: {}
+
+  xml2js@0.6.2:
+    dependencies:
+      sax: 1.6.1
+      xmlbuilder: 11.0.1
+
+  xmlbuilder@11.0.1: {}
 
   xss@1.0.17:
     dependencies:

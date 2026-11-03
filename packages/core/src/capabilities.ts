@@ -1,5 +1,5 @@
-/**
- * @module @sard/core/capabilities
+﻿/**
+ * @module @sard-cms/core/capabilities
  *
  * Capability Manifest model — the security boundary for plugins (ADR-005).
  * A plugin declares what it needs; the host grants a subset. Every granted
@@ -64,3 +64,4 @@ export function validatePluginManifest(
     errors: r.error.issues.map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`)
   };
 }
+

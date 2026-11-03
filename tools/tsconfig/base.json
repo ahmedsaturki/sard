@@ -22,7 +22,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@sard/*": [
+      "@sard-cms/*": [
         "packages/*/src"
       ]
     },

@@ -1,5 +1,5 @@
 /**
- * @module @sard/components
+ * @module @sard-cms/components
  *
  * Core Component Library for Sard CMS.
  * Built on Design Tokens with RTL support.
@@ -19,7 +19,7 @@ import type {
   RtlTokens,
   ComponentTokens,
   AnimationTokens,
-} from "@sard/design-tokens";
+} from "@sard-cms/design-tokens";
 
 // Re-export design tokens
 export type {
@@ -34,9 +34,11 @@ export type {
   RtlTokens,
   ComponentTokens,
   AnimationTokens,
-} from "@sard/design-tokens";
+} from "@sard-cms/design-tokens";
 
-export { tokens } from "@sard/design-tokens";
+export { tokens } from "@sard-cms/design-tokens";
+
+export { Box, Button, Card, Tooltip, Paper, Typography, IconButton, Divider, Grid, Menu, MenuItem, Avatar, CardContent } from "./components";
 
 // ============================================================================
 // ICONS (inline SVG icons)

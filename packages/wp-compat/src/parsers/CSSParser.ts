@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-compat/parsers/CSSParser
+﻿/**
+ * @module @sard-cms/wp-compat/parsers/CSSParser
  *
  * Parses CSS and extracts design tokens compatible with Sard.
  */
@@ -78,3 +78,4 @@ export class CSSParser {
     return { colors, typography, spacing };
   }
 }
+

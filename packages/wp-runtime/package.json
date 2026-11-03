@@ -1,5 +1,5 @@
 {
-  "name": "@sard/wp-runtime",
+  "name": "@sard-cms/wp-runtime",
   "version": "0.0.1",
   "description": "PHP-WASM runtime + Bridge API for WordPress plugin sandbox (L1 WP Compat)",
   "type": "module",
@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@php-wasm/node": "^3.1.61",
+    "@php-wasm/universal": "^3.1.61",
+    "@sard-cms/sandbox": "workspace:*",
     "zod": "^3.24.1"
   },
   "devDependencies": {

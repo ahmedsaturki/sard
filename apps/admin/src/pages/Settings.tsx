@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn } from '@sard/components';
+﻿import React from 'react';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const SETTINGS_TABS = [
@@ -235,3 +235,4 @@ export function Settings() {
 }
 
 export default Settings;
+

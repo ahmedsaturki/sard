@@ -1,10 +1,10 @@
-import React from 'react';
+﻿import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { ThemeProvider } from '@sard/components';
-import { RtlProvider } from '@sard/components';
-import { generateCssVariables, tokens } from '@sard/design-tokens';
+import { ThemeProvider } from '@sard-cms/components';
+import { RtlProvider } from '@sard-cms/components';
+import { generateCssVariables, tokens } from '@sard-cms/design-tokens';
 import './styles/global.css';
 
 // Inject design tokens as CSS variables
@@ -23,3 +23,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ThemeProvider>
   </React.StrictMode>
 );
+

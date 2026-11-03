@@ -1,5 +1,5 @@
 {
-  "name": "@sard/plugin-sdk",
+  "name": "@sard-cms/plugin-sdk",
   "version": "0.0.1",
   "description": "Sard plugin-sdk placeholder",
   "type": "module",

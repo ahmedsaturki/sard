@@ -1,5 +1,5 @@
 {
-  "name": "@sard/visual-editor",
+  "name": "@sard-cms/visual-editor",
   "version": "0.0.1",
   "description": "Real-Time Visual Editor for Sard CMS",
   "type": "module",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "@sard/core": "workspace:*"
+    "@sard-cms/core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",

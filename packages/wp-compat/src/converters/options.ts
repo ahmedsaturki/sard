@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-compat/converters/options
+﻿/**
+ * @module @sard-cms/wp-compat/converters/options
  *
  * Default conversion options for WP theme to Astro conversion.
  */
@@ -16,3 +16,4 @@ export const defaultConversionOptions: ConversionOptions = {
   generateSardConfig: true,
   strictMode: false,
 };
+

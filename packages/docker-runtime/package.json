@@ -1,5 +1,5 @@
 {
-  "name": "docker-runtime",
+  "name": "@sard-cms/docker-runtime",
   "version": "0.0.1",
   "type": "module",
   "exports": {
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sard/runtime": "workspace:*"
+    "@sard-cms/runtime": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2"

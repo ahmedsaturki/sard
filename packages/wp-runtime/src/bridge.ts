@@ -1,10 +1,10 @@
-/**
- * @module @sard/wp-runtime/bridge
+﻿/**
+ * @module @sard-cms/wp-runtime/bridge
  * Bridge API implementation - capability-scoped communication
  * between WP plugins (PHP-WASM) and Sard core
  */
 
-import { auditLog } from '@sard/sandbox';
+import { auditLog } from '@sard-cms/sandbox';
 import type { WPPluginBridge, WPPluginContext, WPPluginManifest, WPPost, WPQuery, WPPage } from './types.js';
 
 export function createBridge(context: WPPluginContext): WPPluginBridge {

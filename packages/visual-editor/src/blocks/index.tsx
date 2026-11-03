@@ -1,5 +1,5 @@
-/**
- * @module @sard/visual-editor/blocks
+﻿/**
+ * @module @sard-cms/visual-editor/blocks
  * Visual Editor blocks for Payload 3 Lexical editor
  * Custom blocks for Portable Text content
  * 
@@ -23,7 +23,7 @@ import {
   MenuItem, 
   Typography,
   InputAdornment 
-} from '@sard/components';
+} from '@sard-cms/components';
 import { 
   ImageIcon, 
   VideoIcon, 
@@ -37,7 +37,7 @@ import {
   DeleteIcon,
   CopyIcon,
   EditIcon 
-} from '@sard/icons';
+} from '@sard-cms/icons';
 // ============================================
 // Base Block Component
 // ============================================

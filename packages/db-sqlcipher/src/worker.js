@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/db-sqlcipher/worker
+ * @module @sard-cms/db-sqlcipher/worker
  * SQLCipher WASM worker - runs in worker thread, executes encrypted SQLite
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -43,7 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var node_worker_threads_1 = require("node:worker_threads");
 var client_1 = require("@libsql/client");
 var libsql_1 = require("drizzle-orm/libsql");
-var schema = require("@sard/db");
+var schema = require("@sard-cms/db");
 if (!node_worker_threads_1.parentPort) {
     throw new Error('SQLCipher worker must be run as a worker thread');
 }
@@ -253,3 +253,4 @@ initialize().catch(function (err) {
     process.exit(1);
 });
 node_worker_threads_1.parentPort.postMessage({ type: 'ready' });
+
