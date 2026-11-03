@@ -3,13 +3,13 @@
  * Audit trail middleware for all API requests
  */
 
-import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
+import type { Payload } from 'payload';
 import config from '@payload-config';
 
-let payloadPromise: Promise<any> | null = null;
+let payloadPromise: Promise<Payload> | null | undefined = null;
 
-function getPayloadInstance() {
+async function getPayloadInstance(): Promise<Payload> {
   if (!payloadPromise) {
     payloadPromise = getPayload({ config });
   }
@@ -17,12 +17,14 @@ function getPayloadInstance() {
 }
 
 export interface AuditContext {
-  userId?: string;
-  userEmail?: string;
-  ip?: string;
-  userAgent?: string;
-  resourceType?: string;
-  resourceId?: string;
+  userId?: string | undefined;
+  userEmail?: string | undefined;
+  ip?: string | undefined;
+  userAgent?: string | undefined;
+  resourceType?: string | undefined;
+  resourceId?: string | undefined;
+  timestamp?: string | undefined;
+  durationMs?: number | undefined;
 }
 
 export async function auditLog(
@@ -32,7 +34,7 @@ export async function auditLog(
 ): Promise<void> {
   try {
     const payload = await getPayloadInstance();
-    
+
     await payload.create({
       collection: 'audit_log',
       data: {
@@ -54,55 +56,54 @@ export async function auditLog(
 }
 
 export function createAuditMiddleware() {
-  return async (request: any, response: any) => {
-    const startTime = Date.now();
-    
+  return async (request: { headers: { get: (name: string) => string | null }; cookies: { get: (name: string) => { value: string } | undefined }; method?: string; url?: string; auditContext?: AuditContext }, _response: unknown) => {
     // Extract context
-    const ip = request.headers.get('x-forwarded-for') || 
-               request.headers.get('x-real-ip') || 
+    const ip = request.headers.get('x-forwarded-for') ||
+               request.headers.get('x-real-ip') ||
                'unknown';
     const userAgent = request.headers.get('user-agent') || 'unknown';
-    
+
     // Try to get user from auth cookie
     const token = request.cookies.get('payload-token')?.value;
-    let userId: string | undefined;
-    let userEmail: string | undefined;
-    
+    let userId: string | undefined = undefined;
+    let userEmail: string | undefined = undefined;
+
     if (token) {
       try {
         // In production, validate JWT and extract user
         // For now, just log the attempt
-      } catch (e) {
+      } catch {
         // Ignore token validation errors
       }
     }
-    
+
     // Store context for response
-    request.auditContext = {
-      ip,
-      userAgent,
+    const auditContext: AuditContext = {
+      ip: ip === 'unknown' ? undefined : ip,
+      userAgent: userAgent === 'unknown' ? undefined : userAgent,
       userId,
       userEmail,
       timestamp: new Date().toISOString(),
       durationMs: 0,
     };
-    
+    request.auditContext = auditContext;
+
     return null; // Continue
   };
 }
 
 export async function logApiCall(
-  request: any,
-  response: any,
+  request: { headers: { get: (name: string) => string | null }; cookies: { get: (name: string) => { value: string } | undefined }; method?: string; url?: string; auditContext?: AuditContext },
+  _response: unknown,
   resourceType: string,
   resourceId?: string,
   action?: string
 ): Promise<void> {
-  const auditContext = request.auditContext || {};
-  
+  const auditContext: AuditContext = request.auditContext ?? {};
+
   try {
     const payload = await getPayloadInstance();
-    
+
     await payload.create({
       collection: 'audit_log',
       data: {
@@ -117,7 +118,9 @@ export async function logApiCall(
           method: request.method,
           url: request.url,
           statusCode: 200,
-          durationMs: Date.now() - (auditContext.timestamp ? new Date(auditContext.timestamp).getTime() : Date.now()),
+          durationMs: auditContext.timestamp
+            ? Date.now() - new Date(auditContext.timestamp).getTime()
+            : 0,
         },
         createdAt: new Date().toISOString(),
       },

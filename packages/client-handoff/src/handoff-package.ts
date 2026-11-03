@@ -21,12 +21,12 @@ export interface HandoffPackage {
   clientEmail: string;
   handoffDate: string;
   constraints: DesignConstraints;
-  collections: Array<{
+  collections: {
     slug: string;
     name: string;
     description?: string;
-    fields: Array<{ name: string; type: string; required: boolean }>;
-  }>;
+    fields: { name: string; type: string; required: boolean }[];
+  }[];
   credentials: { adminUrl: string; username: string };
   guide: { steps: GuideStep[] };
   support: { email: string; docsUrl: string; videoUrl?: string };

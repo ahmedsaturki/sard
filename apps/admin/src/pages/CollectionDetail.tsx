@@ -1,8 +1,7 @@
-﻿import React from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
-import { VisualEditorProvider } from '@sard-cms/visual-editor';
 
 const ENTRIES = [
   { id: 1, slug: 'getting-started-with-sard', title: 'Getting Started with Sard', status: 'published', updated: '2 hours ago', author: 'Admin User' },
@@ -12,8 +11,9 @@ const ENTRIES = [
 ];
 
 export function CollectionDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const collection = { slug, name: slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ') };
+  const { slug } = useParams<{ slug: string | undefined }>();
+  const safeSlug = slug || 'new';
+  const collection = { slug: safeSlug, name: safeSlug.charAt(0).toUpperCase() + safeSlug.slice(1).replace(/-/g, ' ') };
 
   return (
     <div className="space-y-6">
@@ -24,7 +24,7 @@ export function CollectionDetail() {
           <p className="text-neutral-500 mt-1">Manage your {collection.name.toLowerCase()}</p>
         </div>
         <div className="flex gap-3">
-          <Link to={`/collections/${slug}/new`} className="btn btn-primary">
+          <Link to={`/collections/${safeSlug}/new`} className="btn btn-primary">
             <ICONS.plus className="w-4 h-4" aria-hidden="true" />
             New Entry
           </Link>
@@ -58,7 +58,7 @@ export function CollectionDetail() {
                   </span>
                 </td>
                 <td>
-                  <Link to={`/collections/${slug}/${entry.slug}`} className="font-medium text-neutral-900 hover:text-brand-primary-600">
+                  <Link to={`/collections/${safeSlug}/${entry.slug}`} className="font-medium text-neutral-900 hover:text-brand-primary-600">
                     {entry.title}
                   </Link>
                 </td>
@@ -67,14 +67,14 @@ export function CollectionDetail() {
                 <td className="hidden md:table-cell text-neutral-500 text-sm">{entry.updated}</td>
                 <td>
                   <div className="flex items-center gap-2">
-                    <Link to={`/collections/${slug}/${entry.slug}`} className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700" aria-label={`Edit ${entry.title}`}>
-                      {ICONS.edit}
+                    <Link to={`/collections/${safeSlug}/${entry.slug}`} className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700" aria-label={`Edit ${entry.title}`}>
+                      <ICONS.edit className="w-5 h-5" />
                     </Link>
                     <button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700" aria-label={`Duplicate ${entry.title}`}>
-                      {ICONS.copy}
+                      <ICONS.copy className="w-5 h-5" />
                     </button>
                     <button className="p-2 rounded-lg text-error-500 hover:bg-error-50 hover:text-error-700" aria-label={`Delete ${entry.title}`}>
-                      {ICONS.trash}
+                      <ICONS.trash className="w-5 h-5" />
                     </button>
                   </div>
                 </td>
@@ -88,4 +88,3 @@ export function CollectionDetail() {
 }
 
 export default CollectionDetail;
-

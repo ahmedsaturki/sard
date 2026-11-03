@@ -3,10 +3,13 @@
  * 2FA Setup service module
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { TOTP } from 'otplib';
+import { generateSecret, generateURI, verify } from 'otplib';
 import { getPayload } from 'payload';
 import config from '@payload-config';
+
+import { NodeCryptoPlugin } from '@otplib/plugin-crypto-node';
+import { ScureBase32Plugin } from '@otplib/plugin-base32-scure';
+import { HashAlgorithm } from '@otplib/core';
 
 let payloadPromise: Promise<any> | null = null;
 
@@ -17,14 +20,7 @@ function getPayloadInstance() {
   return payloadPromise;
 }
 
-const totpOptions = {
-  window: 1,
-  digits: 6,
-  step: 30,
-  algorithm: 'sha1',
-};
-
-/* eslint-enable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface TwoFactorSetup {
   secret: string;
@@ -34,11 +30,22 @@ export interface TwoFactorSetup {
 }
 
 export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFactorSetup> {
-  // @ts-ignore - TOTP constructor accepts partial options
-  const totp = new TOTP(totpOptions);
-  const secret = totp.secret;
-  /* @ts-ignore - typings differ */
-  const uri = totp.provisioningUri(userEmail, { issuer: 'Sard Lite' });
+  const crypto = new NodeCryptoPlugin();
+  const base32 = new ScureBase32Plugin();
+
+  const secret = generateSecret({
+    crypto,
+    base32,
+  });
+
+  const uri = generateURI({
+    issuer: 'Sard Lite',
+    label: userEmail,
+    secret,
+    algorithm: 'sha1' as HashAlgorithm,
+    digits: 6,
+    period: 30,
+  });
 
   const backupCodes = Array.from({ length: 10 }, () =>
     Math.random().toString(36).substring(2, 8).toUpperCase()
@@ -59,15 +66,27 @@ export async function generateTwoFactorSecret(userEmail: string): Promise<TwoFac
   };
 }
 
-export async function verifyTwoFactorCode(secret: string, code: string): Promise<{ valid: boolean }> {
+export async function verifyTwoFactorCode(_secret: string, code: string): Promise<{ valid: boolean }> {
   try {
-    /* @ts-ignore - typings differ */
-    const totp = new TOTP(totpOptions);
-    /* @ts-ignore - typings differ */
-    const valid = totp.verify(code, secret);
-    return { valid };
+    const crypto = new NodeCryptoPlugin();
+    const base32 = new ScureBase32Plugin();
+
+    const result = await verify({
+      token: code,
+      secret: _secret,
+      crypto,
+      base32,
+      epochTolerance: 30,
+      algorithm: 'sha1' as HashAlgorithm,
+      digits: 6,
+      period: 30,
+    });
+
+    return { valid: result.valid };
   } catch (error) {
     console.error('[2FA] Verification error:', error);
     return { valid: false };
   }
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any */

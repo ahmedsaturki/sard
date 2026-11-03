@@ -4,7 +4,7 @@ export const Forms: CollectionConfig = {
   slug: 'forms',
   labels: { singular: { ar: 'نموذج', en: 'Form' }, plural: { ar: 'النماذج', en: 'Forms' } },
   admin: { useAsTitle: 'title', group: { ar: 'التفاعل', en: 'Interaction' } },
-  access: { read: () => true, create: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor', update: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor', delete: ({ req: { user } }) => user?.role === 'admin' },
+  access: { read: () => true, create: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor', update: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor', delete: ({ req: { user } }) => user?.['role'] === 'admin' },
   fields: [
     { name: 'title', type: 'text', required: true, localized: true, label: { ar: 'العنوان', en: 'Title' } },
     { name: 'fields', type: 'array', label: { ar: 'الحقول', en: 'Fields' }, fields: [

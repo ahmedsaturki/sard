@@ -6,10 +6,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getPayload } from 'payload';
+import type { Payload } from 'payload';
 import config from '@payload-config';
 import { AuditQuerySchema } from '../validation';
 
-let payloadPromise: Promise<any> | null = null;
+let payloadPromise: Promise<Payload> | null | undefined = null;
 
 function getPayloadInstance() {
   if (!payloadPromise) {
@@ -18,12 +19,12 @@ function getPayloadInstance() {
   return payloadPromise;
 }
 
-function validateRequest<T>(schema: any, data: unknown): { success: true; data: T } | { success: false; error: string } {
+function validateRequest<T extends z.ZodSchema>(schema: T, data: unknown): { success: true; data: z.infer<T> } | { success: false; error: string } {
   const result = schema.safeParse(data);
   if (!result.success) {
     return { success: false, error: result.error.errors.map((e: { path: (string | number)[]; message: string }) => `${e.path.join('.')}: ${e.message}`).join(', ') };
   }
-  return { success: true, data: result.data as T };
+  return { success: true, data: result.data };
 }
 
 export async function GET(request: NextRequest) {

@@ -4,26 +4,18 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { LoginSchema, TwoFactorSetupSchema } from '../validation';
+import { LoginSchema } from '../validation';
+import type { Payload } from 'payload';
 
-let payloadPromise: Promise<any> | null = null;
+let payloadPromise: Promise<Payload> | null = null;
 
-function getPayloadInstance() {
+async function getPayloadInstance(): Promise<Payload> {
   if (!payloadPromise) {
     payloadPromise = getPayload({ config });
   }
   return payloadPromise;
-}
-
-function validateRequest<T>(schema: any, data: unknown): { success: true; data: T } | { success: false; error: string } {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    return { success: false, error: result.error.errors.map((e: { path: (string | number)[]; message: string }) => `${e.path.join('.')}: ${e.message}`).join(', ') };
-  }
-  return { success: true as const, data: result.data as T };
 }
 
 export async function POST(request: NextRequest) {
@@ -31,24 +23,12 @@ export async function POST(request: NextRequest) {
     const payload = await getPayloadInstance();
     const body = await request.json();
     
-    // Check if it's a 2FA setup request
-    if (body.twoFactorCode !== undefined && body.enabled !== undefined) {
-      const validation = validateRequest(TwoFactorSetupSchema, body);
-      if (!validation.success) {
-        return NextResponse.json({ success: false, error: validation.error }, { status: 400 });
-      }
-      
-      // This would update user's 2FA settings
-      return NextResponse.json({ success: false, error: 'Not implemented' }, { status: 501 });
-    }
-    
     // Regular login
-    const validation = validateRequest<z.infer<typeof LoginSchema>>(LoginSchema, body);
-    if (!validation.success) {
-      return NextResponse.json({ success: false, error: validation.error }, { status: 400 });
+    const loginResult = LoginSchema.safeParse(body);
+    if (!loginResult.success) {
+      return NextResponse.json({ success: false, error: loginResult.error.errors.map((e) => `${e.path.join('.')}: ${e.message}`).join(', ') }, { status: 400 });
     }
-    
-    const { email, password, twoFactorCode } = validation.data;
+    const { email, password } = loginResult.data;
     
     // Attempt login with Payload
     const result = await payload.login({
@@ -88,7 +68,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(_request: NextRequest) {
   try {
     const response = NextResponse.json({ success: true, message: 'Logged out' });
     response.cookies.set('payload-token', '', {

@@ -6,7 +6,7 @@
  * See ADR-009 (Deployment Modes).
  */
 
-import { generateCssVariables, tokens } from '@sard-cms/design-tokens';
+import { generateCssVariables, tokens } from '@sard-cms/components';
 
 /**
  * Static export configuration

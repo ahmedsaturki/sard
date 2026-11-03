@@ -16,6 +16,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@payloadcms/richtext-lexical':
+        specifier: ^3.92.0
+        version: 3.92.0(@faceless-ui/modal@3.0.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@faceless-ui/scroll-info@2.0.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@payloadcms/next@3.92.0(@types/react@18.3.31)(graphql@16.14.2)(monaco-editor@0.57.0)(next@15.5.28(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.77.4))(payload@3.92.0(graphql@16.14.2)(typescript@5.9.3))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@5.9.3))(@types/react@18.3.31)(monaco-editor@0.57.0)(next@15.5.28(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.77.4))(payload@3.92.0(graphql@16.14.2)(typescript@5.9.3))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@5.9.3)(yjs@13.6.33)
     devDependencies:
       '@eslint/js':
         specifier: ^9.18.0
@@ -65,6 +69,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@sard-cms/client-handoff':
+        specifier: workspace:^
+        version: link:../../packages/client-handoff
       '@sard-cms/components':
         specifier: workspace:*
         version: link:../../packages/components
@@ -80,6 +87,9 @@ importers:
       '@sard-cms/visual-editor':
         specifier: workspace:*
         version: link:../../packages/visual-editor
+      '@sard/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -158,6 +168,12 @@ importers:
       '@node-rs/argon2':
         specifier: ^2.2.2
         version: 2.2.2
+      '@otplib/plugin-base32-scure':
+        specifier: ^13.5.0
+        version: 13.5.0
+      '@otplib/plugin-crypto-node':
+        specifier: ^13.5.0
+        version: 13.6.0
       '@payloadcms/db-sqlite':
         specifier: ^3.92.0
         version: 3.92.0(@types/better-sqlite3@7.6.13)(@types/pg@8.23.1)(gel@2.2.1)(payload@3.92.0(graphql@16.14.2)(typescript@5.9.3))(pg@8.23.1)(postgres@3.4.9)
@@ -200,6 +216,9 @@ importers:
       helmet:
         specifier: ^8.3.0
         version: 8.3.0
+      jose:
+        specifier: ^6.2.15
+        version: 6.2.15
       next:
         specifier: ^15.0.0
         version: 15.5.28(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.77.4)
@@ -219,6 +238,9 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
     devDependencies:
+      '@otplib/core':
+        specifier: ^13.6.0
+        version: 13.6.0
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
@@ -267,7 +289,7 @@ importers:
       '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
-      '@sard-cms/icons':
+      '@sard/icons':
         specifier: workspace:*
         version: link:../icons
       i18next:
@@ -430,16 +452,10 @@ importers:
 
   packages/icons:
     dependencies:
-      lucide-react:
-        specifier: ^1.66.0
-        version: 1.66.0(@types/react@18.3.31)(react@18.3.1)
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
+      '@sard-cms/components':
+        specifier: workspace:*
+        version: link:../components
     devDependencies:
-      '@types/react':
-        specifier: ^18.3.5
-        version: 18.3.31
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -536,6 +552,9 @@ importers:
       '@sard-cms/core':
         specifier: workspace:*
         version: link:../core
+      '@sard/icons':
+        specifier: workspace:^
+        version: link:../icons
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2204,6 +2223,9 @@ packages:
   '@otplib/core@13.5.0':
     resolution: {integrity: sha512-2rURdkYkb3BDhMs3j/oCCPTve1ybJ6ruLfLfSe1ZSPV+y6RFTbLfAuT0m0ZCnps88ogkIq9t/+Li/kg5RofQwQ==}
 
+  '@otplib/core@13.6.0':
+    resolution: {integrity: sha512-TL6/FKKzR55Vr7zo3YGFtPMCSV3SpYPtuvE3T1XcwjFczD9pHU4dYYQBl0AcNvGcqAt4/fPqhZEFfB2OBcnlPA==}
+
   '@otplib/hotp@13.5.0':
     resolution: {integrity: sha512-1EwwAti05CeWJn4xXOVMBK9N6dIJlJw/cQkQyiL9OVlkeS452wAve3ffodi+5IUZdWoF1wxVug38RisdxDqDWw==}
 
@@ -2212,6 +2234,9 @@ packages:
 
   '@otplib/plugin-crypto-noble@13.5.0':
     resolution: {integrity: sha512-fihOAGFvc4b8XTKyIK3jifFP2nLrUNc2bOaJ3UkUKJjy1XI2FbHKG0WmOH+jFsPfa6VsOnouCnEmSznDxIe0pA==}
+
+  '@otplib/plugin-crypto-node@13.6.0':
+    resolution: {integrity: sha512-SoAamAZm+tJI6fgS/PKw6u9MfRy+oM9nlt0z+twqkDmDed0bOfziTkum8wV095LOu53yI5c64xvgb4GGtUsQzw==}
 
   '@otplib/totp@13.5.0':
     resolution: {integrity: sha512-GD9LzQnbHDwXCp79s8AaiA5cJR6luX5fEr9AN32AWx4ooRvllPbMkG80gHSA0jbGCnAIX/ChyOtTZ8tgJHMkSg==}
@@ -3826,6 +3851,9 @@ packages:
   jose@5.10.0:
     resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
+  jose@6.2.15:
+    resolution: {integrity: sha512-qdF6ewcZARtef63fJ9AKKZPgxw+t7USH6HLXYcD4CrdmSvDp79rpJSPFEKc90QBeGS63u1KQtN2MZQHC0yDIzA==}
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -3909,6 +3937,7 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.4:
@@ -3956,15 +3985,6 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
-
-  lucide-react@1.66.0:
-    resolution: {integrity: sha512-8zjbi/Us+ETXqfBwmXF/FHrWGIqOdE6zT1yUdRJLQVoptomSkB0zdFWVIM667t9K8djWDaXdkBkqi2qVTuDNiw==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -6449,6 +6469,8 @@ snapshots:
 
   '@otplib/core@13.5.0': {}
 
+  '@otplib/core@13.6.0': {}
+
   '@otplib/hotp@13.5.0':
     dependencies:
       '@otplib/core': 13.5.0
@@ -6463,6 +6485,10 @@ snapshots:
     dependencies:
       '@noble/hashes': 2.4.0
       '@otplib/core': 13.5.0
+
+  '@otplib/plugin-crypto-node@13.6.0':
+    dependencies:
+      '@otplib/core': 13.6.0
 
   '@otplib/totp@13.5.0':
     dependencies:
@@ -8257,6 +8283,8 @@ snapshots:
 
   jose@5.10.0: {}
 
+  jose@6.2.15: {}
+
   joycon@3.1.1: {}
 
   js-base64@3.9.4: {}
@@ -8392,12 +8420,6 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
-
-  lucide-react@1.66.0(@types/react@18.3.31)(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-    optionalDependencies:
-      '@types/react': 18.3.31
 
   magic-string@0.30.21:
     dependencies:

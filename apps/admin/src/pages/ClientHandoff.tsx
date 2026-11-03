@@ -1,4 +1,5 @@
-﻿import React from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { cn, useTheme, useRtl } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 import { DesignConstraintsProvider, SimplifiedDashboard, InteractiveGuide, useClientHandoffSystem } from '@sard-cms/client-handoff';
@@ -6,29 +7,29 @@ import { DesignConstraintsProvider, SimplifiedDashboard, InteractiveGuide, useCl
 const GUIDE_STEPS = [
   {
     id: 'welcome',
-    title: 'Welcome to Sard CMS',
-    description: 'This interactive guide will walk you through managing your content.',
-    position: 'center' as const,
+    title: { ar: 'مرحباً بك في نظام إدارة المحتوى Sard', en: 'Welcome to Sard CMS' },
+    description: { ar: 'سيتجول لك هذا الدليل التفاعلي عبر إدارة محتواك.', en: 'This interactive guide will walk you through managing your content.' },
+    position: 'top' as const,
   },
   {
     id: 'collections',
-    title: 'Your Content Collections',
-    description: 'Click here to view and manage your pages, posts, and other content types.',
-    target: '[href="/collections"]',
+    title: { ar: 'مجموعات المحتوى الخاصة بك', en: 'Your Content Collections' },
+    description: { ar: 'انقر هنا لعرض وإدارة صفحاتك، منشوراتك، وأنواع المحتوى الأخرى.', en: 'Click here to view and manage your pages, posts, and other content types.' },
+    targetSelector: '[href="/collections"]',
     position: 'right' as const,
   },
   {
     id: 'media',
-    title: 'Media Library',
-    description: 'Upload and organize images, videos, and documents for your content.',
-    target: '[href="/media"]',
+    title: { ar: 'مكتبة الوسائط', en: 'Media Library' },
+    description: { ar: 'حمل ونظم الصور، الفيديوهات، والمستندات لمحتواك.', en: 'Upload and organize images, videos, and documents for your content.' },
+    targetSelector: '[href="/media"]',
     position: 'right' as const,
   },
   {
     id: 'editor',
-    title: 'Visual Editor',
-    description: 'Edit your content visually with drag-and-drop blocks and live preview.',
-    target: '[href*="/collections/"]',
+    title: { ar: 'المحرر البصري', en: 'Visual Editor' },
+    description: { ar: 'حرر محتواك بصرياُ باستخدام السحب والإفلات والكتل مع معاينة مباشرة.', en: 'Edit your content visually with drag-and-drop blocks and live preview.' },
+    targetSelector: '[href*="/collections/"]',
     position: 'left' as const,
   },
 ];
@@ -93,7 +94,7 @@ export function ClientHandoffPage() {
                     onClick={enableClientMode}
                     className="btn btn-outline btn-sm"
                   >
-                    {ICONS.shield className="w-4 h-4" aria-hidden="true" }
+                    <ICONS.shield className="w-4 h-4" aria-hidden="true" />
                     Enable Client Mode
                   </button>
                 ) : (
@@ -101,7 +102,7 @@ export function ClientHandoffPage() {
                     onClick={disableClientMode}
                     className="btn btn-primary btn-sm"
                   >
-                    {ICONS.unlock className="w-4 h-4" aria-hidden="true" }
+                    <ICONS.unlock className="w-4 h-4" aria-hidden="true" />
                     Exit Client Mode
                   </button>
                 )}
@@ -113,7 +114,7 @@ export function ClientHandoffPage() {
                   aria-label="Toggle theme"
                 >
                   <span className="sr-only">Toggle theme</span>
-                  {resolvedMode === 'dark' ? ICONS.sun : ICONS.moon}
+                  {resolvedMode === 'dark' ? <ICONS.sun className="w-4 h-4" aria-hidden="true" /> : <ICONS.moon className="w-4 h-4" aria-hidden="true" />}
                 </button>
 
                 {/* Locale Selector */}

@@ -11,17 +11,18 @@ export const Users: CollectionConfig = {
     lockTime: 900000, // 15 min
     cookies: {
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      httpOnly: true,
-      domain: process.env.SARD_COOKIE_DOMAIN,
+      sameSite: 'Strict',
+      ...(process.env['SARD_COOKIE_DOMAIN']
+        ? { domain: process.env['SARD_COOKIE_DOMAIN'] }
+        : {}),
     },
   },
   access: {
-    read: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor',
-    create: ({ req: { user } }) => user?.role === 'admin',
-    update: ({ req: { user } }) => user?.role === 'admin' || user?.id === '{{doc.id}}',
-    delete: ({ req: { user } }) => user?.role === 'admin',
-    admin: ({ req: { user } }) => user?.role === 'admin',
+    read: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor',
+    create: ({ req: { user } }) => user?.['role'] === 'admin',
+    update: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['id'] === '{{doc.id}}',
+    delete: ({ req: { user } }) => user?.['role'] === 'admin',
+    admin: ({ req: { user } }) => user?.['role'] === 'admin',
   },
   fields: [
     { name: 'name', type: 'text', required: true, label: { ar: 'الاسم', en: 'Name' } },
@@ -40,6 +41,7 @@ export const Users: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ({ data, operation }) => {
         // Password hashing is handled by Payload auth with custom Argon2id provider
       },

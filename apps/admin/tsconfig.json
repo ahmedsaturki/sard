@@ -1,28 +1,41 @@
-/** @type {import('typescript').CompilerOptions} */
-export default {
-  // Base URL for resolving module paths
-  baseUrl: ".",
-  rootDir: "src",
-  rootDirs: ["src"],
-  "rootDirs": ["src"],
-  tsdk: "node_modules/typescript/lib",
-  target: "ES2022",
-  module: "ESNext",
-  lib: ["ES2022", "DOM", "DOM.Iterable"],
-  moduleResolution: "bundler",
-  allowSyntheticDefaultImports: true,
-  esModuleInterop: true,
-  skipLibCheck: true,
-  forceConsistentCasingInFileNames: true,
-  strict: true,
-  noEmit: true,
-  resolveJsonModule: true,
-  isolatedModules: true,
-  jsx: "react-jsx",
-  experimentalDecorators: true,
-  emitDecoratorMetadata: true,
-  types: ["vite/client"],
-  paths: {
-    "@sard-cms/*": ["./packages/*/src", "./packages/*/dist"]
-  }
-};
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "rootDirs": [
+      "src"
+    ],
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable",
+      "ES2020"
+    ],
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": [
+      "vite/client",
+      "node"
+    ],
+    "paths": {
+      "@sard-cms/*": [
+        "./packages/*/src",
+        "./packages/*/dist"
+      ]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["vite.config.ts", "vitest.config.ts"]
+}

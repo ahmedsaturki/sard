@@ -8,7 +8,7 @@ export const Media: CollectionConfig = {
   slug: 'media',
   labels: { singular: { ar: 'ملف', en: 'Media' }, plural: { ar: 'الملفات', en: 'Media' } },
   admin: { group: { ar: 'الوسائط', en: 'Media' } },
-  access: { read: () => true, create: ({ req: { user } }) => !!user, update: ({ req: { user } }) => !!user, delete: ({ req: { user } }) => user?.role === 'admin' },
+  access: { read: () => true, create: ({ req: { user } }) => !!user, update: ({ req: { user } }) => !!user, delete: ({ req: { user } }) => user?.['role'] === 'admin' },
   upload: {
     staticDir: path.resolve(__dirname, '../../public/media'),
     mimeTypes: ['image/*', 'video/*', 'application/pdf'],

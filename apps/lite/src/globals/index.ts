@@ -9,7 +9,7 @@ export const SiteSettings = {
   slug: 'site-settings',
   labels: { singular: { ar: 'إعدادات الموقع', en: 'Site Settings' } },
   admin: { group: { ar: 'الإعدادات', en: 'Settings' } },
-  access: { read: () => true, update: ({ req: { user } }) => user?.role === 'admin' },
+  access: { read: () => true, update: ({ req: { user } }: any) => user?.['role'] === 'admin' },
   fields: [
     { name: 'siteName', type: 'text', required: true, localized: true, label: { ar: 'اسم الموقع', en: 'Site Name' } },
     { name: 'siteDescription', type: 'textarea', localized: true, label: { ar: 'وصف الموقع', en: 'Site Description' } },
@@ -41,7 +41,7 @@ export const Navigation = {
   slug: 'navigation',
   labels: { singular: { ar: 'التنقل', en: 'Navigation' } },
   admin: { group: { ar: 'الإعدادات', en: 'Settings' } },
-  access: { read: () => true, update: ({ req: { user } }) => user?.role === 'admin' },
+  access: { read: () => true, update: ({ req: { user } }: any) => user?.['role'] === 'admin' },
   fields: [
     { name: 'items', type: 'array', label: { ar: 'عناصر القائمة', en: 'Menu Items' }, fields: [
       { name: 'label', type: 'text', required: true, localized: true, label: { ar: 'التسمية', en: 'Label' } },

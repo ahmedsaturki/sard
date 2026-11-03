@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @module @sard-cms/design-tokens
  *
  * Design Token System for Sard CMS.

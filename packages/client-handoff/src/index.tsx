@@ -12,12 +12,19 @@ export type {
   DesignViolation,
   HandoffLayer,
   ClientHandoffContextValue,
-} from "./context.js";
+} from "./context";
 
-// Re-export SimplifiedPanel component
-export { SimplifiedPanel } from "./components/SimplifiedPanel.js";
-export type { SimplifiedPanelProps } from "./components/SimplifiedPanel.js";
+// Re-export providers and hooks
+export { useClientHandoff, useClientHandoffSystem, DesignConstraintsProvider } from "./context";
+
+// Re-export components
+export { SimplifiedPanel } from "./components/SimplifiedPanel";
+export type { SimplifiedPanelProps } from "./components/SimplifiedPanel";
+export { SimplifiedDashboard } from "./components/SimplifiedDashboard";
+export type { SimplifiedDashboardProps } from "./components/SimplifiedDashboard";
+export { InteractiveGuide } from "./components/InteractiveGuide";
+export type { InteractiveGuideProps } from "./components/InteractiveGuide";
 
 // Re-export handoff package utilities
-export type { HandoffPackage, GuideStep } from "./handoff-package.js";
-export { generateHandoffPackage, downloadHandoffPackage } from "./handoff-package.js";
+export type { HandoffPackage, GuideStep } from "./handoff-package";
+export { generateHandoffPackage, downloadHandoffPackage } from "./handoff-package";

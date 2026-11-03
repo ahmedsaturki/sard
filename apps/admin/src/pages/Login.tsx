@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { cn } from '@sard-cms/components';
@@ -92,7 +92,7 @@ export function Login() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? ICONS.eyeOff : ICONS.eye}
+                  {showPassword ? <ICONS.eyeOff className="w-6 h-6" /> : <ICONS.eye className="w-6 h-6" />}
                 </button>
               </div>
             </div>
