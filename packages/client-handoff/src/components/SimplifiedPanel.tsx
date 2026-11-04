@@ -6,8 +6,8 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Card, CardContent, Grid, Typography, IconButton, Menu, MenuItem, Avatar } from '@sard/components';
-import { EditIcon, AddIcon, VisibilityIcon, SettingsIcon, LogoutIcon, HomeIcon, ArticleIcon, ImageIcon, PeopleIcon } from '@sard/icons';
+import { Box, Button, Card, CardContent, Grid, Typography, IconButton, Menu, MenuItem, Avatar } from '@sard-cms/components';
+import { EditIcon, AddIcon, VisibilityIcon, SettingsIcon, LogoutIcon, HomeIcon, ArticleIcon, ImageIcon, PeopleIcon, ExpandMoreIcon } from '@sard-cms/components';
 
 interface SimplifiedPanelProps {
   user: {
@@ -128,8 +128,8 @@ export const SimplifiedPanel: React.FC<SimplifiedPanelProps> = ({ user, onLogout
         <Box sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider' }}>
           <Button
             fullWidth
-            onClick={(event) => { /* handleProfileMenuOpen(event) */ }}
-            startIcon={<user.avatar ? <Avatar src={user.avatar} sx={{ width: 24, height: 24 }} /> : <PeopleIcon />}}
+            onClick={(event) => { handleProfileMenuOpen(event) }}
+            startIcon={user.avatar ? <Avatar src={user.avatar} sx={{ width: 24, height: 24 }} /> : <PeopleIcon />}
             endIcon={<ExpandMoreIcon />}
             variant="text"
             justifyContent={isRtl ? 'flex-end' : 'flex-start'}

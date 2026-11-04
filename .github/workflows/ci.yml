@@ -177,7 +177,7 @@ jobs:
     name: Lighthouse CI (98/100/100/100)
     runs-on: ubuntu-latest
     needs: build
-    if: github.repository == 'bunya-labs/sard'
+    if: github.repository == 'ahmedsaturki/sard'
     steps:
       - uses: actions/checkout@v4
       

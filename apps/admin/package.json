@@ -26,7 +26,6 @@
     "@sard-cms/core": "workspace:*",
     "@sard-cms/db": "workspace:*",
     "@sard-cms/design-tokens": "workspace:*",
-    "@sard/icons": "workspace:*",
     "@sard-cms/visual-editor": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

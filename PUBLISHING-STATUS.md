@@ -4,7 +4,7 @@
 The `@sard` organization does not exist in the npm registry. Publish commands return **404 E404** because npm cannot find the org namespace.
 
 ## Root Cause
-The npm authentication token (`npm_***REDACTED***`) lacks the privileges to create organizations. npm's registry requires 2FA to be enabled on the account before allowing organization creation via API or CLI.
+The npm authentication token (`npm_[TOKEN_REDACTED]`) lacks the privileges to create organizations. npm's registry requires 2FA to be enabled on the account before allowing organization creation via API or CLI.
 
 ## Steps to Resolve
 
@@ -23,7 +23,7 @@ npm org create sard --json
 
 # Option B: Via REST API (requires 2FA token)
 curl -X PUT "https://registry.npmjs.org/org/sard" \
-  -H "Authorization: Bearer TOKEN" \
+  -H "Authorization: Bearer [TOKEN_REDACTED]" \
   -H "Content-Type: application/json" \
   -d '{"name":"sard"}'
 ```
@@ -80,5 +80,5 @@ If packages still return 404 after the org is created:
 ### Token Permissions
 The token must have the `org` scope. Verify by:
 ```bash
-curl -H "Authorization: Bearer TOKEN" "https://registry.npmjs.org/-/whoami"
+curl -H "Authorization: Bearer [TOKEN_REDACTED]" "https://registry.npmjs.org/-/whoami"
 ```

@@ -20,9 +20,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
+    "verbatimModuleSyntax": true,
     "allowJs": true,
-    "checkJs": true,
-    "verbatimModuleSyntax": true
+    "checkJs": true
   },
   "include": [
     "src/**/*",
