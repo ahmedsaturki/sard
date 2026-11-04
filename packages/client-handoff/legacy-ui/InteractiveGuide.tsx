@@ -120,12 +120,6 @@ const guides: Record<string, GuideStep[]> = {
   ],
 };
 
-interface InteractiveGuideProps {
-  isOpen: boolean;
-  onClose: () => void;
-  currentTask?: string;
-}
-
 const InteractiveGuide: React.FC<InteractiveGuideProps> = ({ isOpen, onClose, currentTask }) => {
   const { t, i18n } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
