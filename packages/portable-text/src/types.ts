@@ -1,7 +1,7 @@
 /**
- * @module @sard/portable-text
+ * @module @sard-cms/portable-text
  *
- * Sard's canonical content format — structured, validated, portable.
+ * Sard CMS's canonical content format — structured, validated, portable.
  * See docs/adr/003-content-format.md for the decision rationale.
  */
 

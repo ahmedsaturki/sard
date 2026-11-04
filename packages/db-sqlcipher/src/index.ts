@@ -1,5 +1,5 @@
-/**
- * @module @sard/db-sqlcipher
+﻿/**
+ * @module @sard-cms/db-sqlcipher
  * SQLCipher WASM worker pool + Payload Database Adapter for Sard Lite
  * 
  * AC-06: SQLite in production = SQLCipher (AES-256). No exceptions.
@@ -9,3 +9,4 @@
 
 export * from './types.js';
 export { SQLCipherPool, createSQLCipherPool } from './pool.js';
+

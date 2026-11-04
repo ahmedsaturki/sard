@@ -1,4 +1,4 @@
-# Sard — Git Remote Setup for github.com/ahmedsaturki/sard
+# Sard — Git Remote Setup for github.com/bunya-labs/sard
 # Run this in: D:\\ahmed-research-lab\\Bunya Labs\\Sard
 
 Set-Location "D:\\ahmed-research-lab\\Bunya Labs\\Sard"
@@ -7,7 +7,7 @@ Write-Host "Checking git status..." -ForegroundColor Cyan
 git status
 
 Write-Host "`nAdding remote origin..." -ForegroundColor Cyan
-git remote add origin https://github.com/ahmedsaturki/sard.git
+git remote add origin https://github.com/bunya-labs/sard.git
 
 Write-Host "`nVerifying remote..." -ForegroundColor Cyan
 git remote -v
@@ -33,5 +33,5 @@ git commit -m "chore: Phase 1 foundation - ADRs 010-017, Payload 3 app, SQLCiphe
 Write-Host "`nPushing to GitHub..." -ForegroundColor Cyan
 git push -u origin master
 
-Write-Host "`nDone! Check https://github.com/ahmedsaturki/sard/actions for CI runs." -ForegroundColor Green
+Write-Host "`nDone! Check https://github.com/bunya-labs/sard/actions for CI runs." -ForegroundColor Green
 Read-Host "Press Enter to exit"

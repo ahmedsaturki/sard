@@ -1,5 +1,5 @@
-/**
- * @module @sard/db-sqlcipher/__tests__/pool.test
+﻿/**
+ * @module @sard-cms/db-sqlcipher/__tests__/pool.test
  * TDD tests for SQLCipher worker pool
  */
 
@@ -103,3 +103,4 @@ describe('SQLCipherPool', () => {
     expect(str).not.toContain('CREATE TABLE');
   });
 });
+

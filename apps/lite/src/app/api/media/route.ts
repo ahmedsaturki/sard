@@ -5,10 +5,12 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
+import type { Payload } from 'payload';
 import config from '@payload-config';
 import { MediaUploadSchema } from '../validation';
+import { z } from 'zod';
 
-let payloadPromise: Promise<any> | null = null;
+let payloadPromise: Promise<Payload> | null = null;
 
 function getPayloadInstance() {
   if (!payloadPromise) {
@@ -17,7 +19,7 @@ function getPayloadInstance() {
   return payloadPromise;
 }
 
-function validateRequest<T>(schema: any, data: unknown): { success: true; data: T } | { success: false; error: string } {
+function validateRequest<T extends z.ZodSchema>(schema: T, data: unknown): { success: true; data: z.infer<T> } | { success: false; error: string } {
   const result = schema.safeParse(data);
   if (!result.success) {
     return { success: false, error: result.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ') };

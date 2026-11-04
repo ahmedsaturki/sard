@@ -22,7 +22,7 @@ export const helmetConfig = helmet({
       baseUri: ["'self'"],
       formAction: ["'self'"],
       frameAncestors: ["'none'"],
-      upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
+      upgradeInsecureRequests: process.env['NODE_ENV'] === 'production' ? [] : null,
     },
   },
   crossOriginEmbedderPolicy: false,
@@ -48,7 +48,7 @@ export const writeRateLimit = rateLimit({
   message: { success: false, message: 'Too many write requests, slow down' },
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => req.user?.id ?? req.ip ?? 'unknown',
+  keyGenerator: (req) => (req as any).user?.id ?? req.ip ?? 'unknown',
 });
 
 export const apiRateLimit = rateLimit({
@@ -76,14 +76,14 @@ export function prototypePollutionProtection(req: Request, res: Response, next: 
     return sanitized;
   }
   
-  if (req.body) req.body = sanitize(req.body) as Record<string, unknown>;
-  if (req.query) req.query = sanitize(req.query) as Record<string, unknown>;
-  if (req.params) req.params = sanitize(req.params) as Record<string, unknown>;
+  if (req.body) req.body = sanitize(req.body) as typeof req.body;
+  if (req.query) req.query = sanitize(req.query) as typeof req.query;
+  if (req.params) req.params = sanitize(req.params) as typeof req.params;
   next();
 }
 
 export function corsMiddleware(req: Request, res: Response, next: NextFunction): void {
-  const allowedOrigins = (process.env.SARD_ALLOWED_ORIGINS ?? 'http://localhost:4321,http://localhost:3000')
+  const allowedOrigins = (process.env['SARD_ALLOWED_ORIGINS'] ?? 'http://localhost:4321,http://localhost:3000')
     .split(',').map(o => o.trim());
   
   const origin = req.headers.origin;

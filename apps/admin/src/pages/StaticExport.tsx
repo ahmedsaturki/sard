@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn, useTheme } from '@sard/components';
+﻿import React from 'react';
+import { cn, useTheme } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const EXPORT_FORMATS = [
@@ -77,8 +77,7 @@ export function StaticExport() {
             onClick={handleExport}
             disabled={exporting || selectedFormats.length === 0}
           >
-            {ICONS.download className="w-4 h-4" aria-hidden="true" }
-            {exporting ? 'Exporting...' : 'Export Selected'}
+            <ICONS.download className="w-4 h-4" aria-hidden="true" /> {exporting ? 'Exporting...' : 'Export Selected'}
           </button>
         </div>
       </div>
@@ -93,7 +92,7 @@ export function StaticExport() {
             <div key={format.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-brand-primary-100 flex items-center justify-center flex-shrink-0">
-                  {format.icon}
+                  <ICONS.document className="w-12 h-12" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-neutral-900">{format.name}</h3>
@@ -214,3 +213,4 @@ export function StaticExport() {
 }
 
 export default StaticExport;
+

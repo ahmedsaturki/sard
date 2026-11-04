@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/wp-runtime/bridge
+ * @module @sard-cms/wp-runtime/bridge
  * Bridge API implementation - capability-scoped communication
  * between WP plugins (PHP-WASM) and Sard core
  */
@@ -43,7 +43,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createBridge = createBridge;
 exports.createPluginManifest = createPluginManifest;
-var sandbox_1 = require("@sard/sandbox");
+var sandbox_1 = require("@sard-cms/sandbox");
 function createBridge(context) {
     var plugin = context.plugin, logger = context.logger;
     function checkCapability(cap) {
@@ -237,3 +237,4 @@ function createBridge(context) {
 function createPluginManifest(name, slug, version, capabilities, permissions, entryPoint) {
     return { name: name, version: version, slug: slug, capabilities: capabilities, permissions: permissions, entryPoint: entryPoint };
 }
+

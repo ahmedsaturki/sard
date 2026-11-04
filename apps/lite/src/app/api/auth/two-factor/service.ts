@@ -3,18 +3,19 @@
  * Two-Factor Authentication (TOTP) service
  */
 
-import { TOTP, generateSecret, generateURI, verify } from 'otplib';
+import { generateSecret, generateURI } from 'otplib';
 import { getPayload } from 'payload';
+import type { Payload } from 'payload';
 import config from '@payload-config';
 
-let payloadPromise: Promise<any> | null = null;
+let payloadPromise: Promise<Payload> | null = null;
 
-function getPayloadInstance() {
+async function getPayloadInstance(): Promise<Payload> {
   if (!payloadPromise) {
     payloadPromise = getPayload({ config });
   }
   return payloadPromise;
-};
+}
 
 // otplib v13 TOTP options structure
 type TotpOptions = {

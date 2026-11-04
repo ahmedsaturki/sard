@@ -1,8 +1,8 @@
-/**
- * @module @sard/edge-adapter/adapters/node
+﻿/**
+ * @module @sard-cms/edge-adapter/adapters/node
  * Node.js HTTP Server Adapter for Sard Lite mode
  */
-import type { RuntimeAdapter, RuntimeConfig, RuntimeRequest, RuntimeResponse, RuntimeMetadata } from "@sard/runtime";
+import type { RuntimeAdapter, RuntimeConfig, RuntimeRequest, RuntimeResponse, RuntimeMetadata } from "@sard-cms/runtime";
 import http from "http";
 
 export class NodeAdapter implements RuntimeAdapter {
@@ -83,3 +83,4 @@ export class NodeAdapter implements RuntimeAdapter {
 export function createNodeAdapter(): NodeAdapter {
   return new NodeAdapter();
 }
+

@@ -26,13 +26,13 @@ setup-git-remote.bat
 ```
 
 This will:
-- Add remote: https://github.com/ahmedsaturki/sard.git
+- Add remote: https://github.com/bunya-labs/sard.git
 - Commit all Phase 1 changes
 - Push to GitHub (triggers CI)
 
 ## 3. Verify CI Runs
 
-Check: https://github.com/ahmedsaturki/sard/actions
+Check: https://github.com/bunya-labs/sard/actions
 
 Expected jobs:
 - quality (lint, typecheck, test)

@@ -6,8 +6,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Typography, Paper, IconButton, Tooltip, Divider } from '@sard/components';
-import { CloseIcon, ChevronLeftIcon, ChevronRightIcon, CheckCircleIcon, HelpOutlineIcon } from '@sard/icons';
+import { Box, Button, Typography, Paper, IconButton, Tooltip } from '@sard-cms/components';
+import { CloseIcon, ChevronLeftIcon, ChevronRightIcon, CheckCircleIcon, HelpOutlineIcon } from '@sard-cms/components';
 
 interface GuideStep {
   id: string;
@@ -120,19 +120,15 @@ const guides: Record<string, GuideStep[]> = {
   ],
 };
 
-interface InteractiveGuideProps {
-  isOpen: boolean;
-  onClose: () => void;
-  currentTask?: string;
-}
-
 const InteractiveGuide: React.FC<InteractiveGuideProps> = ({ isOpen, onClose, currentTask }) => {
   const { t, i18n } = useTranslation();
+  // Note: `t` is intentionally unused but kept for i18n compatibility
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-  const guideRef = useRef<HTMLDivElement>(null);
+  // guideRef: Currently unused, kept for future use
+  // const guideRef = useRef<HTMLDivElement>(null);
   
-  const guide = currentTask && guides[currentTask] ? guides[currentTask] : guides['edit-homepage'];
+  const guide = currentTask && guides[currentTask] ? guides[currentTask]! : guides['edit-homepage'];
   const current = guide[currentStep];
   const isRtl = i18n.language === 'ar';
   
@@ -323,8 +319,8 @@ const InteractiveGuide: React.FC<InteractiveGuideProps> = ({ isOpen, onClose, cu
         >
           <HelpOutlineIcon />
         </IconButton>
-      </Box>
-    </>
+      </Tooltip>
+  </Box>
   );
 };
 

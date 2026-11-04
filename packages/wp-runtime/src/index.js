@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/wp-runtime
+ * @module @sard-cms/wp-runtime
  * PHP-WASM runtime + Bridge API for WordPress plugin sandbox (L1 WP Compat)
  *
  * ADR-016: Each WP plugin runs in isolated process with PHP-WASM.
@@ -29,3 +29,4 @@ Object.defineProperty(exports, "createPHPWasmRuntime", { enumerable: true, get: 
 var bridge_js_1 = require("./bridge.js");
 Object.defineProperty(exports, "createBridge", { enumerable: true, get: function () { return bridge_js_1.createBridge; } });
 Object.defineProperty(exports, "createPluginManifest", { enumerable: true, get: function () { return bridge_js_1.createPluginManifest; } });
+

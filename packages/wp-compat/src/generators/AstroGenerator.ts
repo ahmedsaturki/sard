@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-compat/generators/AstroGenerator
+﻿/**
+ * @module @sard-cms/wp-compat/generators/AstroGenerator
  *
  * Generates Astro components and configuration from parsed WP theme.
  */
@@ -72,10 +72,10 @@ export class AstroGenerator {
       },
       dependencies: {
         astro: "^4.16.0",
-        "@sard/core": "workspace:*",
-        "@sard/design-tokens": "workspace:*",
-        "@sard/components": "workspace:*",
-        "@sard/visual-editor": "workspace:*",
+        "@sard-cms/core": "workspace:*",
+        "@sard-cms/design-tokens": "workspace:*",
+        "@sard-cms/components": "workspace:*",
+        "@sard-cms/visual-editor": "workspace:*",
       },
       devDependencies: {
         "@astrojs/check": "^0.9.0",
@@ -86,11 +86,11 @@ export class AstroGenerator {
   }
 
   private generateAstroConfig(_theme: any): string {
-    return "import { defineConfig } from 'astro/config';\nimport sard from '@sard/astro-integration';\n\nexport default defineConfig({\n  site: 'https://example.com',\n  integrations: [sard()],\n  vite: {\n    ssr: {\n      noExternal: ['@sard/*'],\n    },\n  },\n});";
+    return "import { defineConfig } from 'astro/config';\nimport sard from '@sard-cms/astro-integration';\n\nexport default defineConfig({\n  site: 'https://example.com',\n  integrations: [sard()],\n  vite: {\n    ssr: {\n      noExternal: ['@sard/*'],\n    },\n  },\n});";
   }
 
   private generateSardConfig(_theme: any): string {
-    return "import { defineConfig } from '@sard/core';\n\nexport default defineConfig({\n  site: {\n    name: '" + _theme.name + "',\n    url: 'https://example.com',\n  },\n  content: {\n    collections: ['posts', 'pages'],\n  },\n  theme: {\n    name: '" + _theme.name + "',\n    extends: 'base',\n  },\n});";
+    return "import { defineConfig } from '@sard-cms/core';\n\nexport default defineConfig({\n  site: {\n    name: '" + _theme.name + "',\n    url: 'https://example.com',\n  },\n  content: {\n    collections: ['posts', 'pages'],\n  },\n  theme: {\n    name: '" + _theme.name + "',\n    extends: 'base',\n  },\n});";
   }
 
   private generateGlobalStyles(_theme: any, themeJson?: any): string {
@@ -132,3 +132,4 @@ export class AstroGenerator {
     return pages;
   }
 }
+

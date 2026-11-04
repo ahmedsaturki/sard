@@ -16,6 +16,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@payloadcms/richtext-lexical':
+        specifier: ^3.92.0
+        version: 3.92.0(@faceless-ui/modal@3.0.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@faceless-ui/scroll-info@2.0.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@payloadcms/next@3.92.0(@types/react@18.3.31)(graphql@16.14.2)(monaco-editor@0.57.0)(next@15.5.28(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.77.4))(payload@3.92.0(graphql@16.14.2)(typescript@5.9.3))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@5.9.3))(@types/react@18.3.31)(monaco-editor@0.57.0)(next@15.5.28(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.77.4))(payload@3.92.0(graphql@16.14.2)(typescript@5.9.3))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@5.9.3)(yjs@13.6.33)
     devDependencies:
       '@eslint/js':
         specifier: ^9.18.0
@@ -65,19 +69,22 @@ importers:
 
   apps/admin:
     dependencies:
-      '@sard/components':
+      '@sard-cms/client-handoff':
+        specifier: workspace:^
+        version: link:../../packages/client-handoff
+      '@sard-cms/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@sard/core':
+      '@sard-cms/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@sard/db':
+      '@sard-cms/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
-      '@sard/visual-editor':
+      '@sard-cms/visual-editor':
         specifier: workspace:*
         version: link:../../packages/visual-editor
       react:
@@ -113,6 +120,16 @@ importers:
         version: 3.2.7(@types/debug@4.1.13)(@types/node@26.6.5)(happy-dom@20.14.6)(sass@1.77.4)
 
   apps/demo:
+    dependencies:
+      '@sard-cms/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@sard-cms/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@sard-cms/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -122,6 +139,19 @@ importers:
         version: 3.2.7(@types/debug@4.1.13)(@types/node@26.6.5)(happy-dom@20.14.6)(sass@1.77.4)
 
   apps/docs:
+    dependencies:
+      '@sard-cms/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@sard-cms/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@sard-cms/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
+      '@sard-cms/visual-editor':
+        specifier: workspace:*
+        version: link:../../packages/visual-editor
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -135,6 +165,12 @@ importers:
       '@node-rs/argon2':
         specifier: ^2.2.2
         version: 2.2.2
+      '@otplib/plugin-base32-scure':
+        specifier: ^13.5.0
+        version: 13.5.0
+      '@otplib/plugin-crypto-node':
+        specifier: ^13.5.0
+        version: 13.6.0
       '@payloadcms/db-sqlite':
         specifier: ^3.92.0
         version: 3.92.0(@types/better-sqlite3@7.6.13)(@types/pg@8.23.1)(gel@2.2.1)(payload@3.92.0(graphql@16.14.2)(typescript@5.9.3))(pg@8.23.1)(postgres@3.4.9)
@@ -147,22 +183,22 @@ importers:
       '@payloadcms/translations':
         specifier: ^3.92.0
         version: 3.92.0
-      '@sard/client-handoff':
+      '@sard-cms/client-handoff':
         specifier: workspace:*
         version: link:../../packages/client-handoff
-      '@sard/components':
+      '@sard-cms/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@sard/db-sqlcipher':
+      '@sard-cms/db-sqlcipher':
         specifier: workspace:*
         version: link:../../packages/db-sqlcipher
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
-      '@sard/portable-text':
+      '@sard-cms/portable-text':
         specifier: workspace:*
         version: link:../../packages/portable-text
-      '@sard/wp-runtime':
+      '@sard-cms/wp-runtime':
         specifier: workspace:*
         version: link:../../packages/wp-runtime
       '@types/express':
@@ -177,6 +213,9 @@ importers:
       helmet:
         specifier: ^8.3.0
         version: 8.3.0
+      jose:
+        specifier: ^6.2.15
+        version: 6.2.15
       next:
         specifier: ^15.0.0
         version: 15.5.28(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.77.4)
@@ -196,6 +235,9 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
     devDependencies:
+      '@otplib/core':
+        specifier: ^13.6.0
+        version: 13.6.0
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
@@ -238,18 +280,24 @@ importers:
 
   packages/client-handoff:
     dependencies:
-      '@sard/components':
+      '@sard-cms/components':
         specifier: workspace:*
         version: link:../components
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
+      i18next:
+        specifier: ^24.0.0
+        version: 24.2.3(typescript@5.9.3)
       react:
         specifier: ^18.3.1
         version: 18.3.1
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^15.0.0
+        version: 15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
     devDependencies:
       '@types/react':
         specifier: ^18.3.5
@@ -266,7 +314,7 @@ importers:
 
   packages/components:
     dependencies:
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
       react:
@@ -291,7 +339,7 @@ importers:
 
   packages/core:
     dependencies:
-      '@sard/portable-text':
+      '@sard-cms/portable-text':
         specifier: workspace:*
         version: link:../portable-text
       zod:
@@ -335,7 +383,7 @@ importers:
 
   packages/db-sqlcipher:
     dependencies:
-      '@sard/portable-text':
+      '@sard-cms/portable-text':
         specifier: workspace:*
         version: link:../portable-text
       drizzle-orm:
@@ -375,7 +423,7 @@ importers:
 
   packages/docker-runtime:
     dependencies:
-      '@sard/runtime':
+      '@sard-cms/runtime':
         specifier: workspace:*
         version: link:../runtime
     devDependencies:
@@ -385,7 +433,7 @@ importers:
 
   packages/edge-adapter:
     dependencies:
-      '@sard/runtime':
+      '@sard-cms/runtime':
         specifier: workspace:*
         version: link:../runtime
     devDependencies:
@@ -435,7 +483,7 @@ importers:
       '@libsql/client':
         specifier: ^0.14.0
         version: 0.14.0
-      '@sard/db':
+      '@sard-cms/db':
         specifier: workspace:*
         version: link:../db
       drizzle-orm:
@@ -482,7 +530,7 @@ importers:
 
   packages/visual-editor:
     dependencies:
-      '@sard/core':
+      '@sard-cms/core':
         specifier: workspace:*
         version: link:../core
       react:
@@ -501,10 +549,10 @@ importers:
 
   packages/wp-compat:
     dependencies:
-      '@sard/core':
+      '@sard-cms/core':
         specifier: workspace:*
         version: link:../core
-      '@sard/design-tokens':
+      '@sard-cms/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
       css-tree:
@@ -516,7 +564,13 @@ importers:
       postcss-value-parser:
         specifier: ^4.2.0
         version: 4.2.0
+      xml2js:
+        specifier: ^0.6.2
+        version: 0.6.2
     devDependencies:
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -529,6 +583,12 @@ importers:
       '@php-wasm/node':
         specifier: ^3.1.61
         version: 3.1.61
+      '@php-wasm/universal':
+        specifier: ^3.1.61
+        version: 3.1.61
+      '@sard-cms/sandbox':
+        specifier: workspace:*
+        version: link:../sandbox
       zod:
         specifier: ^3.24.1
         version: 3.25.76
@@ -2141,6 +2201,9 @@ packages:
   '@otplib/core@13.5.0':
     resolution: {integrity: sha512-2rURdkYkb3BDhMs3j/oCCPTve1ybJ6ruLfLfSe1ZSPV+y6RFTbLfAuT0m0ZCnps88ogkIq9t/+Li/kg5RofQwQ==}
 
+  '@otplib/core@13.6.0':
+    resolution: {integrity: sha512-TL6/FKKzR55Vr7zo3YGFtPMCSV3SpYPtuvE3T1XcwjFczD9pHU4dYYQBl0AcNvGcqAt4/fPqhZEFfB2OBcnlPA==}
+
   '@otplib/hotp@13.5.0':
     resolution: {integrity: sha512-1EwwAti05CeWJn4xXOVMBK9N6dIJlJw/cQkQyiL9OVlkeS452wAve3ffodi+5IUZdWoF1wxVug38RisdxDqDWw==}
 
@@ -2149,6 +2212,9 @@ packages:
 
   '@otplib/plugin-crypto-noble@13.5.0':
     resolution: {integrity: sha512-fihOAGFvc4b8XTKyIK3jifFP2nLrUNc2bOaJ3UkUKJjy1XI2FbHKG0WmOH+jFsPfa6VsOnouCnEmSznDxIe0pA==}
+
+  '@otplib/plugin-crypto-node@13.6.0':
+    resolution: {integrity: sha512-SoAamAZm+tJI6fgS/PKw6u9MfRy+oM9nlt0z+twqkDmDed0bOfziTkum8wV095LOu53yI5c64xvgb4GGtUsQzw==}
 
   '@otplib/totp@13.5.0':
     resolution: {integrity: sha512-GD9LzQnbHDwXCp79s8AaiA5cJR6luX5fEr9AN32AWx4ooRvllPbMkG80gHSA0jbGCnAIX/ChyOtTZ8tgJHMkSg==}
@@ -2555,6 +2621,9 @@ packages:
 
   '@types/ws@8.18.2':
     resolution: {integrity: sha512-67MQl+fpWKVTT1NYdnmo3U4sc/xPo/zQBncVnI74qmQa0z/b+1g6iYqNmGCPbxO+zz2aklb08a0oHfegiVd0/w==}
+
+  '@types/xml2js@0.4.14':
+    resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
 
   '@typescript-eslint/eslint-plugin@8.72.0':
     resolution: {integrity: sha512-aysKgysPX9XOv/dk95UkvUDe++Q3n3dJPG9CEWT3RUccxfkPJ+Qn6nhKPDhZXU6Ofo9kgwGWwKyQCnZIXTgngg==}
@@ -3597,6 +3666,9 @@ packages:
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
 
+  html-parse-stringify@3.1.0:
+    resolution: {integrity: sha512-E0oAXcELOtsXe+BmpJ2EZyedbldPpriV5vICzEuo6xjC/D1lDukOI7KrpfQGF2Qc4wWEy0nk3bFORS2K5ZAhFQ==}
+
   http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
@@ -3613,6 +3685,14 @@ packages:
     resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
     engines: {node: '>=18'}
     hasBin: true
+
+  i18next@24.2.3:
+    resolution: {integrity: sha512-lfbf80OzkocvX7nmZtu7nSTNbrTYR52sLWxPtlXX1zAhVw8WEnFk4puUkCR4B1dNQwbSpEHHHemcZu//7EcB7A==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -3749,6 +3829,9 @@ packages:
   jose@5.10.0:
     resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
+  jose@6.2.15:
+    resolution: {integrity: sha512-qdF6ewcZARtef63fJ9AKKZPgxw+t7USH6HLXYcD4CrdmSvDp79rpJSPFEKc90QBeGS63u1KQtN2MZQHC0yDIzA==}
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -3832,7 +3915,6 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.4:
@@ -4418,6 +4500,22 @@ packages:
     peerDependencies:
       react: '>=16.13.1'
 
+  react-i18next@15.7.4:
+    resolution: {integrity: sha512-nyU8iKNrI5uDJch0z9+Y5XEr34b0wkyYj3Rp+tfbahxtlswxSCjcUL9H0nqXo9IR3/t5Y5PKIA3fx3MfUyR9Xw==}
+    peerDependencies:
+      i18next: '>= 23.4.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+      typescript: ^5
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+      typescript:
+        optional: true
+
   react-image-crop@10.1.8:
     resolution: {integrity: sha512-4rb8XtXNx7ZaOZarKKnckgz4xLMvds/YrU6mpJfGhGAsy2Mg4mIw1x+DCCGngVGq2soTBVVOxx2s/C6mTX9+pA==}
     peerDependencies:
@@ -4974,6 +5072,10 @@ packages:
       jsdom:
         optional: true
 
+  void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+
   wasm-feature-detect@1.8.0:
     resolution: {integrity: sha512-zksaLKM2fVlnB5jQQDqKXXwYHLQUVH9es+5TOOHwGOVJOCeRBCiPjwSg+3tN2AdTCzjgli4jijCH290kXb/zWQ==}
 
@@ -5046,6 +5148,14 @@ packages:
   xml-naming@0.3.0:
     resolution: {integrity: sha512-ghig2TBE/H11aOVgmahA3MhimvkBr6JIYknH/Dhdk10nXwdbIqBJsbfMxpvFPG8bAw77gN29aQWvKpmVoPlvPQ==}
     engines: {node: '>=16.0.0'}
+
+  xml2js@0.6.2:
+    resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==}
+    engines: {node: '>=4.0.0'}
+
+  xmlbuilder@11.0.1:
+    resolution: {integrity: sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==}
+    engines: {node: '>=4.0'}
 
   xss@1.0.17:
     resolution: {integrity: sha512-+SEr5IDSgTBnhT6bnnf0mVRHT91+HU517zkahLNhkWLz8retCgeR1YDT4OknLiExA5+chn2Wy7z3KyjvnD8A2w==}
@@ -6336,6 +6446,8 @@ snapshots:
 
   '@otplib/core@13.5.0': {}
 
+  '@otplib/core@13.6.0': {}
+
   '@otplib/hotp@13.5.0':
     dependencies:
       '@otplib/core': 13.5.0
@@ -6350,6 +6462,10 @@ snapshots:
     dependencies:
       '@noble/hashes': 2.4.0
       '@otplib/core': 13.5.0
+
+  '@otplib/plugin-crypto-node@13.6.0':
+    dependencies:
+      '@otplib/core': 13.6.0
 
   '@otplib/totp@13.5.0':
     dependencies:
@@ -6920,6 +7036,10 @@ snapshots:
   '@types/whatwg-mimetype@3.0.2': {}
 
   '@types/ws@8.18.2':
+    dependencies:
+      '@types/node': 20.19.43
+
+  '@types/xml2js@0.4.14':
     dependencies:
       '@types/node': 20.19.43
 
@@ -8009,6 +8129,10 @@ snapshots:
 
   html-escaper@2.0.2: {}
 
+  html-parse-stringify@3.1.0:
+    dependencies:
+      void-elements: 3.1.0
+
   http-errors@2.0.0:
     dependencies:
       depd: 2.0.0
@@ -8022,6 +8146,12 @@ snapshots:
   human-signals@5.0.0: {}
 
   husky@9.1.7: {}
+
+  i18next@24.2.3(typescript@5.9.3):
+    dependencies:
+      '@babel/runtime': 7.29.10
+    optionalDependencies:
+      typescript: 5.9.3
 
   iconv-lite@0.4.24:
     dependencies:
@@ -8129,6 +8259,8 @@ snapshots:
       '@pkgjs/parseargs': 0.11.0
 
   jose@5.10.0: {}
+
+  jose@6.2.15: {}
 
   joycon@3.1.1: {}
 
@@ -8955,6 +9087,16 @@ snapshots:
       '@babel/runtime': 7.29.10
       react: 19.3.1
 
+  react-i18next@15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3):
+    dependencies:
+      '@babel/runtime': 7.29.10
+      html-parse-stringify: 3.1.0
+      i18next: 24.2.3(typescript@5.9.3)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
+      typescript: 5.9.3
+
   react-image-crop@10.1.8(react@19.3.1):
     dependencies:
       react: 19.3.1
@@ -9613,6 +9755,8 @@ snapshots:
       - supports-color
       - terser
 
+  void-elements@3.1.0: {}
+
   wasm-feature-detect@1.8.0: {}
 
   web-streams-polyfill@3.3.3: {}
@@ -9659,6 +9803,13 @@ snapshots:
   ws@8.22.0: {}
 
   xml-naming@0.3.0: {}
+
+  xml2js@0.6.2:
+    dependencies:
+      sax: 1.6.1
+      xmlbuilder: 11.0.1
+
+  xmlbuilder@11.0.1: {}
 
   xss@1.0.17:
     dependencies:

@@ -1,12 +1,13 @@
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vitest-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
   test: {
     environment: 'node',
     globals: true,
     include: ['__tests__/**/*.test.ts'],
+    typecheck: {
+      tsconfig: './tsconfig.json'
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

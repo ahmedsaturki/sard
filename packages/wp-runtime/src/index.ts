@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-runtime
+﻿/**
+ * @module @sard-cms/wp-runtime
  * PHP-WASM runtime + Bridge API for WordPress plugin sandbox (L1 WP Compat)
  * 
  * ADR-016: Each WP plugin runs in isolated process with PHP-WASM.
@@ -9,3 +9,4 @@
 export * from './types.js';
 export { PHPWasmRuntime, createPHPWasmRuntime } from './php-wasm-runtime.js';
 export { createBridge, createPluginManifest } from './bridge.js';
+

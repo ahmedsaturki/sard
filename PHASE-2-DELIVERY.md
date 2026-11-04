@@ -112,7 +112,7 @@
 | Risk | Mitigation |
 |---|---|
 | Payload 3 memory on 512MB under load | Memory governor + static-first caching + LRU caches |
-| GitHub remote needed for CI | Push to github.com/ahmedsaturki/sard to activate CI |
+| GitHub remote needed for CI | Push to github.com/bunya-labs/sard to activate CI |
 | WP plugin extension gaps | Documented supported extensions; native alternatives (L4) as fallback |
 | 5-user usability (HC-13) | Script/score sheet ready in docs/evidence/usability/; recruitment needed |
 
@@ -143,6 +143,6 @@
 
 ### 🤔 Questions for User
 
-1. **GitHub Remote:** Ready to create `github.com/ahmedsaturki/sard` and push?
+1. **GitHub Remote:** Ready to create `github.com/bunya-labs/sard` and push?
 2. **HC-13 Usability:** Schedule 5 user sessions (script ready in docs/evidence/usability/)?
 3. **Phase 3 Priority:** Static export first, or WP Theme L2 conversion first?

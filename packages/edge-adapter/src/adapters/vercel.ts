@@ -1,8 +1,8 @@
-/**
- * @module @sard/edge-adapter/adapters/vercel
+﻿/**
+ * @module @sard-cms/edge-adapter/adapters/vercel
  * Vercel Edge Adapter for Sard Cloud mode
  */
-import type { RuntimeAdapter, RuntimeConfig, RuntimeRequest, RuntimeResponse, RuntimeMetadata } from "@sard/runtime";
+import type { RuntimeAdapter, RuntimeConfig, RuntimeRequest, RuntimeResponse, RuntimeMetadata } from "@sard-cms/runtime";
 
 export class VercelEdgeAdapter implements RuntimeAdapter {
   private middleware: Array<(req: RuntimeRequest, next: () => Promise<RuntimeResponse>) => Promise<RuntimeResponse>> = [];
@@ -44,3 +44,4 @@ export class VercelEdgeAdapter implements RuntimeAdapter {
 export function createVercelEdgeAdapter(): VercelEdgeAdapter {
   return new VercelEdgeAdapter();
 }
+

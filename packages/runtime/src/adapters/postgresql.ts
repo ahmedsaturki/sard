@@ -1,10 +1,10 @@
-/**
- * @module @sard/runtime/adapters/postgresql
+﻿/**
+ * @module @sard-cms/runtime/adapters/postgresql
  * PostgreSQL Database Adapter for Cloud/Docker modes
  */
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { schema } from "@sard/db";
+import { schema } from "@sard-cms/db";
 import type { DatabaseAdapter } from "../interfaces.js";
 
 export class PostgreSQLAdapter implements DatabaseAdapter {
@@ -121,3 +121,4 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
 export function createPostgreSQLAdapter(_config: any): any {
   return new PostgreSQLAdapter();
 }
+

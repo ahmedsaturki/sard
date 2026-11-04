@@ -1,5 +1,5 @@
-/**
- * @module @sard/core/serialization
+﻿/**
+ * @module @sard-cms/core/serialization
  *
  * Core CMS serialization types for content model transport.
  * Used by REST/GraphQL APIs and the Visual Editor.
@@ -279,3 +279,4 @@ export const ContentQueryParamsSchema = z.object({
 });
 
 export type ContentQueryParams = z.infer<typeof ContentQueryParamsSchema>;
+

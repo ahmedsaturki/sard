@@ -1,5 +1,5 @@
-/**
- * @module @sard/docker-runtime/config
+﻿/**
+ * @module @sard-cms/docker-runtime/config
  * Docker configuration types
  */
 
@@ -13,3 +13,4 @@ export interface DockerConfig {
   };
   env: Record<string, string>;
 }
+

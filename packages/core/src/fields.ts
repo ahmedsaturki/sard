@@ -1,5 +1,5 @@
-/**
- * @module @sard/core/fields
+﻿/**
+ * @module @sard-cms/core/fields
  *
  * Field definition model. A collection is an ordered list of FieldDefinition.
  * Portable Text fields store structured content (ADR-003).
@@ -75,3 +75,4 @@ export function validateCollection(
     errors: r.error.issues.map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`)
   };
 }
+

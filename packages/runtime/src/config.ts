@@ -1,5 +1,5 @@
-/**
- * @module @sard/runtime/config
+﻿/**
+ * @module @sard-cms/runtime/config
  * Sard runtime configuration schema
  */
 import { z } from "zod";
@@ -51,3 +51,4 @@ export type SardConfig = z.infer<typeof SardConfigSchema>;
 export function validateConfig(config: unknown) {
   return SardConfigSchema.parse(config);
 }
+

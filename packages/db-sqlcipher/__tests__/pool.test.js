@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/db-sqlcipher/__tests__/pool.test
+ * @module @sard-cms/db-sqlcipher/__tests__/pool.test
  * TDD tests for SQLCipher worker pool
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -231,3 +231,4 @@ var TEST_KEY = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
         });
     }); });
 });
+

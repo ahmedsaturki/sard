@@ -9,15 +9,14 @@ import { verifyTwoFactorCode } from '../service';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { code, secret } = await request.json();
-    
-    if (!code || !secret) {
+    const { code, secret } = body as { code?: string; secret?: string };
+
+    if (typeof code !== 'string' || code.length === 0 || typeof secret !== 'string' || secret.length === 0) {
       return NextResponse.json({ success: false, error: 'Code and secret required' }, { status: 400 });
     }
-    
-    const { verifyTwoFactorCode } = await import('../service');
+
     const result = await verifyTwoFactorCode(secret, code);
-    
+
     return NextResponse.json({
       success: result.valid,
       error: result.valid ? undefined : 'Invalid code',

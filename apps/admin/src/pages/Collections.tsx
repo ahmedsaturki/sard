@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const COLLECTIONS = [
@@ -59,13 +59,13 @@ export function Collections() {
                 <td>
                   <div className="flex items-center gap-2">
                     <Link to={`/collections/${collection.slug}`} className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700" aria-label={`View ${collection.name}`}>
-                      {ICONS.eye}
+                      <ICONS.eye className="w-4 h-4" aria-hidden="true" />
                     </Link>
                     <Link to={`/collections/${collection.slug}/new`} className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700" aria-label={`Add entry to ${collection.name}`}>
-                      {ICONS.plus}
+                      <ICONS.plus className="w-4 h-4" aria-hidden="true" />
                     </Link>
                     <button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700" aria-label={`Settings for ${collection.name}`}>
-                      {ICONS.settings}
+                      <ICONS.settings className="w-4 h-4" aria-hidden="true" />
                     </button>
                   </div>
                 </td>
@@ -86,3 +86,4 @@ export function Collections() {
 }
 
 export default Collections;
+

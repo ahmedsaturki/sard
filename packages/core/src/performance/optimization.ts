@@ -1,5 +1,5 @@
-/**
- * @module @sard/core/performance
+﻿/**
+ * @module @sard-cms/core/performance
  * Performance optimization utilities for HC-01/HC-02/HC-03
  * Targets: LCP <= 1s, INP <= 100ms, CLS <= 0.05, TTFB <= 50ms
  */

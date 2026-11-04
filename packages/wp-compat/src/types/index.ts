@@ -1,11 +1,11 @@
-/**
- * @module @sard/wp-compat/types
+﻿/**
+ * @module @sard-cms/wp-compat/types
  *
  * Type definitions for WordPress Compatibility Layer.
  * See ADR-0007 (WP Compatibility Layer).
  */
 
-// import type { PortableTextBlock } from "@sard/portable-text";
+// import type { PortableTextBlock } from "@sard-cms/portable-text";
 
 /**
  * WordPress theme structure
@@ -184,3 +184,4 @@ export interface ConversionResult {
   warnings: string[];
   errors: string[];
 }
+

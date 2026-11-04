@@ -62,11 +62,11 @@ export const TwoFactorSetupSchema = z.object({
 export const AuditQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(50),
-  action: z.string().optional(),
-  userId: z.string().uuid().optional(),
-  resourceType: z.string().optional(),
-  dateFrom: z.string().datetime().optional(),
-  dateTo: z.string().datetime().optional(),
+  action: z.string().optional() as z.ZodOptional<z.ZodString>,
+  userId: z.string().uuid().optional() as z.ZodOptional<z.ZodString>,
+  resourceType: z.string().optional() as z.ZodOptional<z.ZodString>,
+  dateFrom: z.string().datetime().optional() as z.ZodOptional<z.ZodString>,
+  dateTo: z.string().datetime().optional() as z.ZodOptional<z.ZodString>,
 });
 
 // Version schemas

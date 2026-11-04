@@ -1,11 +1,11 @@
-/**
- * @module @sard/db-sqlcipher/payload-adapter
+﻿/**
+ * @module @sard-cms/db-sqlcipher/payload-adapter
  * Payload 3 Database Adapter implementation over SQLCipher pool
  * Implements Payload's DatabaseAdapter contract
  */
 
-import { SQLCipherPool, type SQLCipherConfig, type PayloadDatabaseAdapter, type PayloadTransaction } from './types.js';
-import { createSQLCipherPool } from './pool.js';
+import type { SQLCipherConfig, PayloadDatabaseAdapter, PayloadTransaction } from './types.js';
+import { SQLCipherPool, createSQLCipherPool } from './pool.js';
 import { randomUUID } from 'node:crypto';
 
 export class PayloadSQLCipherAdapter implements PayloadDatabaseAdapter {
@@ -14,10 +14,10 @@ export class PayloadSQLCipherAdapter implements PayloadDatabaseAdapter {
   
   async connect(): Promise<void> {
     if (this.pool) return;
-    
-    const encryptionKey = process.env.SARD_DB_KEY;
-    const keyFile = process.env.SARD_DB_KEY_FILE;
-    const databasePath = process.env.SARD_DB_PATH ?? './data/sard';
+
+    const encryptionKey = process.env['SARD_DB_KEY'];
+    const keyFile = process.env['SARD_DB_KEY_FILE'];
+    const databasePath = process.env['SARD_DB_PATH'] ?? './data/sard';
     
     if (!encryptionKey && !keyFile) {
       throw new Error('SARD_DB_KEY or SARD_DB_KEY_FILE environment variable required (AC-11)');
@@ -60,11 +60,7 @@ export class PayloadSQLCipherAdapter implements PayloadDatabaseAdapter {
   async execute(sql: string, params: unknown[] = []): Promise<{ rows: unknown[][]; affectedRows: number; insertId?: number | string }> {
     if (!this.pool) throw new Error('Not connected');
     const result = await this.pool.exec(sql, params);
-    return {
-      rows: result.rows,
-      affectedRows: result.rowCount,
-      insertId: undefined // SQLite doesn't easily return insertId without RETURNING
-    };
+    return { rows: result.rows, affectedRows: result.rowCount };
   }
   
   async query(sql: string, params: unknown[] = []): Promise<{ rows: unknown[][] }> {
@@ -75,12 +71,12 @@ export class PayloadSQLCipherAdapter implements PayloadDatabaseAdapter {
   
   async transaction<T>(callback: (tx: PayloadTransaction) => Promise<T>): Promise<T> {
     if (!this.pool) throw new Error('Not connected');
-    
+
     return this.pool.transaction(async (tx) => {
       const payloadTx: PayloadTransaction = {
         execute: async (sql: string, params: unknown[] = []) => {
           const result = await tx.exec(sql, params);
-          return { rows: result.rows, affectedRows: result.rowCount, insertId: undefined };
+          return { rows: result.rows, affectedRows: result.rowCount };
         },
         query: async (sql: string, params: unknown[] = []) => {
           const result = await tx.query(sql, params);
@@ -93,9 +89,9 @@ export class PayloadSQLCipherAdapter implements PayloadDatabaseAdapter {
   
   async createMigrationTable(): Promise<void> {
     await this.execute(`
-      CREATE TABLE IF NOT EXISTS `_migrations` (
-        `name` TEXT PRIMARY KEY,
-        `executed_at` INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+      CREATE TABLE IF NOT EXISTS "_migrations" (
+        "name" TEXT PRIMARY KEY,
+        "executed_at" INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
       )
     `);
   }
@@ -113,3 +109,4 @@ export class PayloadSQLCipherAdapter implements PayloadDatabaseAdapter {
 export function createPayloadAdapter(config?: Partial<SQLCipherConfig>): PayloadSQLCipherAdapter {
   return new PayloadSQLCipherAdapter();
 }
+

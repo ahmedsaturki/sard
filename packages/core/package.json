@@ -1,5 +1,5 @@
 {
-  "name": "@sard/core",
+  "name": "@sard-cms/core",
   "version": "0.0.1",
   "description": "Sard CMS core: collections, fields, content engine, capability registry",
   "type": "module",
@@ -14,7 +14,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@sard/portable-text": "workspace:*",
+    "@sard-cms/portable-text": "workspace:*",
     "zod": "^3.24.1"
   },
   "devDependencies": {

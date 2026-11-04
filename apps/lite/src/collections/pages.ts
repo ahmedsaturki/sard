@@ -15,9 +15,9 @@ export const Pages: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor',
-    update: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor',
-    delete: ({ req: { user } }) => user?.role === 'admin',
+    create: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor',
+    update: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor',
+    delete: ({ req: { user } }) => user?.['role'] === 'admin',
   },
   fields: [
     {
@@ -155,7 +155,7 @@ export const Pages: CollectionConfig = {
   hooks: {
     beforeChange: [
       ({ data }) => {
-        data.version = (data.version ?? 0) + 1;
+        data['version'] = (data['version'] ?? 0) + 1;
       },
     ],
   },

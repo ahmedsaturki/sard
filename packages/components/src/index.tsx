@@ -1,12 +1,12 @@
 /**
- * @module @sard/components
+ * @module @sard-cms/components
  *
  * Core Component Library for Sard CMS.
  * Built on Design Tokens with RTL support.
  * See ADR-007 (UI/UX Architecture).
  */
 
-import React from "react";
+import React, { createContext, useState, useEffect, useMemo } from "react";
 import type {
   ColorTokens,
   TypographyTokens,
@@ -19,7 +19,14 @@ import type {
   RtlTokens,
   ComponentTokens,
   AnimationTokens,
-} from "@sard/design-tokens";
+} from "@sard-cms/design-tokens";
+
+// ============================================================================
+// CONTEXTS
+// ============================================================================
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+const RtlContext = createContext<RtlContextValue | null>(null);
 
 // Re-export design tokens
 export type {
@@ -34,15 +41,17 @@ export type {
   RtlTokens,
   ComponentTokens,
   AnimationTokens,
-} from "@sard/design-tokens";
+} from "@sard-cms/design-tokens";
 
-export { tokens } from "@sard/design-tokens";
+export { tokens } from "@sard-cms/design-tokens";
+
+export { Box, Button, Card, Tooltip, Paper, Typography, IconButton, Divider, Grid, Menu, MenuItem, Avatar, CardContent } from "./components";
 
 // ============================================================================
 // ICONS (inline SVG icons)
 // ============================================================================
 
-interface IconProps {
+export interface IconProps {
   width?: number | string;
   height?: number | string;
   className?: string;
@@ -247,6 +256,27 @@ export const AddIcon: React.FC<IconProps> = (props) => (
   </SvgIcon>
 );
 
+export const ShieldIcon: React.FC<IconProps> = (props) => (
+  <SvgIcon {...props}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  </SvgIcon>
+);
+
+export const UnlockIcon: React.FC<IconProps> = (props) => (
+  <SvgIcon {...props}>
+    <rect x="5" y="11" width="14" height="10" rx="2" ry="2" />
+    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </SvgIcon>
+);
+
+export const AlertTriangleIcon: React.FC<IconProps> = (props) => (
+  <SvgIcon {...props}>
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </SvgIcon>
+);
+
 // ============================================================================
 // CSS VARIABLES GENERATION
 // ============================================================================
@@ -412,6 +442,83 @@ export interface RtlContextValue {
 export interface RtlProviderProps {
   children: React.ReactNode;
   defaultLocale?: string;
+}
+
+// ============================================================================
+// THEME PROVIDER
+// ============================================================================
+
+export function ThemeProvider({
+  children,
+  defaultMode = "system",
+  storageKey = "theme",
+  attribute = "class",
+}: ThemeProviderProps) {
+  const [mode, setMode] = useState<ThemeMode>(defaultMode);
+
+  // Resolve system mode
+  const resolvedMode = useMemo(() => {
+    if (mode === "system") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    return mode;
+  }, [mode]);
+
+  // Persist to localStorage
+  useEffect(() => {
+    if (mode !== "system") {
+      localStorage.setItem(storageKey, mode);
+    } else {
+      localStorage.removeItem(storageKey);
+    }
+  }, [mode, storageKey]);
+
+  // Apply to document
+  useEffect(() => {
+    if (attribute === "class") {
+      document.documentElement.classList.toggle("dark", resolvedMode === "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", resolvedMode);
+    }
+  }, [resolvedMode, attribute]);
+
+  return (
+    <ThemeContext.Provider value={{ mode, resolvedMode, setMode, toggleMode: () => setMode(m => m === "light" ? "dark" : "light") }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+// ============================================================================
+// RTL PROVIDER
+// ============================================================================
+
+export function RtlProvider({
+  children,
+  defaultLocale = "en",
+}: RtlProviderProps) {
+  const [locale, setLocale] = useState<string>(defaultLocale);
+
+  // Detect system RTL
+  const isRtl = useMemo(() => {
+    return locale.startsWith("ar") ||
+           locale.startsWith("he") ||
+           locale.startsWith("fa") ||
+           locale.startsWith("ur") ||
+           locale === "he-il";
+  }, [locale]);
+
+  // Apply direction to document
+  useEffect(() => {
+    document.documentElement.dir = isRtl ? "rtl" : "ltr";
+    document.documentElement.lang = locale;
+  }, [locale, isRtl]);
+
+  return (
+    <RtlContext.Provider value={{ dir: isRtl ? "rtl" : "ltr", locale, setLocale, isRtl }}>
+      {children}
+    </RtlContext.Provider>
+  );
 }
 
 // ============================================================================
@@ -603,6 +710,8 @@ export function createStyledComponent<
 // ============================================================================
 
 export default {
+  ThemeProvider,
+  RtlProvider,
   generateCssVariables,
   generateRtlCssVariables,
   useDesignTokens,
@@ -615,4 +724,33 @@ export default {
   rtlAwareStyle,
   tokenToCssValue,
   createStyledComponent,
+  // Icons
+  ImageIcon,
+  VideoIcon,
+  CodeIcon,
+  QuoteIcon,
+  ListIcon,
+  TableIcon,
+  DividerIcon,
+  MoreVertIcon,
+  DragIndicatorIcon,
+  DeleteIcon,
+  CopyIcon,
+  EditIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CheckCircleIcon,
+  HelpOutlineIcon,
+  CloseIcon,
+  PeopleIcon,
+  SettingsIcon,
+  LogoutIcon,
+  HomeIcon,
+  ArticleIcon,
+  ExpandMoreIcon,
+  VisibilityIcon,
+  AddIcon,
+  ShieldIcon,
+  UnlockIcon,
+  AlertTriangleIcon,
 };

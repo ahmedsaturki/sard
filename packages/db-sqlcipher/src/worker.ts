@@ -1,12 +1,12 @@
-/**
- * @module @sard/db-sqlcipher/worker
+﻿/**
+ * @module @sard-cms/db-sqlcipher/worker
  * SQLCipher WASM worker - runs in worker thread, executes encrypted SQLite
  */
 
 import { parentPort, workerData } from 'node:worker_threads';
 import { createClient } from '@libsql/client';
+import type { InValue } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
-import * as schema from '@sard/db';
 import type { SQLCipherWorkerMessage, SQLCipherWorkerResponse } from './types.js';
 
 if (!parentPort) {
@@ -30,7 +30,7 @@ async function initialize(): Promise<void> {
   await client.execute('PRAGMA foreign_keys = ON;');
   await client.execute('PRAGMA busy_timeout = 5000;');
 
-  db = drizzle(client, { schema });
+  db = drizzle(client);
   
   // Verify encryption works
   const result = await client.execute('SELECT 1 as test');
@@ -41,14 +41,15 @@ async function initialize(): Promise<void> {
 
 async function execute(sql: string, params: unknown[] = []): Promise<SQLCipherWorkerResponse> {
   if (!client) throw new Error('Client not initialized');
-  
+
   try {
-    const result = await client.execute({ sql, args: params });
+    const result = await client.execute({ sql, args: params as InValue[] });
+    const rows = Array.isArray(result.rows) ? result.rows.map((r: any) => Object.values(r)) : [];
     return {
       id: '',
       success: true,
-      rows: result.rows as unknown[][],
-      rowCount: result.rows.length,
+      rows: rows as unknown[][],
+      rowCount: rows.length,
       changes: (result as any).changes ?? 0,
       lastInsertRowid: (result as any).lastInsertRowid ?? 0,
     };
@@ -63,18 +64,24 @@ async function execute(sql: string, params: unknown[] = []): Promise<SQLCipherWo
 
 async function transaction(statements: { sql: string; params: unknown[] }[]): Promise<SQLCipherWorkerResponse> {
   if (!client) throw new Error('Client not initialized');
-  
+
   try {
-    return await client.transaction(async (txClient) => {
+    const tx = await client.transaction();
+    try {
       for (const stmt of statements) {
-        await txClient.execute({ sql: stmt.sql, args: stmt.params });
+        await tx.execute({ sql: stmt.sql, args: stmt.params as InValue[] });
       }
-      return {
-        id: '',
-        success: true,
-        rowCount: statements.length,
-      };
-    });
+      await tx.close();
+    } catch (error) {
+      await tx.rollback();
+      throw error;
+    }
+
+    return {
+      id: '',
+      success: true,
+      rowCount: statements.length,
+    };
   } catch (error) {
     return {
       id: '',
@@ -130,3 +137,4 @@ initialize().catch((err) => {
 });
 
 parentPort.postMessage({ type: 'ready' });
+

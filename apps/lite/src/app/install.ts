@@ -4,9 +4,11 @@
  */
 
 import { Request, Response } from 'express';
-import { randomBytes } from 'node:crypto';
+import { randomBytes, createHash } from 'node:crypto';
 import { Payload } from 'payload';
 import { hash, verify } from '@node-rs/argon2';
+import { SignJWT } from 'jose';
+
 
 interface InstallRequest {
   siteName: string;
@@ -29,16 +31,19 @@ interface InstallResponse {
 const REQUIRED_FIELDS: (keyof InstallRequest)[] = ['siteName', 'siteUrl', 'adminEmail', 'adminPassword', 'adminName', 'locale'];
 
 function validateInstallRequest(body: unknown): InstallRequest {
-  const data = body as Record<string, unknown>;
+  const data = body as Record<string, string | undefined>;
   for (const field of REQUIRED_FIELDS) {
     if (!data[field] || typeof data[field] !== 'string') {
       throw new Error(`Missing required field: ${field}`);
     }
   }
-  if (data.adminPassword.length < 12) throw new Error('Admin password must be at least 12 characters');
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.adminEmail)) throw new Error('Invalid admin email');
-  if (!['ar', 'en'].includes(data.locale)) throw new Error('Locale must be ar or en');
-  return data as InstallRequest;
+  const adminPassword = data['adminPassword'] as string;
+  if (adminPassword.length < 12) throw new Error('Admin password must be at least 12 characters');
+  const adminEmail = data['adminEmail'] as string;
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(adminEmail)) throw new Error('Invalid admin email');
+  const locale = data['locale'] as string;
+  if (!['ar', 'en'].includes(locale)) throw new Error('Locale must be ar or en');
+  return data as unknown as InstallRequest;
 }
 
 function generateDBKey(): string {
@@ -47,7 +52,7 @@ function generateDBKey(): string {
 
 function hashPassword(password: string): Promise<string> {
   return hash(password, {
-    memoryCost: 65536, timeCost: 3, parallelism: 1, outputLen: 32, type: 2,
+    memoryCost: 65536, timeCost: 3, parallelism: 1, outputLen: 32, algorithm: 2,
   });
 }
 
@@ -103,15 +108,16 @@ export async function installHandler(payload: Payload): Promise<(req: Request, r
         },
       });
       
-      const token = payload.jwt.sign({ id: admin.id, collection: 'users', email: admin.email, role: admin.role }, {
-        expiresIn: '15m',
-      });
+      const jwt = await new SignJWT({ id: admin['id'], collection: 'users', email: admin['email'], role: admin['role'] })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('15m')
+      .sign(new TextEncoder().encode(process.env['PAYLOAD_SECRET_KEY'] || 'fallback-secret'));
       
       const response: InstallResponse = {
         success: true,
         message: 'Sard installed successfully!',
         dbKey,
-        adminToken: token,
+        adminToken: jwt,
         redirectUrl: '/admin',
       };
       

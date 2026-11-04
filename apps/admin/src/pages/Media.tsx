@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const MEDIA_ITEMS = [
@@ -34,10 +34,10 @@ export function Media() {
         </div>
         <div className="flex gap-3">
           <button className="btn btn-outline" aria-label="Switch to grid view">
-            <ICONS.grid />
+            <ICONS.grid className="w-4 h-4" aria-hidden="true" />
           </button>
           <button className="btn btn-outline" aria-label="Switch to list view">
-            {ICONS.list}
+            <ICONS.list className="w-4 h-4" aria-hidden="true" />
           </button>
           <button className="btn btn-primary">
             <ICONS.upload className="w-4 h-4" aria-hidden="true" />
@@ -64,14 +64,14 @@ export function Media() {
                 className={cn('p-2 rounded-lg', viewMode === 'grid' ? 'bg-brand-primary-100 text-brand-primary-700' : 'text-neutral-500 hover:bg-neutral-100')}
                 aria-label="Grid view"
               >
-                {ICONS.grid}
+                <ICONS.grid className="w-4 h-4" aria-hidden="true" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className={cn('p-2 rounded-lg', viewMode === 'list' ? 'bg-brand-primary-100 text-brand-primary-700' : 'text-neutral-500 hover:bg-neutral-100')}
                 aria-label="List view"
               >
-                {ICONS.list}
+                <ICONS.list className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -94,7 +94,7 @@ export function Media() {
               />
               
               {viewMode === 'grid' ? (
-                <>
+                <React.Fragment>
                   <div className="aspect-video bg-neutral-100 relative overflow-hidden">
                     {item.type === 'image' && (
                       <div className="w-full h-full bg-gradient-to-br from-brand-primary-100 to-brand-primary-200 flex items-center justify-center">
@@ -115,31 +115,33 @@ export function Media() {
                   <div className="p-3">
                     <p className="font-medium text-sm text-neutral-900 truncate">{item.name}</p>
                     <p className="text-xs text-neutral-500 mt-1">
-                      {item.type === 'video' ? item.duration : item.dimensions || item.pages ? `${item.pages} pages` : ''}
-                      <span className="mx-1">·</span>
+                      {(item.type === 'video' ? item.duration : item.dimensions) || item.pages ? `${item.pages} pages` : ''}
+                      <span className="mx-1">-</span>
                       {item.size}
                     </p>
                   </div>
-                </>
+                </React.Fragment>
               ) : (
-                <>
+                <React.Fragment>
                   <div className="w-16 h-10 flex-shrink-0 rounded bg-neutral-100 flex items-center justify-center">
                     {item.type === 'image' && <ICONS.image className="w-8 h-8 text-brand-primary-400" />}
                     {item.type === 'video' && <ICONS.video className="w-8 h-8 text-neutral-400" />}
                     {item.type === 'document' && <ICONS.fileText className="w-8 h-8 text-red-400" />}
-                  </>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-neutral-900 truncate">{item.name}</p>
-                    <p className="text-sm text-neutral-500">
-                      {item.type} · {item.dimensions || item.duration || `${item.pages} pages`} · {item.size} · {item.uploaded}
-                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100" aria-label="Download">{ICONS.download}</button>
-                    <button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100" aria-label="Edit">{ICONS.edit}</button>
-                    <button className="p-2 rounded-lg text-error-500 hover:bg-error-50" aria-label="Delete">{ICONS.trash}</button>
-                  </div>
-                </>
+                  <React.Fragment>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-neutral-900 truncate">{item.name}</p>
+                      <p className="text-sm text-neutral-500">
+                        {item.type} - {item.dimensions || item.duration || `${item.pages} pages`} - {item.size} - {item.uploaded}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100" aria-label="Download"><ICONS.download className="w-4 h-4" aria-hidden="true" /></button>
+                      <button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100" aria-label="Edit"><ICONS.edit className="w-4 h-4" aria-hidden="true" /></button>
+                      <button className="p-2 rounded-lg text-error-500 hover:bg-error-50" aria-label="Delete"><ICONS.trash className="w-4 h-4" aria-hidden="true" /></button>
+                    </div>
+                  </React.Fragment>
+                </React.Fragment>
               )}
             </div>
           ))}
@@ -158,3 +160,5 @@ export function Media() {
 }
 
 export default Media;
+
+

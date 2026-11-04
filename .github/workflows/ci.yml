@@ -111,7 +111,7 @@ jobs:
     name: Performance (k6 100VU/512MB)
     runs-on: ubuntu-latest
     needs: build
-    if: github.repository == 'ahmedsaturki/sard' # Only run on main repo
+    if: github.repository == 'bunya-labs/sard' # Only run on main repo
     steps:
       - uses: actions/checkout@v4
       

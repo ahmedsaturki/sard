@@ -3,10 +3,10 @@
  * Posts collection - bilingual (ar/en) with Portable Text content
  */
 
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig, Field } from 'payload';
 import { z } from 'zod';
 
-const SEOFields = [
+const SEOFields: Field[] = [
   {
     name: 'metaTitle',
     type: 'text',
@@ -52,9 +52,9 @@ export const Posts: CollectionConfig = {
   },
   access: {
     read: () => true, // Public read
-    create: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor' || user?.role === 'author',
-    update: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'editor' || (user?.role === 'author' && user?.id === '{{doc.author}}'),
-    delete: ({ req: { user } }) => user?.role === 'admin',
+    create: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor' || user?.['role'] === 'author',
+    update: ({ req: { user } }) => user?.['role'] === 'admin' || user?.['role'] === 'editor' || (user?.['role'] === 'author' && user?.['id'] === '{{doc.author}}'),
+    delete: ({ req: { user } }) => user?.['role'] === 'admin',
   },
   fields: [
     {
@@ -63,9 +63,12 @@ export const Posts: CollectionConfig = {
       required: true,
       localized: true,
       label: { ar: 'العنوان', en: 'Title' },
-      validate: (value: string) => {
-        const result = z.string().min(3).max(200).safeParse(value);
-        return result.success ? true : 'Title must be 3-200 characters';
+      validate: (value: string | string[] | null | undefined) => {
+        if (typeof value === 'string') {
+          const result = z.string().min(3).max(200).safeParse(value);
+          return result.success ? true : 'Title must be 3-200 characters';
+        }
+        return true;
       },
     },
     {
@@ -79,8 +82,9 @@ export const Posts: CollectionConfig = {
       admin: { position: 'sidebar' },
       hooks: {
         beforeValidate: [({ value, data }) => {
-          if (!value && data?.title) {
-            return data.title
+          const title = data?.['title'];
+          if ((value === undefined || value === '') && typeof title === 'string' && title.length > 0) {
+            return title
               .toLowerCase()
               .replace(/[^a-z0-9؀-ۿs-]/g, '')
               .replace(/s+/g, '-')
@@ -96,7 +100,6 @@ export const Posts: CollectionConfig = {
       required: true,
       localized: true,
       label: { ar: 'المحتوى', en: 'Content' },
-      editor: 'lexical',
     },
     {
       name: 'excerpt',
@@ -177,18 +180,18 @@ export const Posts: CollectionConfig = {
     // Versioning
     {
       name: 'version',
-      type: 'number',
-      defaultValue: 1,
+      type: 'text',
+      defaultValue: '1',
       admin: { readOnly: true, hidden: true },
     },
   ],
   hooks: {
     beforeChange: [
       ({ data, operation }) => {
-        if (operation === 'create' || data.status === 'published') {
-          data.publishedAt = new Date().toISOString();
+        if (operation === 'create' || data['status'] === 'published') {
+          data['publishedAt'] = new Date().toISOString();
         }
-        data.version = (data.version ?? 0) + 1;
+        data['version'] = String((parseInt(data['version'] ?? '0', 10)) + 1);
       },
     ],
     afterChange: [

@@ -1,5 +1,5 @@
-/**
- * @module @sard/wp-compat/parsers/WPThemeParser
+﻿/**
+ * @module @sard-cms/wp-compat/parsers/WPThemeParser
  *
  * Parses WordPress theme files and extracts structure.
  */
@@ -80,3 +80,4 @@ export class WPThemeParser {
     }
   }
 }
+

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const STATS = [
@@ -53,7 +53,7 @@ export function Dashboard() {
                 <p className="text-xs text-success-600 mt-1">{stat.change}</p>
               </div>
               <div className={cn('p-3 rounded-xl', stat.color)}>
-                <span className={cn('w-8 h-8', stat.iconColor)} aria-hidden="true">{stat.icon}</span>
+                <span className={cn('w-8 h-8', stat.iconColor)} aria-hidden="true"><ICONS.chart className="w-8 h-8" /></span>
               </div>
             </div>
           </div>
@@ -76,7 +76,7 @@ export function Dashboard() {
                   )}
                 >
                   <span className={cn('p-2 rounded-lg', action.color)}>
-                    <span className={cn('w-5 h-5', action.iconColor)} aria-hidden="true">{action.icon}</span>
+                    <span className={cn('w-5 h-5', action.iconColor)} aria-hidden="true"><ICONS.chart className="w-5 h-5" /></span>
                   </span>
                   <span className="font-medium text-neutral-900">{action.label}</span>
                 </Link>
@@ -103,15 +103,15 @@ export function Dashboard() {
                     activity.type === 'upload' && 'bg-info-100 text-info-700',
                     activity.type === 'delete' && 'bg-error-100 text-error-700'
                   )}>
-                    {activity.type === 'publish' && ICONS.checkCircle}
-                    {activity.type === 'create' && ICONS.plusCircle}
-                    {activity.type === 'update' && ICONS.edit}
-                    {activity.type === 'upload' && ICONS.upload}
-                    {activity.type === 'delete' && ICONS.trash}
+                    {activity.type === 'publish' && <ICONS.checkCircle className="w-4 h-4" />}
+                    {activity.type === 'create' && <ICONS.plusCircle className="w-4 h-4" />}
+                    {activity.type === 'update' && <ICONS.edit className="w-4 h-4" />}
+                    {activity.type === 'upload' && <ICONS.upload className="w-4 h-4" />}
+                    {activity.type === 'delete' && <ICONS.trash className="w-4 h-4" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-neutral-900 truncate">{activity.action} <span className="font-medium">{activity.item}</span></p>
-                    <p className="text-sm text-neutral-500">{activity.time} · {activity.user}</p>
+                    <p className="text-sm text-neutral-500">{activity.time} Â· {activity.user}</p>
                   </div>
                   <span className="text-xs text-neutral-400 whitespace-nowrap">{activity.time}</span>
                 </div>
@@ -146,3 +146,4 @@ export function Dashboard() {
 }
 
 export default Dashboard;
+

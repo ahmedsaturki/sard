@@ -1,5 +1,5 @@
 {
-  "name": "@sard/db",
+  "name": "@sard-cms/db",
   "version": "0.0.1",
   "description": "Sard database layer: Drizzle ORM schemas, migrations, seeds",
   "type": "module",

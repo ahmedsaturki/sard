@@ -4,11 +4,11 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { chromium } from 'playwright';
+import { chromium, type Browser, type Page } from '@playwright/test';
 
 describe('RTL Support', () => {
-  let browser: ReturnType<typeof chromium.launch>;
-  let page: ReturnType<typeof browser.newPage>;
+  let browser: Browser;
+  let page: Page;
   
   beforeAll(async () => {
     browser = await chromium.launch({ headless: true });
@@ -39,7 +39,7 @@ describe('RTL Support', () => {
       return Array.from(sheet.cssRules || []).map(r => r.cssText);
     });
     // Check for logical properties
-    const hasLogical = styles.some(s => s.includes('margin-inline') || s.includes('padding-inline'));
+    const hasLogical = styles.some((s: string) => s.includes('margin-inline') || s.includes('padding-inline'));
     expect(hasLogical).toBe(true);
   });
   

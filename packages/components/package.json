@@ -1,5 +1,5 @@
 {
-  "name": "@sard/components",
+  "name": "@sard-cms/components",
   "version": "0.0.1",
   "description": "Sard components package",
   "type": "module",
@@ -21,7 +21,7 @@
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@sard/design-tokens": "workspace:*"
+    "@sard-cms/design-tokens": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",

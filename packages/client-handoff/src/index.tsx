@@ -7,8 +7,8 @@
  */
 
 import React from "react";
-import { cn, useTheme, useRtl } from "@sard/components";
-import { tokens } from "@sard/design-tokens";
+import { cn, useTheme, useRtl } from "@sard-cms/components";
+import { tokens } from "@sard-cms/design-tokens";
 
 /**
  * Layer 1: Design Constraints (Design Tokens + Guardrails)

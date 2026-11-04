@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@sard/components';
+import { cn } from '@sard-cms/components';
 import { ICONS } from '../components/Layout';
 
 const SETTINGS_TABS = [
@@ -162,21 +162,21 @@ export function Settings() {
                     <td className="text-neutral-500">admin@example.com</td>
                     <td><span className="badge badge-error">Admin</span></td>
                     <td><span className="badge badge-success">Active</span></td>
-                    <td><button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100">{ICONS.edit}</button></td>
+                    <td><button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100"><ICONS.edit className="w-4 h-4" /></button></td>
                   </tr>
                   <tr>
                     <td className="font-medium text-neutral-900">Jane Smith</td>
                     <td className="text-neutral-500">jane@example.com</td>
                     <td><span className="badge badge-warning">Editor</span></td>
                     <td><span className="badge badge-success">Active</span></td>
-                    <td><button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100">{ICONS.edit}</button></td>
+                    <td><button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100"><ICONS.edit className="w-4 h-4" /></button></td>
                   </tr>
                   <tr>
                     <td className="font-medium text-neutral-900">John Doe</td>
                     <td className="text-neutral-500">john@example.com</td>
                     <td><span className="badge badge-neutral">Author</span></td>
                     <td><span className="badge badge-success">Active</span></td>
-                    <td><button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100">{ICONS.edit}</button></td>
+                    <td><button className="p-2 rounded-lg text-neutral-500 hover:bg-neutral-100"><ICONS.edit className="w-4 h-4" /></button></td>
                   </tr>
                 </tbody>
               </table>
@@ -220,7 +220,7 @@ export function Settings() {
               )}
             >
               <span className="flex items-center gap-2">
-                <span className="w-5 h-5" aria-hidden="true">{tab.icon}</span>
+                <span className="w-5 h-5" aria-hidden="true"><ICONS.settings className="w-5 h-5" /></span>
                 {tab.label}
               </span>
             </button>
@@ -235,3 +235,4 @@ export function Settings() {
 }
 
 export default Settings;
+

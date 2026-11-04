@@ -37,6 +37,9 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Registry auth — never commit tokens
+.npmrc
+
 # Turbo
 .turbo
 

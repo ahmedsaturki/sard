@@ -1,5 +1,5 @@
-/**
- * @module @sard/db-sqlcipher/types
+﻿/**
+ * @module @sard-cms/db-sqlcipher/types
  * Type definitions for SQLCipher WASM worker pool
  */
 
@@ -18,7 +18,7 @@ export interface SQLCipherConfig {
 
 export interface SQLCipherWorkerMessage {
   id: string;
-  type: 'exec' | 'transaction' | 'close' | 'health';
+  type: 'exec' | 'query' | 'transaction' | 'close' | 'health';
   sql?: string;
   params?: unknown[];
   statements?: { sql: string; params: unknown[] }[];
@@ -71,3 +71,4 @@ export interface Migration {
   up: string;
   down?: string;
 }
+

@@ -1,5 +1,5 @@
 @echo off
-REM Sard — Git Remote Setup for github.com/ahmedsaturki/sard
+REM Sard — Git Remote Setup for github.com/bunya-labs/sard
 REM Run this in: D:\ahmed-research-lab\Bunya Labs\Sard
 
 cd /d "D:\ahmed-research-lab\Bunya Labs\Sard"
@@ -9,7 +9,7 @@ git status
 
 echo.
 echo Adding remote origin...
-git remote add origin https://github.com/ahmedsaturki/sard.git
+git remote add origin https://github.com/bunya-labs/sard.git
 
 echo.
 echo Verifying remote...
@@ -40,5 +40,5 @@ echo Pushing to GitHub...
 git push -u origin master
 
 echo.
-echo Done! Check https://github.com/ahmedsaturki/sard/actions for CI runs.
+echo Done! Check https://github.com/bunya-labs/sard/actions for CI runs.
 pause

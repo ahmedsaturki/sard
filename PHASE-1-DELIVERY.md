@@ -101,6 +101,6 @@
 7. Starters (agency + blog-ar) + 5-user usability sessions (HC-13)
 
 ### 🤔 Questions for User
-1. **GitHub remote:** Create `github.com/ahmedsaturki/sard` and push?
+1. **GitHub remote:** Create `github.com/bunya-labs/sard` and push?
 2. **Snyk token:** Available for HC-08, or continue with npm audit + audit-ci?
 3. **HC-13 users:** Agency contacts for usability sessions, or prepare script + mark recruitment needed?

@@ -1,6 +1,6 @@
-"use strict";
+﻿"use strict";
 /**
- * @module @sard/db-sqlcipher/pool
+ * @module @sard-cms/db-sqlcipher/pool
  * Worker thread pool for SQLCipher WASM - non-blocking async queue
  */
 var __assign = (this && this.__assign) || function () {
@@ -313,3 +313,4 @@ exports.SQLCipherPool = SQLCipherPool;
 function createSQLCipherPool(config) {
     return new SQLCipherPool();
 }
+

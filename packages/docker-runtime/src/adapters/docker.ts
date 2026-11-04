@@ -1,10 +1,10 @@
-/**
- * @module @sard/docker-runtime/adapters/docker
+﻿/**
+ * @module @sard-cms/docker-runtime/adapters/docker
  * Docker Adapter for Sard Docker mode
  */
 
-import type { DatabaseAdapter, DatabaseConfig } from "@sard/runtime";
-import { createDatabaseAdapter } from "@sard/runtime";
+import type { DatabaseAdapter, DatabaseConfig } from "@sard-cms/runtime";
+import { createDatabaseAdapter } from "@sard-cms/runtime";
 
 export class DockerAdapter implements DatabaseAdapter {
   private db: DatabaseAdapter | null = null;
@@ -60,3 +60,4 @@ export class DockerAdapter implements DatabaseAdapter {
 export function createDockerAdapter(): DockerAdapter {
   return new DockerAdapter();
 }
+

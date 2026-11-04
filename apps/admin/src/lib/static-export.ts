@@ -1,12 +1,12 @@
-/**
- * @module @sard/admin/static-export
+﻿/**
+ * @module @sard-cms/admin/static-export
  *
  * Static Site Export functionality for Sard Admin.
  * Generates static HTML/CSS/JS for shared hosting deployment.
  * See ADR-009 (Deployment Modes).
  */
 
-import { generateCssVariables, tokens } from '@sard/design-tokens';
+import { generateCssVariables, tokens } from '@sard-cms/components';
 
 /**
  * Static export configuration
@@ -199,3 +199,4 @@ export default {
   runStaticExport,
   defaultStaticExportConfig,
 };
+

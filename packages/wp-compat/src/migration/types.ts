@@ -1,9 +1,8 @@
-/**
- * @module @sard/wp-compat/migration/types
+﻿/**
+ * @module @sard-cms/wp-compat/migration/types
  * Type definitions for WordPress Migration Toolkit (L3)
  */
 
-import type { PortableTextBlock } from "@sard/portable-text";
 
 /**
  * WordPress WXR (WordPress eXtended RSS) export structure
@@ -207,3 +206,4 @@ export interface RedirectEntry {
   type: "301" | "302";
   reason: string;
 }
+

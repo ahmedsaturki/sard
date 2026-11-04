@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { cn, useRtl } from "@sard/components";
+import { cn, useRtl } from "@sard-cms/components";
 import {
   ClientHandoffContext,
   mergeConstraints,

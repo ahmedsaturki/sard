@@ -1,5 +1,5 @@
-/**
- * @module @sard/visual-editor
+﻿/**
+ * @module @sard-cms/visual-editor
  *
  * Real-Time Visual Editor for Sard CMS.
  * In-context editing with live preview.
@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import type { ContentEntrySerializable, CollectionSerializable } from "@sard/core";
+import type { ContentEntrySerializable, CollectionSerializable } from "@sard-cms/core";
 
 /**
  * Editor modes
@@ -667,3 +667,4 @@ export {
   undoFn,
   redoFn,
 };
+
