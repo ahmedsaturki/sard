@@ -1,5 +1,5 @@
-﻿/**
- * @module @sard-cms/client-handoff/lint-rules/design-constraints
+/**
+ * @module @sard/client-handoff/lint-rules/design-constraints
  * ESLint rule: No hex colors outside design tokens
  * Enforces HC-11 Client Handoff Layer 1: Design constraints
  */
@@ -71,9 +71,9 @@ module.exports = createRule({
       /inherit/,
       /initial/,
       /unset/,
-      /var\(/,
-      /theme\(/,
-      /color-mix\(/,
+      /var(/,
+      /theme(/,
+      /color-mix(/,
     ];
 
     function isAllowed(value) {
@@ -154,4 +154,3 @@ module.exports = createRule({
     };
   },
 });
-

@@ -1,13 +1,13 @@
-﻿/**
- * @module @sard-cms/client-handoff/SimplifiedPanel
+/**
+ * @module @sard/client-handoff/SimplifiedPanel
  * Client Handoff Layer 2: Simplified Arabic admin panel
  * "إدارة الموقع" - Only what the client needs to touch
  */
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Card, CardContent, Grid, Typography, IconButton, Menu, MenuItem, Avatar } from '@sard-cms/components';
-import { EditIcon, AddIcon, VisibilityIcon, SettingsIcon, LogoutIcon, HomeIcon, ArticleIcon, ImageIcon, PeopleIcon } from '@sard-cms/icons';
+import { Box, Button, Card, CardContent, Grid, Typography, IconButton, Menu, MenuItem, Avatar } from '@sard/components';
+import { EditIcon, AddIcon, VisibilityIcon, SettingsIcon, LogoutIcon, HomeIcon, ArticleIcon, ImageIcon, PeopleIcon } from '@sard/icons';
 
 interface SimplifiedPanelProps {
   user: {
@@ -168,4 +168,3 @@ export const SimplifiedPanel: React.FC<SimplifiedPanelProps> = ({ user, onLogout
 };
 
 export default SimplifiedPanel;
-
